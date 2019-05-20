@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript"   th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
+    <title>Title</title>
+</head>
+<body>
+<h1>YUMMY-Customer-Info</h1>
+<div class="contact" th:object="${customer}">
+    <ul>
+        <li>
+            <label for="email">邮箱:</label>
+            <input th:value="*{email}" id="email" type="text" readonly/>
+        </li>
+        <li>
+            <label for="password">密码:</label>
+            <input id="password" type="password"/>
+        </li>
+        <li>
+            <label for="name">姓名:</label>
+            <input th:value="*{name}" id="name" type="text"/>
+        </li>
+        <li>
+            <label for="phone">电话:</label>
+            <input th:value="*{phone}" id="phone" type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"/>
+        </li>
+        <li>
+            <label for="addresses">地址:</label>
+            <select id="addresses" style="width:160px;">
+                <option th:each="address:*{addresses}" th:text="${address}"></option>
+            </select>
+            <button id="addAddress">新增地址</button>
+        </li>
+        <li>
+            <label for="level">级别:</label>
+            <input th:value="${level}" id="level" type="text" readonly/>
+        </li>
+        <input th:value="*{id}" id="id" type="text" style="display:none;"/>
+        <input th:value="*{consumption}" id="consumption" type="text" style="display:none;"/>
+        <input th:value="*{balance}" id="balance" type="text" style="display:none;"/>
+    </ul>
+    <button id="submit">保存</button>
+</div>
+</body>
+<script th:inline="javascript">
+    function Customer(id,email,password,name,phone,isActive,addresses,consumption,balance){
+        this.id=id;
+        this.email=email;
+        this.password=password;
+        this.name=name;
+        this.phone=phone;
+        this.isActive=isActive;
+        this.addresses=addresses;
+        this.consumption=consumption;
+        this.balance=balance;
+    }
+    function getAddresses(){
+        var addresses=[];
+        var options=document.getElementById("addresses").options;
+        for(var i=0;i<options.length;i++){
+            addresses.push(options[i].innerHTML);
+        }
+        return addresses;
+    }
+    document.getElementById("addAddress").onclick=function(){
+        var address=prompt("请输入要添加的送餐地址","");
+        if(address=="") return;
+        var addressOption=document.createElement("option");
+        addressOption.innerHTML=address;
+        document.getElementById("addresses").appendChild(addressOption);
+        alert("添加成功");
+    };
+    document.getElementById("submit").onclick=function(){
+        var id=document.getElementById("id").value;
+        var email=document.getElementById("email").value;
+        var password=document.getElementById("password").value;
+        var name=document.getElementById("name").value;
+        var phone=document.getElementById("phone").value;
+        var addresses=getAddresses();
+        var consumption=document.getElementById("consumption").value;
+        var balance=document.getElementById("balance").value;
+        var pwdPattern = new RegExp(/^[a-z0-9_-]{6,12}$/);
+        var phonePattern = new RegExp(/^[0-9]{5,15}$/);
+        if(!pwdPattern.test(password)){
+            alert("密码必须为6~12位数字、大小写字母、中划线、下划线");
+            return;
+        }else if(name==''){
+            alert("姓名不能为空");
+            return;
+        }else if(!phonePattern.test(phone)){
+            alert("电话号码格式错误");
+            return;
+        }
+        var customer=new Customer(id,email,password,name,phone,true,addresses,consumption,balance);
+        var basePath = "http:\/\/localhost:8080\/yummy";
+         $.ajax({
+            type: 'POST',
+            url: basePath + "/customer/update",
+            contentType: "application/json",
+            data: JSON.stringify(customer),
+            success:function(result) {
+                alert("保存成功");
+            },
+            error: function (result) {
+                alert("error!");
+            }
+        });
+    };
+</script>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/static/css/signin.css}">
+</head>
+<body>
+<div class="form">
+
+    <ul class="tab-group">
+        <li id="signin_li" class="tab active"><a href="#login">Sign In</a>
+        </li>
+        <li id="signup_li" class="tab"><a href="#signup">Sign Up</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="login">
+            <h1>Welcome Yummy!</h1>
+            <input type="text" style="display: none">
+            <input type="password" style="display: none">
+            <div class="field-wrap">
+                <label>
+                    Email<span class="req">*</span>
+                </label>
+                <input type="text" id="email_signin" readonly onfocus="this.removeAttribute('readonly');" required autocomplete="off" />
+            </div>
+            <div class="field-wrap">
+                <label>
+                    Password<span class="req">*</span>
+                </label>
+                <input type="password" id="password_signin" readonly onfocus="this.removeAttribute('readonly');" required autocomplete="off" />
+            </div>
+            <p class="forgot">
+                <a href="/yummy/rstLogin">Restaurant Login</a>
+            </p>
+            <button id="submit_signin" class="button button-block">Log In</button>
+        </div>
+
+        <div id="signup">
+            <h1>Sign Up for Yummy</h1>
+            <p id="errorInfo"></p>
+            <div class="field-wrap">
+                <label>
+                    Email<span class="req">*</span>
+                </label>
+                <input type="text" id="email_signup" required autocomplete="off" />
+            </div>
+            <div class="field-wrap">
+                <label>
+                    Password<span class="req">*</span>
+                </label>
+                <input type="password" id="password_signup" required autocomplete="off" />
+            </div>
+            <div class="field-wrap">
+                <label>
+                    Confirm<span class="req">*</span>
+                </label>
+                <input type="password" id="password2_signup" required autocomplete="off" />
+            </div>
+            <div class="field-wrap">
+                <label>
+                    Name<span class="req">*</span>
+                </label>
+                <input type="text" id="name_signup" required autocomplete="off" />
+            </div>
+            <div class="field-wrap">
+                <label>
+                    Phone<span class="req">*</span>
+                </label>
+                <input type="text" id="phone_signup" required autocomplete="off" />
+            </div>
+            <button id="submit_signup" class="button button-block">Get Started</button>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" th:src = "@{/static/js/jquery-2.0.3.min.js}"></script>
+<script th:src="@{/static/js/bootstrap.min.js}"></script>
+<script th:src="@{/static/js/bootbox.min.js}"></script>
+</body>
+<script th:inline="javascript">
+    document.getElementById("submit_signin").onclick=function(){
+        var email=document.getElementById("email_signin").value;
+        var password=document.getElementById("password_signin").value;
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/loginAndRegister/cstLogin",
+            data: {
+                email:email,
+                password:password
+            },
+            success:function(result) {
+                if(result==true) {
+                    window.location.href="/yummy/cstHome"
+                }else{
+                    bootbox.alert("用户名或密码错误");
+                }
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    }
+</script>
+<script th:inline="javascript">
+    function Customer(email,password,name,phone){
+        this.email=email;
+        this.password=password;
+        this.name=name;
+        this.phone=phone;
+    }
+
+    document.getElementById("submit_signup").onclick=function(){
+        var email=document.getElementById("email_signup").value;
+        var password=document.getElementById("password_signup").value;
+        var password2=document.getElementById("password2_signup").value;
+        var name=document.getElementById("name_signup").value;
+        var phone=document.getElementById("phone_signup").value;
+        var pwdPattern = new RegExp(/^[a-z0-9_-]{6,12}$/);
+        var emailPattern = new RegExp(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
+        var phonePattern = new RegExp(/^[0-9]{5,15}$/);
+        if(email=='') {
+            bootbox.alert("邮箱不能为空");
+            return;
+        }else if(!emailPattern.test(email)){
+            bootbox.alert("邮箱格式错误");
+            return;
+        }else if(!pwdPattern.test(password)){
+            bootbox.alert("密码必须为6~12位数字、大小写字母、中划线、下划线");
+            return;
+        }else if(password!=password2){
+            bootbox.alert("重复密码错误");
+            return;
+        }else if(name==''){
+            bootbox.alert("姓名不能为空");
+            return;
+        }else if(!phonePattern.test(phone)){
+            bootbox.alert("电话号码格式错误");
+            return;
+        }
+        var customer=new Customer(email,password,name,phone);
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/loginAndRegister/cstRegister",
+            contentType: "application/json",
+            data: JSON.stringify(customer),
+            success:function(result) {
+                if(result==true) {
+                    window.location.href = 'cstLogin';
+                }else{
+                    bootbox.alert("该邮箱已注册");
+                }
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    };
+</script>
+<script>
+    $().ready(function () {
+        $("#email_signup").click(emailReq);
+        $("#password_signup").click(passwordReq);
+        $("#password2_signup").click(checkPasswordReq);
+        $("#name_signup").click(nameReq);
+        $("#phone_signup").click(phoneReq);
+
+        $("#email_signup").change(checkEmail);
+        $("#password_signup").change(checkPasswordForm);
+        $("#password2_signup").change(checkpasswordSame);
+        $("#name_signup").change(checkName);
+        $("#phone_signup").change(checkPhone);
+
+        $('.form').find('input, textarea').on('keyup blur focus', function (e) {
+            var $this = $(this),
+                label = $this.prev('label');
+
+            if (e.type === 'keyup') {
+                if ($this.val() === '') {
+                    label.removeClass('active highlight');
+                } else {
+                    label.addClass('active highlight');
+                }
+            } else if (e.type === 'blur') {
+                if ($this.val() === '') {
+                    label.removeClass('active highlight');
+                } else {
+                    label.removeClass('highlight');
+                }
+            } else if (e.type === 'focus') {
+
+                if ($this.val() === '') {
+                    label.removeClass('highlight');
+                } else if ($this.val() !== '') {
+                    label.addClass('highlight');
+                }
+            }
+        });
+
+        $('.tab a').on('click', function (e) {
+            e.preventDefault();
+
+            $(this).parent().addClass('active');
+            $(this).parent().siblings().removeClass('active');
+
+            target = $(this).attr('href');
+
+            $('.tab-content > div').not(target).hide();
+
+            $(target).fadeIn(600);
+        });
+    });
+    function emailReq() {
+        $("#errorInfo").attr("class","err");
+        $("#errorInfo").text("合法可用的邮箱地址");
+    }
+    function passwordReq() {
+        $("#errorInfo").attr("class", "err");
+        $("#errorInfo").text("6~12位数字、大小写字母、中划线、下划线")
+    }
+    function checkPasswordReq() {
+        $("#errorInfo").attr("class", "err");
+        $("#errorInfo").text("请确认密码")
+    }
+    function nameReq() {
+        $("#errorInfo").attr("class","err");
+        $("#errorInfo").text("请输入姓名");
+    }
+    function phoneReq() {
+        $("#errorInfo").attr("class","err");
+        $("#errorInfo").text("请输入电话号码，5-15位数字");
+    }
+    function checkEmail() {
+        var patten = new RegExp(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
+        var name = $(this).val();
+        if (!patten.test(name)){
+            $(this).attr("class", "red");
+        }else {
+            $("#errorInfo").text("请输入信息");
+            $("#errorInfo").attr("class","correct");
+            $(this).attr("class", "green");
+        }
+    }
+    function checkPasswordForm() {
+        var patten = new RegExp(/^[a-z0-9_-]{6,12}$/);
+        var name = $(this).val();
+        if (!patten.test(name)) {
+            $(this).attr("class", "red");
+        } else {
+            $("#errorInfo").text("请输入信息");
+            $("#errorInfo").attr("class","correct");
+            $(this).attr("class", "green");
+        }
+    }
+    function checkpasswordSame() {
+        var password = $("#password_signup").val();
+        var check = $(this).val();
+        if (password != check) {
+            $(this).attr("class", "red");
+            $("#errorInfo").text("密码不一致");
+        } else {
+            $("#errorInfo").text("请输入信息");
+            $("#errorInfo").attr("class","correct");
+            $(this).attr("class", "green");
+        }
+    }
+    function checkName(){
+        var name = $(this).val();
+        if (name=="") {
+            $(this).attr("class", "red");
+        } else {
+            $("#errorInfo").text("请输入信息");
+            $("#errorInfo").attr("class","correct");
+            $(this).attr("class", "green");
+        }
+    }
+    function checkPhone(){
+        var patten = new RegExp(/^[0-9]{5,15}$/);
+        var name = $(this).val();
+        if (!patten.test(name)) {
+            $(this).attr("class", "red");
+        } else {
+            $("#errorInfo").text("请输入信息");
+            $("#errorInfo").attr("class","correct");
+            $(this).attr("class", "green");
+        }
+    }
+</script>
+</html>

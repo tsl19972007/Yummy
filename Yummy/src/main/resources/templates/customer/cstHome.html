@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <script type="text/javascript"   th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
+    <title>Insert title here</title>
+</head>
+<body>
+<h1>YUMMY-Customer-Homepage</h1>
+<h2>Customer</h2>
+<div th:object="${customer}">
+    <p><strong>ID:</strong><span id="id" th:text="*{id}"></span></p>
+    <p><strong>Email:</strong><span id="email" th:text="*{email}"></span></p>
+    <p><strong>Name:</strong><span id="name" th:text="*{name}"></span></p>
+    <p><strong>Phone:</strong><span id="phone" th:text="*{phone}"></span></p>
+    <p><strong>Password:</strong><span id="password" th:text="*{password}"></span></p>
+</div>
+<form action="/yummy/loginAndRegister/cstLogout" method="post">
+    <input type="submit" value="注销">
+</form>
+<ul>
+    <li><a href="/yummy/cstInfo">个人信息</a></li>
+    <li><a href="/yummy/cstOrder">点餐</a></li>
+    <li><a href="/yummy/cstOrderList">我的订单</a></li>
+    <li><a href="/yummy/cstStatistics">统计信息</a></li>
+</ul>
+<form action="/yummy/customer/writeOff" method="post">
+    <input type="submit" value="删除账户">
+</form>
+</body>
+</html>

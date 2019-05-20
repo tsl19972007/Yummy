@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript"   th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
+    <title>Title</title>
+</head>
+<br>
+<h1>YUMMY-Manager-Balance</h1>
+<h2>结算：</h2>
+<table id="rsts" border="1" cellspacing="0" cellpadding="0" class="hide">
+    <thead>
+    <tr>
+        <th>
+            编号
+        </th>
+        <th>
+            名称
+        </th>
+        <th>
+            类型
+        </th>
+        <th>
+            盈利
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+    </thead>
+    <tbody id="commodityBody">
+    <tr th:each="rst:${rstList}">
+        <th th:text="${rst.id}"></th>
+        <th th:text="${rst.name}"></th>
+        <th th:text="${rst.type}"></th>
+        <th th:text="${rst.profit}"></th>
+        <th><button class="balance" onclick="balance(this)">结算</button></th>
+    </tr>
+    </tbody>
+</table>
+</br>
+<button id="balanceAll">全部结算</button>
+</body>
+<script>
+    document.getElementById("balanceAll").onclick=function(){
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: basePath + "/manager/balanceAll",
+            success: function (result) {
+                location.reload();
+            },
+            error: function (result) {
+                alert("error!");
+            }
+        });
+    };
+    function balance(obj){
+        var tr = obj.parentNode.parentNode;
+        var id = tr.childNodes[1].innerHTML;
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: basePath + "/manager/balance",
+            data: {
+                rstId: id
+            },
+            success: function (result) {
+                location.reload();
+            },
+            error: function (result) {
+                alert("error!");
+            }
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>YUMMY-Customer-OrderList</h1>
+<h2>我的订单：</h2>
+<ul>
+    <li th:each="order:${orderList}">
+        <a th:href="@{'/cstOrderDetail/'+${order.orderId}}" th:text="${#strings.substring(order.orderTime,0,19)}+' - '+${order.state}"></a>
+    </li>
+</ul>
+</body>
+</html>

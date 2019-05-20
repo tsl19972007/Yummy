@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+</head>
+<body>
+<h1>YUMMY-Restaurant-Homepage</h1>
+<h2>Restaurant</h2>
+<div th:object="${restaurant}">
+    <p><strong>ID:</strong><span id="id" th:text="*{id}">id</span></p>
+    <p><strong>Type:</strong><span id="email" th:text="*{type}"></span></p>
+    <p><strong>Name:</strong><span id="name" th:text="*{name}"></span></p>
+    <p><strong>Phone:</strong><span id="phone" th:text="*{phone}"></span></p>
+    <p><strong>Password:</strong><span id="password" th:text="*{password}"></span></p>
+</div>
+<form action="/yummy/loginAndRegister/rstLogout" method="post">
+    <input type="submit" value="登出"/>
+</form>
+<ul>
+    <li><a href="/yummy/rstInfo">餐厅信息</a></li>
+    <li><a href="/yummy/rstMenu">发布菜单</a></li>
+    <li><a href="/yummy/rstOrderList">送餐记录</a></li>
+    <li><a href="/yummy/rstStatistics">统计信息</a></li>
+</ul>
+</body>
+</html>

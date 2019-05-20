@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="customer/cstCommon::commonHeader">
+</head>
+<body>
+<link rel="stylesheet" th:href="@{/static/css/datepicker.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/bootstrap-timepicker.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/jquery-ui-1.10.3.full.min.css}" />
+<div th:include="customer/cstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div th:include="customer/cstCommon::commonNav('cstOrder')" class="sidebar" id="sidebar"></div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/yummy/cstHome">主页</a>
+                    </li>
+
+                    <li><a href="/yummy/cstOrder">点餐</a></li>
+
+                    <li class="active">餐厅详情</li>
+                </ul>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        餐厅详情
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="user-profile-2" class="user-profile">
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs padding-18">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#info">
+                                            <i class="green icon-user bigger-120"></i>
+                                            资料
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a data-toggle="tab" href="#menu">
+                                            <i class="orange icon-shopping-cart bigger-120"></i>
+                                            菜单
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a data-toggle="tab" href="#comments">
+                                            <i class="pink icon-pencil bigger-120"></i>
+                                            评论
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content no-border padding-24">
+                                    <div id="info" class="tab-pane in active">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-3 center">
+															<span class="profile-picture">
+																<img class="editable img-responsive" alt="Alex's Avatar" id="avatar2" th:src="@{/static/avatars/profile-pic.jpg}" />
+															</span>
+                                            </div><!-- /span -->
+
+                                            <div class="col-xs-12 col-sm-6">
+                                                <div class="space-10"></div>
+                                                <h4 class="blue">
+                                                    <span th:text="${rst.name}" class="middle"></span>
+
+                                                    <span class="label label-purple arrowed-in-right">
+																	<i class="icon-circle smaller-80 align-middle"></i>
+																	online
+																</span>
+                                                </h4>
+                                                <div class="space-10"></div>
+                                                <div class="profile-user-info">
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> 店名 </div>
+
+                                                        <div class="profile-info-value">
+                                                            <span th:text="${rst.name}"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> 类型 </div>
+
+                                                        <div class="profile-info-value">
+                                                            <span th:text="${rst.type}"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> 地址 </div>
+
+                                                        <div class="profile-info-value">
+                                                            <span th:text="${rst.address}"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> 电话 </div>
+
+                                                        <div class="profile-info-value">
+                                                            <span th:text="${rst.phone}"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- /span -->
+                                        </div><!-- /row-fluid -->
+
+                                    </div><!-- #home -->
+                                    <div id="menu" class="tab-pane">
+                                        <div class="row">
+                                            <div th:if="${rst.menu!=null}" class="col-xs-12 col-sm-6 center">
+                                                <h3 class="header smaller lighter blue"> 当前菜单 </h3>
+                                                <div class="space-12"></div>
+                                                <div class="row">
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    <i class="icon-calendar bigger-110"></i> 时间
+                                                                </span>
+                                                            <input th:value="${#strings.substring(rst.menu.beginTime,0,19)}+' - '+${#strings.substring(rst.menu.endTime,0,19)}" class="form-control" type="text" name="date-range-picker-3" id="id-date-range-picker-2" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="space-12"></div>
+                                                <div class="table-header">
+                                                    Menu
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="sample-table-3" class="table table-striped table-bordered table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>类型</th>
+                                                            <th>名称</th>
+                                                            <th>价格</th>
+                                                            <th>数量</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="item:${rst.menu.itemList}">
+                                                            <td style="display:none" th:text="${item.id}"></td>
+                                                            <td th:text="${item.type}"></td>
+                                                            <td th:text="${item.name}"></td>
+                                                            <td th:text="${item.price}"></td>
+                                                            <td th:text="${item.num}"></td>
+                                                            <td><a class="tooltip-info" title="添加" onclick="add(this)">
+                                                                <span class="blue"><i class="icon-plus bigger-120"></i></span></a>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="page-header">
+                                            <h1>
+                                                订单详情
+                                            </h1>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-6 center">
+                                                <div class="table-header">
+                                                    OrderItem
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="sample-table-4" class="table table-striped table-bordered table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>类型</th>
+                                                            <th>名称</th>
+                                                            <th>价格</th>
+                                                            <th>余量</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="cartBody">
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-sm-5 pull-right">
+                                                    <h4 class="pull-right">
+                                                        总价格 : ￥<span id="totalPrice">0</span>
+                                                    </h4>
+                                                </div>
+                                                <div class="col-sm-12 pull-right">
+                                                    <h4 class="pull-right">
+                                                        折扣后 : <span class="red">￥</span><span class="red" id="consumption">0</span>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-4 center col-sm-offset-1">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="icon-calendar bigger-110"></i> 送餐日期
+                                                    </span>
+                                                    <input class="form-control date-picker" id="arriveDate" type="text" data-date-format="yyyy-mm-dd" />
+                                                </div>
+                                                <div class="space-8"></div>
+                                                <div class="input-group bootstrap-timepicker">
+                                                    <span class="input-group-addon">
+                                                        <i class="icon-time bigger-110"></i> 送餐时间
+                                                    </span>
+                                                    <input id="arriveTime" type="text" class="form-control" />
+                                                </div>
+                                                <div class="space-8"></div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="icon-phone"></i> 电话号码
+                                                    </span>
+                                                    <input th:value="${customer.phone}" class="form-control" type="text" id="phone" />
+                                                </div>
+                                                <div class="space-8"></div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="icon-home"></i> 送餐地址
+                                                    </span>
+                                                    <select class="form-control" id="addresses">
+                                                        <option th:each="address:*{customer.addresses}" th:text="${address}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="space-8"></div>
+                                                <div class="input-group" style="width:100%;">
+                                                    <textarea style="width: 100%;" class="form-control limited" id="remarks" maxlength="50" placeholder="请填写备注"></textarea>
+                                                </div>
+                                                <div class="space-16"></div>
+                                                <button id="submitOrder" class="btn btn-primary btn-success" style="float:right;">
+                                                    <i class="icon-ok bigger-120"></i>去支付
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="comments" class="tab-pane"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<div th:include="customer/cstCommon::commonFooter"></div>
+</body>
+<script th:src="@{/static/js/date-time/moment.min.js}"></script>
+<script th:src="@{/static/js/date-time/bootstrap-datepicker.min.js}"></script>
+<script th:src="@{/static/js/date-time/bootstrap-timepicker.min.js}"></script>
+<script th:src="@{/static/js/jquery-ui-1.10.3.full.min.js}"></script>
+<script th:inline="javascript">
+    var itemList=[];
+    function Order(rstId, cstId, phone, address, remarks, itemList, consumption, discount, orderTime, arriveTime, state) {
+        this.rstId = rstId;
+        this.cstId = cstId;
+        this.phone = phone;
+        this.address = address;
+        this.remarks = remarks;
+        this.itemList = itemList;
+        this.consumption = consumption;
+        this.discount = discount;
+        this.orderTime = orderTime;
+        this.arriveTime = arriveTime;
+        this.state = state;
+    }
+    function Item(menuItemId,type,name,price,num){
+        this.type=type;
+        this.menuItemId=menuItemId;
+        this.name=name;
+        this.price=price;
+        this.num=num;
+    }
+    function add(obj){
+        var menuBeginStr=[[${rst.menu.beginTime}]].substring(0,10)+" "+[[${rst.menu.beginTime}]].substring(11,19);
+        var menuEndStr=[[${rst.menu.endTime}]].substring(0,10)+" "+[[${rst.menu.endTime}]].substring(11,19);
+        var menuBegin = new Date(menuBeginStr.replace(/-/g, "/"));
+        var menuEnd = new Date(menuEndStr.replace(/-/g, "/"));
+        var now = new Date();
+        if(menuBegin<now&&menuEnd>now){
+            var tr = obj.parentNode.parentNode;
+            var id = tr.childNodes[1].innerHTML;
+            var type = tr.childNodes[3].innerHTML;
+            var name = tr.childNodes[5].innerHTML;
+            var price=parseFloat(tr.childNodes[7].innerHTML);
+            var item=new Item(id,type,name,price,1);
+            addItem(item);
+            updateCartTable();
+        }
+        else{
+            bootbox.alert("当前不在菜单生效时间内");
+        }
+    }
+    function addItem(item){
+        var found=0;
+        var id=item.menuItemId;
+        for(var i=0;i<itemList.length;i++){
+            if(itemList[i].menuItemId==id){
+                found=1;
+                itemList[i].num+=1;
+                break;
+            }
+        }
+        if(found==0){
+            itemList.push(item);
+        }
+    }
+    function addItemInTable(item){
+        var tbody=document.getElementById('cartBody');
+        var tr=document.createElement('tr');
+        var td_id=document.createElement('td');
+        td_id.innerHTML=item.menuItemId;
+        td_id.style.display="none";
+        tr.appendChild(td_id);
+        var td_type=document.createElement('td');
+        td_type.innerHTML=item.type;
+        td_type.className="center";
+        tr.appendChild(td_type);
+        var td_name=document.createElement('td');
+        td_name.innerHTML=item.name;
+        td_name.className="center";
+        tr.appendChild(td_name);
+        var td_price=document.createElement('td');
+        td_price.innerHTML=item.price;
+        td_price.className="center";
+        tr.appendChild(td_price);
+        var td_num=document.createElement('td');
+        td_num.innerHTML=item.num;
+        td_num.className="center";
+        tr.appendChild(td_num);
+        var td_del=document.createElement('td');
+        td_del.innerHTML='<a href="#" class="tooltip-error" title="删除" onclick="deleteA(this)">' +
+            '<span class="red"><i class="icon-trash bigger-120"></i></span></a>';
+        tr.appendChild(td_del);
+        tbody.appendChild(tr);
+    }
+    function deleteA(obj){
+        var tr = obj.parentNode.parentNode;
+        var id = tr.firstChild.innerHTML;
+        deleteItemById(id);
+        updateCartTable();
+    }
+    function deleteItemById(id){
+        var temp=[];
+        for(var i=0;i<itemList.length;i++){
+            if(itemList[i].menuItemId!=id){
+                temp.push(itemList[i]);
+            }
+        }
+        itemList=temp;
+    }
+    function updateCartTable(){
+        var tbody=document.getElementById('cartBody');
+        tbody.innerHTML="";
+        for(var i=0;i<itemList.length;i++){
+            addItemInTable((itemList[i]));
+        }
+        document.getElementById('totalPrice').innerHTML=getTotalPrice();
+        document.getElementById('consumption').innerHTML=getTotalPrice()-getDiscount([[${customer.id}]],getTotalPrice());
+    }
+    function getTotalPrice(){
+        var total=0;
+        for(var i=0;i<itemList.length;i++){
+            total+=itemList[i].price*itemList[i].num;
+        }
+        return total;
+    }
+    function getDiscount(cstId,totalPrice){
+        var discount=0;
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/customer/getDiscount",
+            async:false,
+            data: {
+                cstId:cstId,
+                totalPrice:totalPrice
+            },
+            success: function (result) {
+                discount=result;
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+        return discount;
+    }
+    document.getElementById("submitOrder").onclick=function() {
+        var rstId = [[${rst.id}]];
+        var cstId = [[${customer.id}]];
+        var phone = document.getElementById("phone").value;
+        var index = document.getElementById("addresses").selectedIndex;
+        if(index<0){
+            bootbox.alert("当前无送餐地址");
+            return;
+        }
+        var address = document.getElementById("addresses").options[index].value;
+        var remarks = document.getElementById("remarks").value;
+        var total = document.getElementById("totalPrice").innerHTML;
+        var consumption = document.getElementById("consumption").innerHTML;
+        console.log(consumption);
+        var discount = total - consumption;
+        var now = new Date();
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        var hour = ("0" + now.getHours()).slice(-2);
+        var minute = ("0" + now.getMinutes()).slice(-2);
+        var second = ("0" + now.getSeconds()).slice(-2);
+        var nowStr = now.getFullYear() + "-" + (month) + "-" + (day) + "T" + hour + ":" + minute + ":" + second;
+        var arriveStr = document.getElementById("arriveDate").value+"T"+document.getElementById("arriveTime").value;
+        var arriveStr2=arriveStr.substring(0,10)+" "+arriveStr.substring(11,19);
+        var arriveDate = new Date(arriveStr2.replace(/-/g, "/"));
+        var arriveDateMin= new Date();
+        arriveDateMin.setTime(new Date().getTime()+28*60*1000);
+        console.log(arriveDate);
+        console.log(arriveDateMin);
+        if (itemList.length == 0) {
+            bootbox.alert("当前无已选项目");
+            return;
+        }else if(arriveDate<arriveDateMin){
+            bootbox.alert("送餐时间过早");
+            return;
+        }
+        var state = "待支付";
+        var order = new Order(rstId, cstId, phone, address, remarks, itemList, consumption, discount, nowStr, arriveStr, state);
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/customer/order",
+            contentType: "application/json",
+            data: JSON.stringify(order),
+            success: function (result) {
+                if (result == -1) {
+                    bootbox.alert("库存不足");
+                } else {
+                    window.location.href = "/yummy/cstOrderDetail/" + result;
+                }
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    }
+</script>
+<script>
+    jQuery(function($) {
+        $('#arriveTime').timepicker({
+            minuteStep: 1,
+            showMeridian: false
+        }).next().on(ace.click_event, function () {
+            $(this).prev().focus();
+        });
+        $('#arriveDate').datepicker({
+            minDate:arriveDate,
+            format : 'yyyy-mm-dd',
+            todayBtn:true,
+            todayHighlight:true,
+            autoclose:true,
+        }).next().on(ace.click_event, function () {
+            $(this).prev().focus();
+        });
+        var arriveDate=new Date();
+        arriveDate.setTime(parseInt(new Date().getTime()+1000*60*30));
+        var arriveTimeStr=("0" + arriveDate.getHours()).slice(-2)+":"+("0" + arriveDate.getMinutes()).slice(-2);
+        var arriveDayStr=arriveDate.getFullYear() + "-" + ("0" + (arriveDate.getMonth() + 1)).slice(-2) + "-" + ("0" + arriveDate.getDate()).slice(-2);
+        $('#arriveTime').val(arriveTimeStr);
+        $('#arriveDate').val(arriveDayStr);
+    });
+</script>
+</html>

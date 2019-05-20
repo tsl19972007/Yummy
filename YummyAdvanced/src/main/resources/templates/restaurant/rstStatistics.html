@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="restaurant/rstCommon::commonHeader">
+</head>
+<body>
+<div th:include="restaurant/rstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div th:include="restaurant/rstCommon::commonNav('rstStatistics')" class="sidebar" id="sidebar"></div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/yummy/rstHome">主页</a>
+                    </li>
+
+                    <li class="active">统计</li>
+                </ul>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        统计数据
+                    </h1>
+                </div><!-- /.page-header -->
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="widget-box transparent">
+                            <div class="widget-header widget-header-flat">
+                                <h4 class="lighter">
+                                    <i class="icon-shopping-cart blue"></i>
+                                    今日营收
+                                </h4>
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="icon-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main no-padding infobox-container">
+                                    <div class="space-20"></div>
+                                    <div class="space-20"></div>
+                                    <div class="infobox infobox-green  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-bar-chart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span th:text="${#numbers.formatDecimal(rstStatistics.todayProfit,1,1)}" class="infobox-data-number"></span>
+                                            <div class="infobox-content">今日盈利</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="infobox infobox-green  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-shopping-cart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span th:text="${rstStatistics.todayOrderNum}" class="infobox-data-number"></span>
+                                            <div class="infobox-content">今日订单</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="infobox infobox-orange  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-bar-chart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span th:text="${#numbers.formatDecimal(rstStatistics.totalProfit,1,1)}" class="infobox-data-number"></span>
+                                            <div class="infobox-content">总盈利</div>
+                                        </div>
+
+                                        <div class="stat stat-success">
+                                            <span th:text="${rstStatistics.totalProfit==0?0.0:#numbers.formatDecimal((100*rstStatistics.todayProfit/rstStatistics.totalProfit),1,1)}+'%'">
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="infobox infobox-orange">
+                                        <div class="infobox-icon">
+                                            <i class="icon-shopping-cart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span th:text="${rstStatistics.totalOrderNum}" class="infobox-data-number"></span>
+                                            <div class="infobox-content">总订单</div>
+                                        </div>
+
+                                        <div class="stat stat-success">
+                                             <span th:text="${rstStatistics.totalOrderNum==0?0.0:#numbers.formatDecimal((100*rstStatistics.todayOrderNum/rstStatistics.totalOrderNum),1,1)}+'%'">
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-20"></div>
+                                </div><!-- /widget-main -->
+                            </div><!-- /widget-body -->
+                        </div><!-- /widget-box -->
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="widget-box transparent">
+                            <div class="widget-header widget-header-flat">
+                                <h4 class="lighter">
+                                    <i class="icon-shopping-cart blue"></i>
+                                    本周营收
+                                </h4>
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="icon-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-body center">
+                                <div id="eChart" style="height:350px; width:650px;" class="center widget-main no-padding infobox-container">
+                                </div><!-- /widget-main -->
+                            </div><!-- /widget-body -->
+                        </div><!-- /widget-box -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="widget-box transparent">
+                        <div class="widget-header widget-header-flat">
+                            <h4 class="lighter">
+                                <i class="icon-level-up blue"></i>
+                                其他
+                            </h4>
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="icon-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main no-padding infobox-container">
+                            </div><!-- /widget-main -->
+                        </div><!-- /widget-body -->
+                    </div><!-- /widget-box -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<div th:include="restaurant/rstCommon::commonFooter"></div>
+<script th:src="@{/static/js/echarts.js}"></script>
+<script th:inline="javascript">
+    var data=[[${rstStatistics}]];
+    console.log(data);
+    var myChart = echarts.init(document.getElementById('eChart'));
+    var option = {
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['盈利']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                data : ['周一','周二','周三','周四','周五','周六','周日']
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                name : '本店盈利'
+            }
+        ],
+        series : [
+            {
+                name:'盈利',
+                color:'red',
+                type:'line',
+                stack: '总量',
+                data:data.weekProfitList
+            }
+        ]
+    };
+    myChart.setOption(option);
+</script>
+</body>
+</html>

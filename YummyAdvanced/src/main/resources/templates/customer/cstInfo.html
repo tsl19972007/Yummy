@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="customer/cstCommon::commonHeader">
+</head>
+<body>
+<div th:include="customer/cstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div th:include="customer/cstCommon::commonNav('cstInfo')" class="sidebar" id="sidebar"></div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/yummy/cstHome">主页</a>
+                    </li>
+
+                    <li class="active">个人信息</li>
+                </ul>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        会员信息
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="user-profile-3" class="user-profile row">
+                            <div class="col-sm-offset-1 col-sm-10">
+                                <div class="well well-sm">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    &nbsp;
+                                    <div class="inline middle blue bigger-110"> 您的资料完整度为<span th:text="${percent}+'%'">0</span> </div>
+
+                                    &nbsp; &nbsp; &nbsp;
+                                    <div style="width:200px;" th:attr="data-percent=${percent}" class="inline middle no-margin progress progress-striped active">
+                                        <div th:style="'width:'+${percent}+'%'" class="progress-bar progress-bar-success"></div>
+                                    </div>
+                                </div><!-- /well -->
+
+                                <div class="space"></div>
+
+                                <form class="form-horizontal" id="validation-form">
+                                    <div class="tabbable">
+                                        <ul class="nav nav-tabs padding-16">
+                                            <li class="active">
+                                                <a data-toggle="tab" href="#edit-basic">
+                                                    <i class="green icon-edit bigger-125"></i>
+                                                    基本信息
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                        <div class="tab-content profile-edit-tab-content">
+                                            <div id="edit-basic" class="tab-pane in active">
+                                                <h4 class="header blue bolder smaller">General</h4>
+                                                <div class="space-4"></div>
+
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-8">
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-email">邮箱</label>
+
+                                                            <div class="col-sm-8">
+                                                                <div class="clearfix">
+                                                                    <input th:value="${customer.email}" class="col-xs-12 col-sm-8" type="email" name="email" id="form-field-email" readonly/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="space-4"></div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-name">姓名</label>
+
+                                                            <div class="col-sm-8">
+                                                                <div class="clearfix">
+                                                                    <input th:value="${customer.name}" class="col-xs-12 col-sm-8" type="text" name="name" id="form-field-name"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="space-4"></div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-pass">密码</label>
+
+                                                            <div class="col-sm-8">
+                                                                <div class="clearfix">
+                                                                    <input th:value="${customer.password}" class="col-xs-12 col-sm-8" type="password" name="password" id="form-field-pass" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="space-4"></div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-level">级别</label>
+
+                                                            <div class="col-sm-8">
+                                                                <div class="clearfix">
+                                                                    <input th:value="${level}" class="col-xs-12 col-sm-8" type="text" name="level" id="form-field-level" readonly/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="space-4"></div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-balance">余额</label>
+
+                                                            <div class="col-sm-8">
+                                                                <div class="clearfix">
+                                                                    <input th:value="${#numbers.formatDecimal(customer.balance,1,2)}" class="col-xs-12 col-sm-8" type="text" name="level" id="form-field-balance" readonly/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <h4 class="header blue bolder smaller">Contact</h4>
+
+                                                <div class="row">
+                                                    <div class="space-4"></div>
+
+                                                    <div class="col-xs-12 col-sm-8">
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-phone">电话</label>
+
+                                                            <div class="col-sm-8">
+                                                                <div class="clearfix">
+                                                                    <input th:value="${customer.phone}" class="col-xs-12 col-sm-8" type="text" name="phone" id="form-field-phone" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="space-4"></div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-select">地址</label>
+
+                                                            <div class="col-sm-8">
+                                                                <div class="clearfix">
+                                                                    <select name="addresses" class="col-xs-12 col-sm-8" id="form-field-select">
+                                                                        <option th:each="address:*{customer.addresses}" th:text="${address}"></option>
+                                                                    </select>
+                                                                    <button id="addAddress" class="btn btn-xs btn-success" data-toggle="modal" data-target="#myModal" style="margin-left:20px; margin-top:2px;">添加地址</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix form-actions">
+                                        <div class="col-md-offset-5 col-md-9">
+                                            <button id="submitInfo" class="btn btn-info" type="button">
+                                                <i class="icon-ok bigger-110"></i>
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div><!-- /span -->
+                        </div><!-- /user-profile -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="addAddressTitle">添加地址</h4>
+            </div>
+            <div class="modal-body">
+                <form id="addressForm">
+                    <div class="form-group">
+                        <label for="addressToAdd" class="col-form-label">地址</label>
+                        <input type="text" autofocus class="form-control" name="addressToAdd" id="addressToAdd">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="addAddressSureBut">确定</button>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+<input th:value="${customer.id}" id="id" type="text" style="display:none;"/>
+<input th:value="${#numbers.formatDecimal(customer.consumption,1,2)}" id="consumption" type="text" style="display:none;"/>
+<input th:value="${#numbers.formatDecimal(customer.balance,1,2)}" id="balance" type="text" style="display:none;"/>
+<div th:include="customer/cstCommon::commonFooter"></div>
+<script th:src="@{static/js/jquery.validate.min.js}"></script>
+</body>
+<script th:inline="javascript">
+    function Customer(id,email,password,name,phone,isActive,isWrittenOff,addresses,consumption,balance){
+        this.id=id;
+        this.email=email;
+        this.password=password;
+        this.name=name;
+        this.phone=phone;
+        this.isActive=isActive;
+        this.isWrittenOff=isWrittenOff;
+        this.addresses=addresses;
+        this.consumption=consumption;
+        this.balance=balance;
+    }
+    function getAddresses(){
+        var addresses=[];
+        var options=document.getElementById("form-field-select").options;
+        for(var i=0;i<options.length;i++){
+            addresses.push(options[i].innerHTML);
+        }
+        return addresses;
+    }
+</script>
+<script type="text/javascript">
+    $("#addAddressSureBut").click(function (){
+        var address = $("#addressToAdd").val();
+        if(address!="") {
+            console.log(address);
+            $("#form-field-select").append("<option value='"+address+"'>"+address+"</option>");
+            $("#myModal").modal("hide");
+        }
+    });
+
+    $('#validation-form').validate({
+        errorElement: 'div',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        onclick:true,
+        rules: {
+            email: {
+                required: true,
+                email:true
+            },
+            name: {
+                required: true,
+                minlength:2
+            },
+            phone: {
+                required: true,
+                digits:true,
+                minlength:5
+            },
+            password: {
+                required: true,
+                minlength: 6
+            },
+        },
+        messages: {
+            email: {
+                required: "Please provide a valid email.",
+                email: "Please provide a valid email."
+            },
+            name:{
+                required: "Please provide a name."
+            },
+            phone:{
+                required: "Please provide a phone.",
+                minlength: "Please provide a valid phone.",
+                digits: "Please provide a valid phone."
+            }
+        },
+        invalidHandler: function (event, validator) { //display error alert on form submit
+            $('.alert-danger', $('.login-form')).show();
+        },
+
+        highlight: function (e) {
+            $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+        },
+
+        success: function (e) {
+            $(e).closest('.form-group').removeClass('has-error').addClass('has-info');
+            $(e).remove();
+        },
+        errorPlacement: function (error, element) {
+            if(element.is(':checkbox') || element.is(':radio')) {
+                var controls = element.closest('div[class*="col-"]');
+                if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+                else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
+            }
+            else if(element.is('.select2')) {
+                error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
+            }
+            else if(element.is('.chosen-select')) {
+                error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
+            }
+            else error.insertAfter(element.parent());
+        },
+        submitHandler: function (form) {
+        },
+        invalidHandler: function (form) {
+        }
+    });
+
+    document.getElementById("submitInfo").onclick=function(){
+        if(!$("#validation-form").valid()){
+            return;
+        }
+        var id=document.getElementById("id").value;
+        var email=document.getElementById("form-field-email").value;
+        var password=document.getElementById("form-field-pass").value;
+        var name=document.getElementById("form-field-name").value;
+        var phone=document.getElementById("form-field-phone").value;
+        var addresses=getAddresses();
+        var consumption=document.getElementById("consumption").value;
+        var balance=document.getElementById("balance").value;
+        var customer=new Customer(id,email,password,name,phone,true,true,addresses,consumption,balance);
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/customer/update",
+            contentType: "application/json",
+            data: JSON.stringify(customer),
+            success:function(result) {
+                window.location.reload();
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    };
+</script>
+</html>

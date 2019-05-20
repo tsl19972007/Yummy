@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="manager/mngCommon::commonHeader">
+</head>
+<body>
+<div th:include="manager/mngCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div th:include="manager/mngCommon::commonNav('mngStatistics')" class="sidebar" id="sidebar"></div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/yummy/mngHome">主页</a>
+                    </li>
+
+                    <li class="active">财务统计</li>
+                </ul>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        财务统计
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-10 col-sm-offset-1">
+                        <div class="widget-box">
+                            <div class="widget-header widget-header-flat widget-header-small">
+                                <h5>
+                                    <i class="icon-money"></i>
+                                    财务统计
+                                </h5>
+
+                                <div class="widget-toolbar no-border">
+                                    <button id="typeToggle" class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+                                        本周
+                                        <i class="icon-angle-down icon-on-right bigger-110"></i>
+                                    </button>
+
+                                    <ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
+                                        <li>
+                                            <a href="#" onclick="changeToggle(this,1)">
+                                                <i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+                                                本周
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#" onclick="changeToggle(this,2)">
+                                                <i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+                                                本月
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#" onclick="changeToggle(this,3)">
+                                                <i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+                                                本年
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <div id="weekly">
+                                        <div class="space-20"></div>
+                                        <div id="weeklyChart1" style="width:1000px;height:400px;">1</div>
+                                        <div class="space-20"></div>
+                                        <div id="weeklyChart2" style="width:1000px;height:400px;">2</div>
+                                        <div class="space-20"></div>
+                                        <div id="weeklyChart3" style="width:1000px;height:400px;">3</div>
+                                        <div class="space-20"></div>
+                                    </div>
+                                    <div id="monthly" style="display: none">
+                                        <div class="space-20"></div>
+                                        <div id="monthlyChart1" style="width:1000px;height:400px;">1</div>
+                                        <div class="space-20"></div>
+                                        <div id="monthlyChart2" style="width:1000px;height:400px;">2</div>
+                                        <div class="space-20"></div>
+                                        <div id="monthlyChart3" style="width:1000px;height:400px;">3</div>
+                                        <div class="space-20"></div>
+                                    </div>
+                                    <div id="annual" style="display: none">
+                                        <div class="space-20"></div>
+                                        <div id="annualChart1" style="width:1000px;height:400px;">1</div>
+                                        <div class="space-20"></div>
+                                        <div id="annualChart2" style="width:1000px;height:400px;">2</div>
+                                        <div class="space-20"></div>
+                                        <div id="annualChart3" style="width:1000px;height:400px;">3</div>
+                                        <div class="space-20"></div>
+                                    </div>
+                                    <div class="hr hr8 hr-double"></div>
+
+                                    <div class="clearfix">
+                                        <div class="grid3">
+															<span class="grey">
+																<i class="icon-desktop icon-2x blue"></i>
+																&nbsp; 总订单
+															</span>
+                                            <h4 id="orderNum" class="bigger pull-right"></h4>
+                                        </div>
+
+                                        <div class="grid3">
+															<span class="grey">
+																<i class="icon-money icon-2x purple"></i>
+																&nbsp; 总交易金额
+															</span>
+                                            <h4 id="transactionAmount" class="bigger pull-right"></h4>
+                                        </div>
+
+                                        <div class="grid3">
+															<span class="grey">
+																<i class="icon-money icon-2x red"></i>
+																&nbsp; 总盈利
+															</span>
+                                            <h4 id="profit" class="bigger pull-right"></h4>
+                                        </div>
+                                    </div>
+                                </div><!-- /widget-main -->
+                            </div><!-- /widget-body -->
+                        </div><!-- /widget-box -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<div th:include="manager/mngCommon::commonFooter"></div>
+<script th:src="@{/static/js/echarts.js}"></script>
+<script th:inline="javascript">
+    displayWeekly();
+    function displayWeekly() {
+        var data=[[${weeklyFinance}]];
+        console.log(data);
+        var myChart1 = echarts.init(document.getElementById('weeklyChart1'));
+        var myChart2 = echarts.init(document.getElementById('weeklyChart2'));
+        var myChart3 = echarts.init(document.getElementById('weeklyChart3'));
+        var option1 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['订单量']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : 'Yummy订单量'
+                }
+            ],
+            series : [
+                {
+                    name:'订单量',
+                    color:'#6CA6CD',
+                    type:'line',
+                    stack: '总量',
+                    data:data.orderNumList
+                }
+            ]
+        };
+        var option2 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['交易金额']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : '交易金额'
+                }
+            ],
+            series : [
+                {
+                    name:'交易金额',
+                    color:'purple',
+                    type:'line',
+                    stack: '总量',
+                    data:data.transactionAmountList
+                }
+            ]
+        };
+        var option3 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['Yummy盈利']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : 'Yummy盈利'
+                }
+            ],
+            series : [
+                {
+                    name:'Yummy盈利',
+                    color:"red",
+                    type:'line',
+                    stack: '总量',
+                    data:data.profitList
+                }
+            ]
+        };
+        myChart1.setOption(option1);
+        myChart2.setOption(option2);
+        myChart3.setOption(option3);
+        document.getElementById('orderNum').innerText=data.totalOrderNum;
+        document.getElementById('transactionAmount').innerText=data.totalTransactionAmount.toFixed(2);
+        document.getElementById('profit').innerText=data.totalProfit.toFixed(2);
+    }
+
+    function displayMonthly() {
+        var data=[[${monthlyFinance}]];
+        var myChart1 = echarts.init(document.getElementById('monthlyChart1'));
+        var myChart2 = echarts.init(document.getElementById('monthlyChart2'));
+        var myChart3 = echarts.init(document.getElementById('monthlyChart3'));
+        var option1 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['订单量']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data :  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : 'Yummy订单量'
+                }
+            ],
+            series : [
+                {
+                    name:'订单量',
+                    color:'#6CA6CD',
+                    type:'line',
+                    stack: '总量',
+                    data:data.orderNumList
+                }
+            ]
+        };
+        var option2 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['交易金额']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data :  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : '交易金额'
+                }
+            ],
+            series : [
+                {
+                    name:'交易金额',
+                    color:'purple',
+                    type:'line',
+                    stack: '总量',
+                    data:data.transactionAmountList
+                }
+            ]
+        };
+        var option3 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['Yummy盈利']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data :  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : 'Yummy盈利'
+                }
+            ],
+            series : [
+                {
+                    name:'Yummy盈利',
+                    color:"red",
+                    type:'line',
+                    stack: '总量',
+                    data:data.profitList
+                }
+            ]
+        };
+        myChart1.setOption(option1);
+        myChart2.setOption(option2);
+        myChart3.setOption(option3);
+        document.getElementById('orderNum').innerText=data.totalOrderNum;
+        document.getElementById('transactionAmount').innerText=data.totalTransactionAmount.toFixed(2);
+        document.getElementById('profit').innerText=data.totalProfit.toFixed(2);
+    }
+
+    function displayAnunual() {
+        var data=[[${annualFinance}]];
+        var myChart1 = echarts.init(document.getElementById('annualChart1'));
+        var myChart2 = echarts.init(document.getElementById('annualChart2'));
+        var myChart3 = echarts.init(document.getElementById('annualChart3'));
+        var option1 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['订单量']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : 'Yummy订单量'
+                }
+            ],
+            series : [
+                {
+                    name:'订单量',
+                    color:'#6CA6CD',
+                    type:'line',
+                    stack: '总量',
+                    data:data.orderNumList
+                }
+            ]
+        };
+        var option2 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['交易金额']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data :    ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : '交易金额'
+                }
+            ],
+            series : [
+                {
+                    name:'交易金额',
+                    color:'purple',
+                    type:'line',
+                    stack: '总量',
+                    data:data.transactionAmountList
+                }
+            ]
+        };
+        var option3 = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['Yummy盈利']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data :    ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : 'Yummy盈利'
+                }
+            ],
+            series : [
+                {
+                    name:'Yummy盈利',
+                    color:"red",
+                    type:'line',
+                    stack: '总量',
+                    data:data.profitList
+                }
+            ]
+        };
+        myChart1.setOption(option1);
+        myChart2.setOption(option2);
+        myChart3.setOption(option3);
+        document.getElementById('orderNum').innerText=data.totalOrderNum;
+        document.getElementById('transactionAmount').innerText=data.totalTransactionAmount.toFixed(2);
+        document.getElementById('profit').innerText=data.totalProfit.toFixed(2);
+    }
+</script>
+<script>
+    function changeToggle(obj,index){
+        document.getElementById("typeToggle").innerHTML=obj.innerText + "<i class=\"icon-angle-down icon-on-right bigger-110\"></i>";
+        if(index==1){
+            document.getElementById("weekly").style.display = "";
+            document.getElementById("monthly").style.display = "none";
+            document.getElementById("annual").style.display = "none";
+            displayWeekly();
+        }else if(index==2){
+            document.getElementById("weekly").style.display = "none";
+            document.getElementById("monthly").style.display = "";
+            document.getElementById("annual").style.display = "none";
+            displayMonthly();
+        }else if(index==3){
+            document.getElementById("weekly").style.display = "none";
+            document.getElementById("monthly").style.display = "none";
+            document.getElementById("annual").style.display = "";
+            displayAnunual();
+        }
+    }
+</script>
+</body>
+</html>

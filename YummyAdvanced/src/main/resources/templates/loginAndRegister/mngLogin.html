@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <script type="text/javascript"   th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
+    <title>登录</title>
+    <style>
+        body{
+            text-align:center;
+        }
+        .login{
+            margin-top:200px;
+            display:block;
+            margin-left:auto;
+            margin-right:auto;
+        }
+    </style>
+</head>
+<body>
+<div class="login">
+    <h1>YUMMY-Manager-Login</h1>
+    <p>账号：
+    <input id="id" name="id" type="text" readonly onfocus="this.removeAttribute('readonly')"
+           onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"/>
+        <br/>
+    </p>
+    <p>密码：
+    <input id="password" name="password" type="password" readonly onfocus="this.removeAttribute('readonly');"/>
+        <br/>
+    </p>
+    <button type="button" id="login" name='login' value="Login">登陆</button>
+</div>
+</body>
+
+<script th:inline="javascript">
+    document.getElementById("login").onclick=function(){
+        var id=document.getElementById("id").value;
+        var password=document.getElementById("password").value;
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/loginAndRegister/mngLogin",
+            data: {
+                id:id,
+                password:password
+            },
+            success:function(result) {
+                if(result==true) {
+                    window.location.href = 'mngHome';
+                }else{
+                    bootbox.alert("用户名或密码错误");
+                }
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    }
+</script>
+</html>

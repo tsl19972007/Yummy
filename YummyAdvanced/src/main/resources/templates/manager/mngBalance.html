@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="manager/mngCommon::commonHeader">
+</head>
+<body>
+<div th:include="manager/mngCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div th:include="manager/mngCommon::commonNav('mngRstInfo')" class="sidebar" id="sidebar"></div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/yummy/mngHome">主页</a>
+                    </li>
+
+                    <li><a href="/yummy/mngRstInfo">餐厅信息</a></li>
+
+                    <li class="active">盈利结算</li>
+                </ul>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        餐厅盈利结算
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-header">
+                            Results
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>账号</th>
+                                    <th>类型</th>
+                                    <th>店名</th>
+                                    <th>盈利</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="rst:${rstList}">
+                                    <td th:text="${rst.id}"></td>
+                                    <td th:text="${rst.type}"></td>
+                                    <td th:text="${rst.name}"></td>
+                                    <td th:text="${rst.profit}"></td>
+                                    <td>
+                                        <button class="btn btn-xs btn-success" onclick="balance(this)">
+                                            <i class="icon-ok bigger-120"></i>结算
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="space-8"></div>
+                        <div>
+                            <button id="balanceAll" class="btn btn-primary btn-success"  style="float:right">
+                                <i class="icon-ok bigger-120"></i>全部结算
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<div th:include="manager/mngCommon::commonFooter"></div>
+</body>
+<script type="text/javascript">
+    jQuery(function($) {
+        var oTable1 = $('#sample-table-2').dataTable( {
+            "aoColumns": [
+                null, null,null, null,{ "bSortable": false }
+            ] } );
+    })
+</script>
+<script>
+    document.getElementById("balanceAll").onclick=function(){
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/manager/balanceAll",
+            success: function (result) {
+                location.reload();
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    };
+    function balance(obj){
+        var tr = obj.parentNode.parentNode;
+        var id = tr.childNodes[1].innerHTML;
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/manager/balance",
+            data: {
+                rstId: id
+            },
+            success: function (result) {
+                location.reload();
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    }
+</script>
+</html>

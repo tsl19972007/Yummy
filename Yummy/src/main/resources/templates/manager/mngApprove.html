@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>YUMMY-Manager-Approve</h1>
+<h2>餐厅修改申请：</h2>
+<ul>
+    <li th:each="rst:${rstList}">
+        <a th:href="@{'/mngApprove/'+${rst.id}}" th:text="${rst.name}"></a>
+    </li>
+</ul>
+</body>
+</html>

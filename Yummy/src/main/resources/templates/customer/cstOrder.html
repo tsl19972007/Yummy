@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>YUMMY-Customer-Order</h1>
+<h2>餐厅列表：</h2>
+<ul>
+    <li th:each="rst:${rstList}">
+        <a th:href="@{'/cstOrder/'+${rst.id}}" th:text="${rst.name}"></a>
+    </li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript"   th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
+    <title>Title</title>
+</head>
+<body>
+<h1>YUMMY-Manager-ApproveDetail</h1>
+<h2>餐厅旧信息：</h2>
+<div th:object="${oldRst}">
+    <p><strong>账号:</strong><span id="rstId" th:text="*{id}"></span></p>
+    <p><strong>店名:</strong><span th:text="*{name}"></span></p>
+    <p><strong>类型:</strong><span th:text="*{type}"></span></p>
+    <p><strong>电话:</strong><span th:text="*{phone}"></span></p>
+    <p><strong>地址:</strong><span th:text="*{address}"></span></p>
+</div>
+<h2>餐厅新信息：</h2>
+<div th:object="${newRst}">
+    <p><strong>账号:</strong><span th:text="*{id}"></span></p>
+    <p><strong>店名:</strong><span th:text="*{name}"></span></p>
+    <p><strong>类型:</strong><span th:text="*{type}"></span></p>
+    <p><strong>电话:</strong><span th:text="*{phone}"></span></p>
+    <p><strong>地址:</strong><span th:text="*{address}"></span></p>
+</div>
+<button id="approve">通过</button>
+<button id="reject">拒绝</button>
+<script th:inline="javascript">
+    document.getElementById("approve").onclick=function() {
+        var basePath = [[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]];
+        var id = document.getElementById("rstId").innerText;
+        $.ajax({
+            type: 'POST',
+            url: basePath + "/manager/approve",
+            data: {
+                rstId: id
+            },
+            success: function (result) {
+                window.location.href = '/yummy/mngApprove';
+            },
+            error: function (result) {
+                alert("error!");
+            }
+        });
+    };
+    document.getElementById("reject").onclick=function() {
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        var id = document.getElementById("rstId").innerText;
+        $.ajax({
+            type: 'POST',
+            url: basePath + "/manager/reject",
+            data: {
+                rstId: id
+            },
+            success: function (result) {
+                window.location.href = '/yummy/mngApprove';
+            },
+            error: function (result) {
+                alert("error!");
+            }
+        });
+    };
+</script>
+</body>
+</html>

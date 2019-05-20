@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <script type="text/javascript"   th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
+    <title>注册</title>
+</head>
+<body>
+<h1>YUMMY-Restaurant-Register</h1>
+<input id="name" name="name" type="text" placeholder="店名"/><br/>
+<input id="password" name="password" type="password" placeholder="密码"/><br/>
+<input id="password2" name="password2" type="password" placeholder="重复密码"/><br/>
+<input id="type" name="type" type="text" placeholder="类型"/><br/>
+<input id="phone" name="phone" type="text" placeholder="电话"
+       onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"/><br/>
+<input id="address" name="address" type="text" placeholder="地址"/><br/>
+<button type="button" id="register" name='register' value="Register">注册</button>
+<a href="/yummy/rstLogin">登陆</a>
+</body>
+
+<script th:inline="javascript">
+    function Restaurant(password,type,name,phone,address) {
+        this.password = password;
+        this.type = type;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+    }
+
+    document.getElementById("register").onclick=function(){
+        var password=document.getElementById("password").value;
+        var password2=document.getElementById("password2").value;
+        var name=document.getElementById("name").value;
+        var type=document.getElementById("type").value;
+        var phone=document.getElementById("phone").value;
+        var address=document.getElementById("address").value;
+        var pwdPattern = new RegExp(/^[a-z0-9_-]{6,12}$/);
+        var phonePattern = new RegExp(/^[0-9]{5,15}$/);
+        if(name=='') {
+            alert("店名不能为空");
+            return;
+        }else if(!pwdPattern.test(password)){
+            alert("密码必须为6~12位数字、大小写字母、中划线、下划线");
+            return;
+        }else if(password!=password2){
+            alert("重复密码错误");
+            return;
+        }else if(type==''){
+            alert("类型不能为空");
+            return;
+        }else if(!phonePattern.test(phone)){
+            alert("电话号码格式错误");
+            return;
+        }else if(address==''){
+            alert("地址不能为空");
+            return;
+        }
+        var rst=new Restaurant(password,type,name,phone,address);
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: basePath + "/loginAndRegister/rstRegister",
+            contentType: "application/json",
+            data: JSON.stringify(rst),
+            success:function(result) {
+                    window.location.href = 'rstRegister/'+result;
+            },
+            error: function (result) {
+                alert("error!");
+            }
+        });
+    };
+</script>
+</html>

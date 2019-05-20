@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <script type="text/javascript"   th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
+    <title>注册</title>
+</head>
+<body>
+<h1>YUMMY-Customer-Register</h1>
+<input id="email" name="email" type="email" placeholder="邮箱"/><br/>
+<input id="password" name="password" type="password" placeholder="密码"/><br/>
+<input id="password2" name="password2" type="password" placeholder="重复密码"/><br/>
+<input id="name" name="name" type="text" placeholder="姓名"/><br/>
+<input id="phone" name="phone" type="text" placeholder="电话"
+       onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"/><br/>
+<button type="button" id="register" name='register' value="Register">注册</button>
+<a href="/yummy/cstLogin">登陆</a>
+</body>
+
+<script th:inline="javascript">
+    function Customer(email,password,name,phone){
+        this.email=email;
+        this.password=password;
+        this.name=name;
+        this.phone=phone;
+    }
+
+    document.getElementById("register").onclick=function(){
+        var email=document.getElementById("email").value;
+        var password=document.getElementById("password").value;
+        var password2=document.getElementById("password2").value;
+        var name=document.getElementById("name").value;
+        var phone=document.getElementById("phone").value;
+        var pwdPattern = new RegExp(/^[a-z0-9_-]{6,12}$/);
+        var emailPattern = new RegExp(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
+        var phonePattern = new RegExp(/^[0-9]{5,15}$/);
+        if(email=='') {
+            alert("邮箱不能为空");
+            return;
+        }else if(!emailPattern.test(email)){
+            alert("邮箱格式错误");
+            return;
+        }else if(!pwdPattern.test(password)){
+            alert("密码必须为6~12位数字、大小写字母、中划线、下划线");
+            return;
+        }else if(password!=password2){
+            alert("重复密码错误");
+            return;
+        }else if(name==''){
+            alert("姓名不能为空");
+            return;
+        }else if(!phonePattern.test(phone)){
+            alert("电话号码格式错误");
+            return;
+        }
+        var customer=new Customer(email,password,name,phone);
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: basePath + "/loginAndRegister/cstRegister",
+            contentType: "application/json",
+            data: JSON.stringify(customer),
+            success:function(result) {
+                if(result==true) {
+                    window.location.href = 'cstLogin';
+                }else{
+                    alert("该邮箱已注册");
+                }
+            },
+            error: function (result) {
+                alert("error!");
+            }
+        });
+    };
+</script>
+</html>

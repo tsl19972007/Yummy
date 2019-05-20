@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="customer/cstCommon::commonHeader">
+</head>
+<body>
+<div th:include="customer/cstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div th:include="customer/cstCommon::commonNav('cstStatistics')" class="sidebar" id="sidebar"></div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/yummy/cstHome">主页</a>
+                    </li>
+                    <li class="active">统计</li>
+                </ul>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        统计数据
+                    </h1>
+                </div><!-- /.page-header -->
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="widget-box transparent">
+                            <div class="widget-header widget-header-flat">
+                                <h4 class="lighter">
+                                    <i class="icon-shopping-cart blue"></i>
+                                    今日消费
+                                </h4>
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="icon-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main no-padding infobox-container">
+                                    <div class="space-20"></div>
+                                    <div class="space-20"></div>
+                                    <div class="infobox infobox-green  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-bar-chart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span th:text="${cstStatistics.todayConsumption}" class="infobox-data-number"></span>
+                                            <div class="infobox-content">今日消费</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="infobox infobox-green  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-shopping-cart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span th:text="${cstStatistics.todayOrderNum}" class="infobox-data-number"></span>
+                                            <div class="infobox-content">今日订单</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="infobox infobox-orange  ">
+                                        <div class="infobox-icon">
+                                            <i class="icon-bar-chart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span th:text="${cstStatistics.totalConsumption}" class="infobox-data-number"></span>
+                                            <div class="infobox-content">总消费</div>
+                                        </div>
+
+                                        <div class="stat stat-success">
+                                            <span th:text="${cstStatistics.totalConsumption==0?0.0:#numbers.formatDecimal((100*cstStatistics.todayConsumption/cstStatistics.totalConsumption),1,1)}+'%'">
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="infobox infobox-orange">
+                                        <div class="infobox-icon">
+                                            <i class="icon-shopping-cart"></i>
+                                        </div>
+
+                                        <div class="infobox-data">
+                                            <span th:text="${cstStatistics.totalOrderNum}" class="infobox-data-number"></span>
+                                            <div class="infobox-content">总订单</div>
+                                        </div>
+
+                                        <div class="stat stat-success">
+                                             <span th:text="${cstStatistics.totalOrderNum==0?0.0:#numbers.formatDecimal((100*cstStatistics.todayOrderNum/cstStatistics.totalOrderNum),1,1)}+'%'">
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-20"></div>
+                                </div><!-- /widget-main -->
+                            </div><!-- /widget-body -->
+                        </div><!-- /widget-box -->
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="widget-box transparent">
+                            <div class="widget-header widget-header-flat">
+                                <h4 class="lighter">
+                                    <i class="icon-bar-chart blue"></i>
+                                    消费组成
+                                </h4>
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="icon-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <div id="eChart" style="width:350px; height:280px" class="widget-main no-padding infobox-container">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="widget-box transparent">
+                            <div class="widget-header widget-header-flat">
+                                <h4 class="lighter">
+                                    <i class="icon-shopping-cart blue"></i>
+                                    消费等级
+                                </h4>
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="icon-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-body center">
+                                <div class="space-20"></div>
+                                <div class="easy-pie-chart percentage" th:attr="data-percent=${#numbers.formatDecimal(cst.getLevelPercentage()*100,1,2)}" data-color="#87B87F">
+                                    <span class="percent" th:text="${#numbers.formatDecimal(cst.getLevelPercentage()*100,1,2)}"></span>%
+                                </div>
+                                <div class="space-10"></div>
+                                <hr/>
+                                <div class="space-10"></div>
+                                <div class="no-border-bottom">
+                                    <b th:text="'当前等级：'+${cst.getLevel()}"></b></br>
+                                    <b th:text="'下一等级：'+${cstStatistics.nextLevel}">下一等级：</b></br>
+                                    <b th:text="'距离下一等级还需消费：'+${#numbers.formatDecimal(cstStatistics.consumptionToNextLevel,1,2)}"></b>
+                                </div>
+                            </div><!-- /widget-body -->
+                        </div><!-- /widget-box -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="widget-box transparent">
+                        <div class="widget-header widget-header-flat">
+                            <h4 class="lighter">
+                                <i class="icon-level-up blue"></i>
+                                其他
+                            </h4>
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="icon-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main no-padding infobox-container">
+                            </div><!-- /widget-main -->
+                        </div><!-- /widget-body -->
+                    </div><!-- /widget-box -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<div th:include="customer/cstCommon::commonFooter"></div>
+<script th:src="@{/static/js/echarts.js}"></script>
+<script th:src="@{/static/js/jquery.easy-pie-chart.min.js}"></script>
+</body>
+<script th:inline="javascript">
+    $(function() {
+        var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
+        $('.easy-pie-chart.percentage').each(function () {
+            $(this).easyPieChart({
+                barColor: $(this).data('color'),
+                trackColor: '#EEEEEE',
+                scaleColor: false,
+                lineCap: 'butt',
+                lineWidth: 8,
+                animate: oldie ? false : 1000,
+                size: 100
+            }).css('color', $(this).data('color'));
+        });
+    });
+</script>
+<script th:inline="javascript">
+    var myChart = echarts.init(document.getElementById('eChart'));
+    var statistics = [[${cstStatistics}]];
+    var data=[];
+    for(var i=0;i<statistics.rstNameList.length;i++){
+        var pair={}
+        pair.value=statistics.rstConsumptionList[i];
+        pair.name=statistics.rstNameList[i];
+        data.push(pair);
+    }
+    console.log(data);
+    var option = {
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {
+                    show: true,
+                    type: ['pie', 'funnel'],
+                    option: {
+                        funnel: {
+                            x: '25%',
+                            width: '20%',
+                            funnelAlign: 'left',
+                            max: 1548
+                        }
+                    }
+                },
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        series : [
+            {
+                name:'消费',
+                type:'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data: data
+            }
+        ]
+    };
+    myChart.setOption(option);
+</script>
+</html>

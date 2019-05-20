@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript"   th:src="@{/static/js/jquery-3.3.1.min.js}"></script>
+    <title>Title</title>
+    <style>
+        table th,td{
+            width:100px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>YUMMY-Restaurant-OrderDetail</h1>
+<h4 th:text="'订单号：'+${order.orderId}">Name Type</h4>
+<table id="items" border="1" cellspacing="0" cellpadding="0" class="hide">
+    <thead>
+    <tr>
+        <th>
+            名称
+        </th>
+        <th>
+            单价
+        </th>
+        <th>
+            数量
+        </th>
+        <th>
+            小计
+        </th>
+    </tr>
+    </thead>
+    <tbody id="commodityBody">
+    <tr th:each="item:${order.itemList}">
+        <th th:text="${item.name}"></th>
+        <th th:text="${item.price}"></th>
+        <th th:text="${item.num}"></th>
+        <th th:text="${item.price*item.num}"></th>
+    </tr>
+    </tbody>
+</table>
+<h4 th:text="'总价:'+${order.total}"></h4>
+<h4 th:text="'顾客:'+${cst.name}"></h4>
+<h4 th:text="'电话:'+${order.phone}"></h4>
+<h4 th:text="'地址:'+${order.address}"></h4>
+<h4 th:text="'送餐时间:'+${#strings.substring(order.orderTime,0,19)}"></h4>
+<h4 th:text="'备注:'+${order.remarks}"></h4>
+<button th:if="${order.state=='已支付'}" id="finish">确认送达</button>
+<input id="orderId" th:value="${order.orderId}" style="display:none;"/>
+</body>
+<script>
+    function finishOrder(){
+        var orderId=document.getElementById("orderId").value;
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        $.ajax({
+            type: 'POST',
+            url: basePath + "/restaurant/finishOrder",
+            data: {
+                id:orderId
+            },
+            success:function(result) {
+                window.location.href="/yummy/rstOrderList";
+            },
+            error: function (result) {
+                alert("error!");
+            }
+        });
+    }
+    document.getElementById("finish").onclick=function(){
+        finishOrder();
+    };
+</script>
+</html>

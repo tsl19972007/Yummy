@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="manager/mngCommon::commonHeader">
+</head>
+<body>
+<div th:include="manager/mngCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="main-container-inner">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <div th:include="manager/mngCommon::commonNav('mngRstInfo')" class="sidebar" id="sidebar"></div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon"></i>
+                        <a href="/yummy/mngHome">主页</a>
+                    </li>
+
+                    <li><a href="/yummy/mngRstInfo">餐厅信息</a></li>
+
+                    <li><a href="/yummy/mngRstApprove">审批修改</a></li>
+
+                    <li th:text="${oldRst.id}" class="active"></li>
+                </ul>
+            </div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        餐厅信息修改详情
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-header">
+                            Comparison
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>状态</th>
+                                    <th>账号</th>
+                                    <th>密码</th>
+                                    <th>类型</th>
+                                    <th>店名</th>
+                                    <th>电话</th>
+                                    <th>地址</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>旧信息</td>
+                                    <td th:text="${oldRst.id}"></td>
+                                    <td th:text="${oldRst.password}"></td>
+                                    <td th:text="${oldRst.type}"></td>
+                                    <td th:text="${oldRst.name}"></td>
+                                    <td th:text="${oldRst.phone}"></td>
+                                    <td th:text="${oldRst.address}"></td>
+                                </tr>
+                                <tr>
+                                    <td>新信息</td>
+                                    <td th:text="${newRst.id}"></td>
+                                    <td th:text="${newRst.password}"></td>
+                                    <td th:text="${newRst.type}"></td>
+                                    <td th:text="${newRst.name}"></td>
+                                    <td th:text="${newRst.phone}"></td>
+                                    <td th:text="${newRst.address}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="space-8"></div>
+                        <div>
+                            <button id="reject" class="btn btn-primary btn-danger"  style="margin-left:20px; float:right">
+                                <i class="icon-remove bigger-120"></i>拒绝通过
+                            </button>
+                            <button id="approve" class="btn btn-primary btn-success"  style="float:right">
+                                <i class="icon-ok bigger-120"></i>审批通过
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<div th:include="manager/mngCommon::commonFooter"></div>
+<script th:inline="javascript">
+    document.getElementById("approve").onclick=function() {
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        var id = [[${oldRst.id}]];
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/manager/approve",
+            data: {
+                rstId: id
+            },
+            success: function (result) {
+                window.location.href = '/yummy/mngApprove';
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    };
+    document.getElementById("reject").onclick=function() {
+        var basePath = "http:\/\/localhost:8080\/yummy";
+        var id = [[${oldRst.id}]];
+        $.ajax({
+            type: 'POST',
+            url: "/yummy/manager/reject",
+            data: {
+                rstId: id
+            },
+            success: function (result) {
+                window.location.href = '/yummy/mngApprove';
+            },
+            error: function (result) {
+                bootbox.alert("error!");
+            }
+        });
+    };
+</script>
+</body>
+</html>
