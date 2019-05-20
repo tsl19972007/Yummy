@@ -1,6 +1,6 @@
 package yummy.demo.statistics;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class YummyMonthlyFinance {
     /*
@@ -16,11 +16,11 @@ public class YummyMonthlyFinance {
      */
     private double totalProfit;
 
-    private ArrayList<Double> transactionAmountList;
-    private ArrayList<Integer> orderNumList;
-    private ArrayList<Double> profitList;
+    private List<Double> transactionAmountList;
+    private List<Integer> orderNumList;
+    private List<Double> profitList;
 
-    public YummyMonthlyFinance(double totalTransactionAmount, int totalOrderNum, double totalProfit, ArrayList<Double> transactionAmountList, ArrayList<Integer> orderNumList, ArrayList<Double> profitList) {
+    public YummyMonthlyFinance(double totalTransactionAmount, int totalOrderNum, double totalProfit, List<Double> transactionAmountList, List<Integer> orderNumList, List<Double> profitList) {
         this.totalTransactionAmount = totalTransactionAmount;
         this.totalOrderNum = totalOrderNum;
         this.totalProfit = totalProfit;
@@ -53,27 +53,27 @@ public class YummyMonthlyFinance {
         this.totalProfit = totalProfit;
     }
 
-    public ArrayList<Double> getTransactionAmountList() {
+    public List<Double> getTransactionAmountList() {
         return transactionAmountList;
     }
 
-    public void setTransactionAmountList(ArrayList<Double> transactionAmountList) {
+    public void setTransactionAmountList(List<Double> transactionAmountList) {
         this.transactionAmountList = transactionAmountList;
     }
 
-    public ArrayList<Integer> getOrderNumList() {
+    public List<Integer> getOrderNumList() {
         return orderNumList;
     }
 
-    public void setOrderNumList(ArrayList<Integer> orderNumList) {
+    public void setOrderNumList(List<Integer> orderNumList) {
         this.orderNumList = orderNumList;
     }
 
-    public ArrayList<Double> getProfitList() {
+    public List<Double> getProfitList() {
         return profitList;
     }
 
-    public void setProfitList(ArrayList<Double> profitList) {
+    public void setProfitList(List<Double> profitList) {
         this.profitList = profitList;
     }
 }

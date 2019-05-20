@@ -32,7 +32,7 @@ public class Restaurant implements Serializable{
         this.profit = 0;
     }
 
-    public Restaurant(int id, String password, String type, String name, String phone, String address, Menu menu, double balance) {
+    public Restaurant(int id, String password, String type, String name, String phone, String address, Menu menu,double profit, double balance) {
         this.id = id;
         this.password = password;
         this.type = type;
@@ -40,11 +40,11 @@ public class Restaurant implements Serializable{
         this.phone = phone;
         this.address = address;
         this.menu = menu;
-        this.balance = balance;
         this.profit = profit;
+        this.balance = balance;
     }
 
-    public Restaurant(){};
+    public Restaurant(){}
 
     public int getId() {
         return id;

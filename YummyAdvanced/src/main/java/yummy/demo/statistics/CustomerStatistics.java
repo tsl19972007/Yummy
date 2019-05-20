@@ -1,6 +1,6 @@
 package yummy.demo.statistics;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerStatistics {
     private int totalOrderNum;
@@ -9,8 +9,8 @@ public class CustomerStatistics {
     private double todayConsumption;
     private String nextLevel;
     private double consumptionToNextLevel;
-    private ArrayList<String> rstNameList;
-    private ArrayList<Double> rstConsumptionList;
+    private List<String> rstNameList;
+    private List<Double> rstConsumptionList;
 
     public int getTotalOrderNum() {
         return totalOrderNum;
@@ -60,23 +60,23 @@ public class CustomerStatistics {
         this.consumptionToNextLevel = consumptionToNextLevel;
     }
 
-    public ArrayList<String> getRstNameList() {
+    public List<String> getRstNameList() {
         return rstNameList;
     }
 
-    public void setRstNameList(ArrayList<String> rstNameList) {
+    public void setRstNameList(List<String> rstNameList) {
         this.rstNameList = rstNameList;
     }
 
-    public ArrayList<Double> getRstConsumptionList() {
+    public List<Double> getRstConsumptionList() {
         return rstConsumptionList;
     }
 
-    public void setRstConsumptionList(ArrayList<Double> rstConsumptionList) {
+    public void setRstConsumptionList(List<Double> rstConsumptionList) {
         this.rstConsumptionList = rstConsumptionList;
     }
 
-    public CustomerStatistics(int totalOrderNum, int todayOrderNum, double totalConsumption, double todayConsumption, String nextLevel, double consumptionToNextLevel, ArrayList<String> rstNameList, ArrayList<Double> rstConsumptionList) {
+    public CustomerStatistics(int totalOrderNum, int todayOrderNum, double totalConsumption, double todayConsumption, String nextLevel, double consumptionToNextLevel, List<String> rstNameList, List<Double> rstConsumptionList) {
         this.totalOrderNum = totalOrderNum;
         this.todayOrderNum = todayOrderNum;
         this.totalConsumption = totalConsumption;

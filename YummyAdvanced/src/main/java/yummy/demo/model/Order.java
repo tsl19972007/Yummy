@@ -40,7 +40,7 @@ public class Order implements Serializable{
         this.state = state;
     }
 
-    public Order(){};
+    public Order(){}
 
     public int getOrderId() {
         return orderId;

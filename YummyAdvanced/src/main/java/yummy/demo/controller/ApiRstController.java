@@ -18,20 +18,20 @@ public class ApiRstController {
     @Autowired
     RestaurantOrderService rstOrderService;
 
-    @RequestMapping(value = "/updateRst", method = RequestMethod.POST)
+    @PostMapping(value = "/updateRst")
     @ResponseBody
     public void updateRst(@RequestBody Restaurant rst) {
         rstService.updateRst(rst);
     }
 
-    @RequestMapping(value = "/updateMenu", method = RequestMethod.POST)
+    @PostMapping(value = "/updateMenu")
     @ResponseBody
     public void updateMenu(HttpServletRequest request, @RequestBody Menu menu) {
         int rstId=(Integer)request.getSession(false).getAttribute("rstId");
         rstService.updateMenu(rstId,menu);
     }
 
-    @RequestMapping(value = "/finishOrder", method = RequestMethod.POST)
+    @PostMapping(value = "/finishOrder")
     @ResponseBody
     public void finishOrder(@RequestParam int id) {
         rstOrderService.finishOrder(id);

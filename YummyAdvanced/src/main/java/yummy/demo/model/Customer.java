@@ -168,7 +168,7 @@ public class Customer implements Serializable  {
 
 
     public double getInfoCompletePercent(){
-        if(addresses.size()==0)
+        if(addresses.isEmpty())
             return 75.0;
         else
             return 100.0;

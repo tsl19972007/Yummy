@@ -21,7 +21,7 @@ public class ApiLoginController {
     @Autowired
     ManagerService mngService;
 
-    @RequestMapping(value = "/cstRegister", method = RequestMethod.POST)
+    @PostMapping(value = "/cstRegister")
     @ResponseBody
     public boolean cstRegister(@RequestBody Customer cst) {
         Customer cstFound=cstService.findByEmail(cst.getEmail());
@@ -32,13 +32,13 @@ public class ApiLoginController {
         return true;
     }
 
-    @RequestMapping(value = "/rstRegister", method = RequestMethod.POST)
+    @PostMapping(value = "/rstRegister")
     @ResponseBody
     public int rstRegister(@RequestBody Restaurant rst) {
         return rstService.register(rst);
     }
 
-    @RequestMapping(value = "/cstLogin", method = RequestMethod.POST)
+    @PostMapping(value = "/cstLogin")
     @ResponseBody
     public boolean cstLogin(HttpServletRequest request, @RequestParam String email, @RequestParam String password) {
         Customer cst=cstService.login(email,password);
@@ -50,7 +50,7 @@ public class ApiLoginController {
         return cst!=null;
     }
 
-    @RequestMapping(value = "/rstLogin", method = RequestMethod.POST)
+    @PostMapping(value = "/rstLogin")
     @ResponseBody
     public boolean rstLogin(HttpServletRequest request, @RequestParam int id,@RequestParam String password) {
         if(rstService.login(id,password)!=null){
@@ -61,7 +61,7 @@ public class ApiLoginController {
         return rstService.login(id,password)!=null;
     }
 
-    @RequestMapping(value = "/mngLogin", method = RequestMethod.POST)
+    @PostMapping(value = "/mngLogin")
     @ResponseBody
     public boolean mngLogin(HttpServletRequest request, @RequestParam int id,@RequestParam String password) {
         if(mngService.login(id,password)){
@@ -72,26 +72,26 @@ public class ApiLoginController {
         return mngService.login(id,password);
     }
 
-    @RequestMapping(value = "/cstLogout", method = RequestMethod.POST)
+    @PostMapping(value = "/cstLogout")
     @ResponseBody
-    public void cstLogout(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void cstLogout(HttpServletRequest request, HttpServletResponse response){
         System.out.println("cstLogout");
         HttpSession session = request.getSession(false);
         System.out.println(session.getAttribute("cstId"));
         session.invalidate();
     }
 
-    @RequestMapping(value = "/rstLogout", method = RequestMethod.POST)
+    @PostMapping(value = "/rstLogout")
     @ResponseBody
-    public void rstLogout(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void rstLogout(HttpServletRequest request, HttpServletResponse response){
         System.out.println("rstLogout");
         HttpSession session = request.getSession(false);
         session.invalidate();
     }
 
-    @RequestMapping(value = "/mngLogout", method = RequestMethod.POST)
+    @PostMapping(value = "/mngLogout")
     @ResponseBody
-    public void mngLogout(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void mngLogout(HttpServletRequest request, HttpServletResponse response){
         System.out.println("mngLogout");
         HttpSession session = request.getSession(false);
         session.invalidate();

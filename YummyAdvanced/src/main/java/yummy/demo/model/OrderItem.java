@@ -32,7 +32,7 @@ public class OrderItem implements Serializable{
         this.num = num;
     }
 
-    public OrderItem(){};
+    public OrderItem(){}
 
     public int getId() {
         return id;

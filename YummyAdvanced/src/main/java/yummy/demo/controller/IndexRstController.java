@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import yummy.demo.model.Customer;
 import yummy.demo.model.Order;
 import yummy.demo.model.Restaurant;
-import yummy.demo.service.*;
-import yummy.demo.statistics.CustomerStatistics;
+import yummy.demo.service.CustomerService;
+import yummy.demo.service.RestaurantOrderService;
+import yummy.demo.service.RestaurantService;
 import yummy.demo.statistics.RestaurantStatistics;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
 import java.util.List;
 
 @Controller

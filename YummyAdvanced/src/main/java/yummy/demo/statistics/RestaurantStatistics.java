@@ -1,29 +1,29 @@
 package yummy.demo.statistics;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantStatistics {
-    private ArrayList<String> cstNameList;
-    private ArrayList<Double> cstConsumptionList;
+    private List<String> cstNameList;
+    private List<Double> cstConsumptionList;
     private int totalOrderNum;
     private int todayOrderNum;
     private double totalProfit;
     private double todayProfit;
-    private ArrayList<Double> weekProfitList;
+    private List<Double> weekProfitList;
 
-    public ArrayList<String> getCstNameList() {
+    public List<String> getCstNameList() {
         return cstNameList;
     }
 
-    public void setCstNameList(ArrayList<String> cstNameList) {
+    public void setCstNameList(List<String> cstNameList) {
         this.cstNameList = cstNameList;
     }
 
-    public ArrayList<Double> getCstConsumptionList() {
+    public List<Double> getCstConsumptionList() {
         return cstConsumptionList;
     }
 
-    public void setCstConsumptionList(ArrayList<Double> cstConsumptionList) {
+    public void setCstConsumptionList(List<Double> cstConsumptionList) {
         this.cstConsumptionList = cstConsumptionList;
     }
 
@@ -59,15 +59,15 @@ public class RestaurantStatistics {
         this.todayProfit = todayProfit;
     }
 
-    public ArrayList<Double> getWeekProfitList() {
+    public List<Double> getWeekProfitList() {
         return weekProfitList;
     }
 
-    public void setWeekProfitList(ArrayList<Double> weekProfitList) {
+    public void setWeekProfitList(List<Double> weekProfitList) {
         this.weekProfitList = weekProfitList;
     }
 
-    public RestaurantStatistics(ArrayList<String> cstNameList, ArrayList<Double> cstConsumptionList, int totalOrderNum, int todayOrderNum, double totalProfit, double todayProfit, ArrayList<Double> weekProfitList) {
+    public RestaurantStatistics(List<String> cstNameList, List<Double> cstConsumptionList, int totalOrderNum, int todayOrderNum, double totalProfit, double todayProfit, List<Double> weekProfitList) {
         this.cstNameList = cstNameList;
         this.cstConsumptionList = cstConsumptionList;
         this.totalOrderNum = totalOrderNum;

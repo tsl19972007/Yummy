@@ -29,7 +29,7 @@ public class Menu implements Serializable {
         this.itemList = itemList;
     }
 
-    public Menu(){};
+    public Menu(){}
 
     public int getId() {
         return id;
