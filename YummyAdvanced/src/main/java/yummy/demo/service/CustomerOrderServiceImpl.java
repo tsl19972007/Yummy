@@ -2,21 +2,20 @@ package yummy.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yummy.demo.dao.CustomerDao;
 import yummy.demo.dao.OrderDao;
 import yummy.demo.dao.RestaurantDao;
 import yummy.demo.model.Customer;
 import yummy.demo.model.Order;
-import yummy.demo.model.Restaurant;
 import yummy.demo.statistics.CustomerStatistics;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static yummy.demo.service.RestaurantServiceImpl.ID_DIFF;
 
+@Transactional
 @Service
 public class CustomerOrderServiceImpl implements CustomerOrderService {
     @Autowired
@@ -28,29 +27,23 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public Order findById(int id) {
-        Order order=orderDao.findById(id);
-        order.setRstId(order.getRstId()+ID_DIFF);
-        return order;
+        return orderDao.findById(id);
     }
 
     @Override
     public List<Order> findByCst(int cstId) {
         orderDao.cancelOrders();
         List<Order> orderList=orderDao.findByCst(cstId);
-        for(Order order:orderList){
-            order.setRstId(order.getRstId()+ID_DIFF);
-        }
         return orderList;
     }
 
     @Override
     public List<Order> findUnpaidByCst(int cstId) {
         orderDao.cancelOrders();
-        List<Order> orderUnpaidList=new ArrayList<Order>();
+        List<Order> orderUnpaidList=new ArrayList<>();
         List<Order> orderList=orderDao.findByCst(cstId);
         for(Order order:orderList){
             if(order.getState().equals("待支付")) {
-                order.setRstId(order.getRstId()+ID_DIFF);
                 orderUnpaidList.add(order);
             }
         }
@@ -59,11 +52,10 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public List<Order> findPaidByCst(int cstId) {
-        List<Order> orderPaidList=new ArrayList<Order>();
+        List<Order> orderPaidList=new ArrayList<>();
         List<Order> orderList=orderDao.findByCst(cstId);
         for(Order order:orderList){
             if(order.getState().equals("进行中")) {
-                order.setRstId(order.getRstId()+ID_DIFF);
                 orderPaidList.add(order);
             }
         }
@@ -72,11 +64,10 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public List<Order> findCompletedByCst(int cstId) {
-        List<Order> orderCompletedList=new ArrayList<Order>();
+        List<Order> orderCompletedList=new ArrayList<>();
         List<Order> orderList=orderDao.findByCst(cstId);
         for(Order order:orderList){
             if(order.getState().equals("已完成")) {
-                order.setRstId(order.getRstId()+ID_DIFF);
                 orderCompletedList.add(order);
             }
         }
@@ -85,11 +76,10 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public List<Order> findReturnedByCst(int cstId) {
-        List<Order> orderReturnedList=new ArrayList<Order>();
+        List<Order> orderReturnedList=new ArrayList<>();
         List<Order> orderList=orderDao.findByCst(cstId);
         for(Order order:orderList){
             if(order.getState().equals("已退订")) {
-                order.setRstId(order.getRstId()+ID_DIFF);
                 orderReturnedList.add(order);
             }
         }
@@ -98,7 +88,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public int add(Order order) {
-        order.setRstId(order.getRstId()-ID_DIFF);
+        order.setRstId(order.getRstId());
         return orderDao.add(order);
     }
 
@@ -145,9 +135,9 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         int totalOrderNum=0;
         int todayOrderNum=0;
         double todayConsumption=0;
-        ArrayList<Integer> rstIdList=new ArrayList<Integer>();
-        ArrayList<String> rstNameList=new ArrayList<String>();
-        ArrayList<Double> rstConsumptionList=new ArrayList<Double>();
+        ArrayList<Integer> rstIdList=new ArrayList<>();
+        ArrayList<String> rstNameList=new ArrayList<>();
+        ArrayList<Double> rstConsumptionList=new ArrayList<>();
         for(Order order:orderList){
             if(order.getState().equals("已退订")||order.getState().equals("待支付")){
                 continue;
@@ -185,7 +175,6 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
             rstNameList.add(rstDao.findById(id).getName());
         }
 
-        CustomerStatistics cstStatistics=new CustomerStatistics(totalOrderNum,todayOrderNum,totalConsumption, todayConsumption,nextLevel,consumptionToNextLevel,rstNameList, rstConsumptionList) ;
-        return cstStatistics;
+        return new CustomerStatistics(totalOrderNum,todayOrderNum,totalConsumption, todayConsumption,nextLevel,consumptionToNextLevel,rstNameList, rstConsumptionList) ;
     }
 }

@@ -1,11 +1,12 @@
 package yummy.demo.dao;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
@@ -17,12 +18,13 @@ public class BaseDaoImpl implements BaseDao {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+    @PersistenceContext
+    private EntityManager entityManager;
     /**
      * gerCurrentSession 会自动关闭session，使用的是当前的session事务 * * @return
      */
     public Session getSession() {
-        //return sessionFactory.getCurrentSession();
-        return entityManagerFactory.unwrap(SessionFactory.class).openSession();
+        return entityManager.unwrap(Session.class);
     }
 
     public void flush() {
@@ -36,18 +38,8 @@ public class BaseDaoImpl implements BaseDao {
     /**
      * 根据 id 查询信息 * * @param id * @return
      */
-    @SuppressWarnings("rawtypes")
     public Object load(Class c, int id) {
-        Object obj = null;
-        Session session = getSession();
-        try {
-            obj = session.get(c, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            ;
-            return obj;
-        }
+        return getSession().get(c, id);
     }
 
     /**
@@ -58,12 +50,7 @@ public class BaseDaoImpl implements BaseDao {
         Session session = getSession();
         String hql = "from " + c.getName();
         List list = null;
-        try {
-            list = session.createQuery(hql).list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        session.close();
+        list = session.createQuery(hql).list();
         return list;
     }
 
@@ -75,7 +62,6 @@ public class BaseDaoImpl implements BaseDao {
         Session session = getSession();
         String hql = "select count(*) from " + c.getName();
         Long count = (Long) session.createQuery(hql).uniqueResult();
-        session.close();
         return count != null ? count.longValue() : 0;
     }
 
@@ -83,50 +69,21 @@ public class BaseDaoImpl implements BaseDao {
      * 保存（作为完整事务） * * @param action *
      */
     public Object save (Object bean){
-        Object id = null;
-        Session session = getSession();
-        try {
-            session.beginTransaction();
-            id = session.save(bean);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        session.close();
-        return id;
+        return getSession().save(bean);
     }
 
     /**
      * 更新（作为完整事务） * * @param action *
      */
     public void update (Object bean){
-        Session session = getSession();
-        try {
-            session.beginTransaction();
-            session.update(bean);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        session.close();
+        getSession().update(bean);
     }
 
     /**
      * 删除 * * @param action *
      */
     public void delete (Object bean){
-        Session session = getSession();
-        try {
-            session.beginTransaction();
-            session.delete(bean);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        session.close();
+        getSession().delete(bean);
     }
 
     /**
@@ -135,38 +92,20 @@ public class BaseDaoImpl implements BaseDao {
     @SuppressWarnings({"rawtypes"})
     public void delete (Class c,int id){
         Session session = getSession();
-        try {
-            session.beginTransaction();
-            Object obj = session.get(c, id);
-            session.delete(obj);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        session.close();
+        Object obj = session.get(c, id);
+        session.delete(obj);
     }
 
     /**
      * 批量删除（作为完整事务） * * @param c 类 * * @param ids ID 集合 *
      */
-    @SuppressWarnings({"rawtypes"})
     public void delete (Class c,int[] ids){
         Session session = getSession();
-        try {
-            session.beginTransaction();
-            for (int id : ids) {
-                Object obj = getSession().get(c, id);
-                if (obj != null) {
-                    getSession().delete(obj);
-                }
+        for (int id : ids) {
+            Object obj = getSession().get(c, id);
+            if (obj != null) {
+                getSession().delete(obj);
             }
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-            e.printStackTrace();
         }
-        session.close();
     }
-
 }

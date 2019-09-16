@@ -1,8 +1,10 @@
 package yummy.demo.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import yummy.demo.dto.CustomerDTO;
+import yummy.demo.dto.RestaurantDTO;
 import yummy.demo.model.Customer;
-import yummy.demo.model.Restaurant;
 import yummy.demo.service.CustomerService;
 import yummy.demo.service.ManagerService;
 import yummy.demo.service.RestaurantService;
@@ -22,8 +24,8 @@ public class ApiLoginController {
     ManagerService mngService;
 
     @PostMapping(value = "/cstRegister")
-    @ResponseBody
-    public boolean cstRegister(@RequestBody Customer cst) {
+    public boolean cstRegister(@RequestBody CustomerDTO cstDTO) {
+        Customer cst=cstDTO.toCustomer();
         Customer cstFound=cstService.findByEmail(cst.getEmail());
         if(cstFound!=null){
             return false;
@@ -33,67 +35,59 @@ public class ApiLoginController {
     }
 
     @PostMapping(value = "/rstRegister")
-    @ResponseBody
-    public int rstRegister(@RequestBody Restaurant rst) {
-        return rstService.register(rst);
+    public int rstRegister(@RequestBody RestaurantDTO rstDTO) {
+        return rstService.register(rstDTO.toRestaurant());
     }
 
     @PostMapping(value = "/cstLogin")
-    @ResponseBody
     public boolean cstLogin(HttpServletRequest request, @RequestParam String email, @RequestParam String password) {
         Customer cst=cstService.login(email,password);
         if(cst!=null){
             HttpSession session = request.getSession(true);
-            session.setAttribute("cstId", cst.getId());
-            session.setAttribute("userName",cst.getName());
+            session.setAttribute(ConstantField.SESSION_CUSTOMER_ID, cst.getId());
+            session.setAttribute(ConstantField.SESSION_USERNAME, cst.getName());
         }
         return cst!=null;
     }
 
     @PostMapping(value = "/rstLogin")
-    @ResponseBody
     public boolean rstLogin(HttpServletRequest request, @RequestParam int id,@RequestParam String password) {
         if(rstService.login(id,password)!=null){
             HttpSession session = request.getSession(true);
-            session.setAttribute("rstId", id);
-            session.setAttribute("userName",id);
+            session.setAttribute(ConstantField.SESSION_RESTAURANT_ID, id);
+            session.setAttribute(ConstantField.SESSION_USERNAME,id);
         }
         return rstService.login(id,password)!=null;
     }
 
     @PostMapping(value = "/mngLogin")
-    @ResponseBody
     public boolean mngLogin(HttpServletRequest request, @RequestParam int id,@RequestParam String password) {
         if(mngService.login(id,password)){
             HttpSession session = request.getSession(true);
-            session.setAttribute("mngId", id);
-            session.setAttribute("userName","manager");
+            session.setAttribute(ConstantField.SESSION_MANAGER_ID, id);
+            session.setAttribute(ConstantField.SESSION_USERNAME,"manager");
         }
         return mngService.login(id,password);
     }
 
     @PostMapping(value = "/cstLogout")
-    @ResponseBody
     public void cstLogout(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("cstLogout");
         HttpSession session = request.getSession(false);
-        System.out.println(session.getAttribute("cstId"));
+        if(session==null) return;
         session.invalidate();
     }
 
     @PostMapping(value = "/rstLogout")
-    @ResponseBody
     public void rstLogout(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("rstLogout");
         HttpSession session = request.getSession(false);
+        if(session==null) return;
         session.invalidate();
     }
 
     @PostMapping(value = "/mngLogout")
-    @ResponseBody
     public void mngLogout(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("mngLogout");
         HttpSession session = request.getSession(false);
+        if(session==null) return;
         session.invalidate();
     }
 }

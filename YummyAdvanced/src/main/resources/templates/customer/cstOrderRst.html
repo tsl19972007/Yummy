@@ -129,7 +129,7 @@
                                     </div><!-- #home -->
                                     <div id="menu" class="tab-pane">
                                         <div class="row">
-                                            <div th:if="${rst.menu!=null}" class="col-xs-12 col-sm-6 center">
+                                            <div th:if="${rst.menuDTO!=null}" class="col-xs-12 col-sm-6 center">
                                                 <h3 class="header smaller lighter blue"> 当前菜单 </h3>
                                                 <div class="space-12"></div>
                                                 <div class="row">
@@ -138,7 +138,7 @@
                                                                 <span class="input-group-addon">
                                                                     <i class="icon-calendar bigger-110"></i> 时间
                                                                 </span>
-                                                            <input th:value="${#strings.substring(rst.menu.beginTime,0,19)}+' - '+${#strings.substring(rst.menu.endTime,0,19)}" class="form-control" type="text" name="date-range-picker-3" id="id-date-range-picker-2" />
+                                                            <input th:value="${#strings.substring(rst.menuDTO.beginTime,0,19)}+' - '+${#strings.substring(rst.menuDTO.endTime,0,19)}" class="form-control" type="text" name="date-range-picker-3" id="id-date-range-picker-2" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -158,7 +158,7 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <tr th:each="item:${rst.menu.itemList}">
+                                                        <tr th:each="item:${rst.menuDTO.itemList}">
                                                             <td style="display:none" th:text="${item.id}"></td>
                                                             <td th:text="${item.type}"></td>
                                                             <td th:text="${item.name}"></td>
@@ -293,8 +293,8 @@
         this.num=num;
     }
     function add(obj){
-        var menuBeginStr=[[${rst.menu.beginTime}]].substring(0,10)+" "+[[${rst.menu.beginTime}]].substring(11,19);
-        var menuEndStr=[[${rst.menu.endTime}]].substring(0,10)+" "+[[${rst.menu.endTime}]].substring(11,19);
+        var menuBeginStr=[[${rst.menuDTO.beginTime}]].substring(0,10)+" "+[[${rst.menuDTO.beginTime}]].substring(11,19);
+        var menuEndStr=[[${rst.menuDTO.endTime}]].substring(0,10)+" "+[[${rst.menuDTO.endTime}]].substring(11,19);
         var menuBegin = new Date(menuBeginStr.replace(/-/g, "/"));
         var menuEnd = new Date(menuEndStr.replace(/-/g, "/"));
         var now = new Date();

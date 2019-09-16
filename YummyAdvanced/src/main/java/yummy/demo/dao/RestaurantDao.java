@@ -3,7 +3,6 @@ package yummy.demo.dao;
 import yummy.demo.model.Menu;
 import yummy.demo.model.Restaurant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

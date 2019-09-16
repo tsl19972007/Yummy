@@ -2,13 +2,11 @@ package yummy.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yummy.demo.dao.CustomerDao;
 import yummy.demo.model.Customer;
-import yummy.demo.model.Restaurant;
 
-import java.util.List;
-
-
+@Transactional
 @Service
 public class CustomerServiceImpl implements CustomerService{
     @Autowired
@@ -49,6 +47,7 @@ public class CustomerServiceImpl implements CustomerService{
         if(cst!=null&&cst.getIsActive()&&!cst.getIsWrittenOff()) {
             return cst;
         }
+        //int a=1/0;
         return null;
     }
 

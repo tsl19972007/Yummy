@@ -1,7 +1,6 @@
 package yummy.demo.service;
 
 import yummy.demo.model.Order;
-import yummy.demo.model.Restaurant;
 import yummy.demo.statistics.CustomerStatistics;
 
 import java.util.List;

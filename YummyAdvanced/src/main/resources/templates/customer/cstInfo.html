@@ -336,7 +336,7 @@
         var addresses=getAddresses();
         var consumption=document.getElementById("consumption").value;
         var balance=document.getElementById("balance").value;
-        var customer=new Customer(id,email,password,name,phone,true,true,addresses,consumption,balance);
+        var customer=new Customer(id,email,password,name,phone,true,false,addresses,consumption,balance);
         var basePath = "http:\/\/localhost:8080\/yummy";
         $.ajax({
             type: 'POST',

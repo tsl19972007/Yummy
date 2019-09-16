@@ -23,9 +23,5 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    private void test(){
-        System.out.println(cstDao==null);
-        System.out.println(null==cstDao.findById(1));
-    }
 }
 

@@ -39,43 +39,23 @@ public class RestaurantDaoImpl implements RestaurantDao {
     @Override
     public void updateRst(Restaurant rst) {
         Session session=baseDao.getSession();
-        try {
-            session.beginTransaction();
-            String hql = "UPDATE Restaurant r SET r.password=?2,r.type=?3,r.name=?4,r.phone=?5,r.address=?6 WHERE r.id = ?1";
-            Query query = session.createQuery(hql);
-            query.setParameter(1, rst.getId());
-            query.setParameter(2, rst.getPassword());
-            query.setParameter(3, rst.getType());
-            query.setParameter(4, rst.getName());
-            query.setParameter(5, rst.getPhone());
-            query.setParameter(6, rst.getAddress());
-            int ret = query.executeUpdate();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        finally {
-            session.close();
-        }
+        String hql = "UPDATE Restaurant r SET r.password=?2,r.type=?3,r.name=?4,r.phone=?5,r.address=?6 WHERE r.id = ?1";
+        Query query = session.createQuery(hql);
+        query.setParameter(1, rst.getId());
+        query.setParameter(2, rst.getPassword());
+        query.setParameter(3, rst.getType());
+        query.setParameter(4, rst.getName());
+        query.setParameter(5, rst.getPhone());
+        query.setParameter(6, rst.getAddress());
+        int ret = query.executeUpdate();
     }
 
     @Override
     public void updateMenu(int rstId, Menu menu){
         Session session=baseDao.getSession();
-        try {
-            session.beginTransaction();
-            Restaurant rst=session.get(Restaurant.class,rstId);
-            rst.setMenu(menu);
-            session.update(rst);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        finally {
-            session.close();
-        }
+        Restaurant rst=session.get(Restaurant.class,rstId);
+        rst.setMenu(menu);
+        session.update(rst);
     }
 
     @Override
@@ -92,57 +72,36 @@ public class RestaurantDaoImpl implements RestaurantDao {
         query.setParameter(1, id);
         query.setParameter(2, password);
         rst=(Restaurant) query.uniqueResult();
-        session.close();
         return rst;
     }
 
     public void balance(int id){
         Session session=baseDao.getSession();
-        try {
-            session.beginTransaction();
-            Restaurant rst=(Restaurant)session.get(Restaurant.class,id);
-            double profit=rst.getProfit();
-            rst.setProfit(0);
-            rst.setBalance(rst.getBalance()+profit*ManagerServiceImpl.PROFIT_RATIO);
-            session.update(rst);
-            Manager mng=(Manager)session.get(Manager.class,Manager.getDefaultId());
-            mng.setBalance(mng.getBalance()-profit*ManagerServiceImpl.PROFIT_RATIO);
-            session.update(mng);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        finally {
-            session.close();
-        }
+        Restaurant rst=(Restaurant)session.get(Restaurant.class,id);
+        double profit=rst.getProfit();
+        rst.setProfit(0);
+        rst.setBalance(rst.getBalance()+profit*ManagerServiceImpl.PROFIT_RATIO);
+        session.update(rst);
+        Manager mng=(Manager)session.get(Manager.class,Manager.getDefaultId());
+        mng.setBalance(mng.getBalance()-profit*ManagerServiceImpl.PROFIT_RATIO);
+        session.update(mng);
     }
 
     public void balanceAll(){
         Session session=baseDao.getSession();
-        try {
-            session.beginTransaction();
-            String hql = "SELECT r FROM Restaurant r WHERE r.profit>0 ";
-            List rstList=session.createQuery(hql).list();
-            double totalProfit=0;
-            for(Object obj :rstList){
-                Restaurant rst = (Restaurant) obj;
-                rst.setBalance(rst.getBalance()+rst.getProfit()*ManagerServiceImpl.PROFIT_RATIO);
-                totalProfit+=rst.getProfit()*ManagerServiceImpl.PROFIT_RATIO;
-                rst.setProfit(0);
-                session.update(rst);
-            }
-            String hqlUpd = "UPDATE Manager m SET m.balance=m.balance- ?1 ";
-            Query query = session.createQuery(hqlUpd);
-            query.setParameter(1, totalProfit);
-            query.executeUpdate();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            session.getTransaction().rollback();
-            e.printStackTrace();
+        String hql = "SELECT r FROM Restaurant r WHERE r.profit>0 ";
+        List rstList=session.createQuery(hql).list();
+        double totalProfit=0;
+        for(Object obj :rstList){
+            Restaurant rst = (Restaurant) obj;
+            rst.setBalance(rst.getBalance()+rst.getProfit()*ManagerServiceImpl.PROFIT_RATIO);
+            totalProfit+=rst.getProfit()*ManagerServiceImpl.PROFIT_RATIO;
+            rst.setProfit(0);
+            session.update(rst);
         }
-        finally {
-            session.close();
-        }
+        String hqlUpd = "UPDATE Manager m SET m.balance=m.balance- ?1 ";
+        Query query = session.createQuery(hqlUpd);
+        query.setParameter(1, totalProfit);
+        query.executeUpdate();
     }
 }

@@ -2,13 +2,14 @@ package yummy.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yummy.demo.dao.RestaurantDao;
 import yummy.demo.model.Menu;
 import yummy.demo.model.Restaurant;
 
 import java.util.List;
 
-
+@Transactional
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
@@ -17,18 +18,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
     ManagerService mngService;
 
-    public static int ID_DIFF=1000000;
-
     public List<Restaurant> getAllRestaurants(){
-        List<Restaurant> rstList=rstDao.getAllRestaurants();
-        for(int i=0;i<rstList.size();i++){
-            rstList.get(i).setId(rstList.get(i).getId()+ID_DIFF);
-        }
-        return rstList;
+        return rstDao.getAllRestaurants();
     }
 
     public int register(Restaurant rst){
-        return ID_DIFF+rstDao.add(rst);
+        return rstDao.add(rst);
     }
 
     public void updateRst(Restaurant rst){
@@ -36,20 +31,18 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     public void updateMenu(int rstId,Menu menu){
-        rstDao.updateMenu(rstId-ID_DIFF,menu);
+        rstDao.updateMenu(rstId,menu);
     }
 
     public void delete(int id){
-        rstDao.delete(id-ID_DIFF);
+        rstDao.delete(id);
     }
 
     public Restaurant login(int id,String password){
-        return rstDao.login(id-ID_DIFF,password);
+        return rstDao.login(id,password);
     }
 
     public Restaurant findById(int id){
-        Restaurant rst=rstDao.findById(id-ID_DIFF);
-        rst.setId(rst.getId()+ID_DIFF);
-        return rst;
+        return rstDao.findById(id);
     }
 }

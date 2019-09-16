@@ -6,7 +6,7 @@ import yummy.demo.statistics.YummyAnnualFinance;
 import yummy.demo.statistics.YummyMonthlyFinance;
 import yummy.demo.statistics.YummyWeeklyFinance;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface ManagerService {
     public void addApply(Restaurant rst);
@@ -19,17 +19,17 @@ public interface ManagerService {
 
     public boolean login(int id,String password);
 
-    public ArrayList<Restaurant> getRstUpdateList();
+    public List<Restaurant> getRstUpdateList();
 
     public void balance(int id);
 
     public void balanceAll();
 
-    public ArrayList<Restaurant> getRstBalanceList();
+    public List<Restaurant> getRstBalanceList();
 
-    public ArrayList<Restaurant> getAllRestaurants();
+    public List<Restaurant> getAllRestaurants();
 
-    public ArrayList<Customer> getAllCustomers();
+    public List<Customer> getAllCustomers();
 
     public YummyAnnualFinance getYummyAnnualFinance();
 

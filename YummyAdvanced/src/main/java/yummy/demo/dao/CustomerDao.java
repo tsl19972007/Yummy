@@ -1,6 +1,6 @@
 package yummy.demo.dao;
+
 import yummy.demo.model.Customer;
-import yummy.demo.model.Restaurant;
 
 import java.util.List;
 

@@ -2,9 +2,10 @@ package yummy.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import yummy.demo.model.Customer;
+import yummy.demo.dto.CustomerDTO;
+import yummy.demo.dto.OrderDTO;
+import yummy.demo.dto.OrderItemDTO;
 import yummy.demo.model.Order;
 import yummy.demo.model.OrderItem;
 import yummy.demo.service.CustomerOrderService;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Controller
+@RestController
 @RequestMapping("/customer")
 public class ApiCstController {
     @Autowired
@@ -26,26 +27,24 @@ public class ApiCstController {
     CustomerOrderService cstOrderService;
 
     @PostMapping(value = "/update")
-    @ResponseBody
-    public void update(@RequestBody Customer cst) {
-        cstService.update(cst);
+    public void update(@RequestBody CustomerDTO cstDTO) {
+        cstService.update(cstDTO.toCustomer());
     }
 
     @PostMapping(value = "/writeOff")
-    @ResponseBody
     public void writeOff(HttpServletRequest request, HttpServletResponse response){
         HttpSession session=request.getSession(false);
-        int cstId=(Integer)session.getAttribute("cstId");
+        int cstId=(Integer)session.getAttribute(ConstantField.SESSION_CUSTOMER_ID);
         cstService.writeOff(cstId);
         session.invalidate();
     }
 
     @PostMapping(value = "/order")
-    @ResponseBody
-    public int order(@RequestBody Order order) {
+    public int order(@RequestBody OrderDTO orderDTO) {
+        Order order=orderDTO.toOrder();
         List<OrderItem> newItemList=new ArrayList<>();
         for(int i=0;i<order.getItemList().size();i++){
-            OrderItem item=order.getItemList().get(i);
+            OrderItemDTO item=orderDTO.getItemList().get(i);
             newItemList.add(new OrderItem(item.getMenuItemId(),item.getType(),item.getName(),item.getPrice(),item.getNum()));
         }
         order.setItemList(newItemList);
@@ -53,31 +52,26 @@ public class ApiCstController {
     }
 
     @PostMapping(value = "/cancelOrder")
-    @ResponseBody
     public void cancelOrder(@RequestParam int id) {
         cstOrderService.cancelOrder(id);
     }
 
     @PostMapping(value = "/payOrder")
-    @ResponseBody
     public boolean payOrder(@RequestParam int id) {
         return cstOrderService.payOrder(id);
     }
 
     @PostMapping(value = "/returnOrder")
-    @ResponseBody
     public double returnOrder(@RequestParam int id) {
         return cstOrderService.returnOrder(id);
     }
 
     @PostMapping(value = "/finishOrder")
-    @ResponseBody
     public void finishOrder(@RequestParam int id) {
         cstOrderService.finishOrder(id);
     }
 
     @PostMapping(value = "/getDiscount")
-    @ResponseBody
     public double getDiscount(@RequestParam int cstId,@RequestParam double totalPrice) {
         return cstOrderService.getDiscount(cstId,totalPrice);
     }

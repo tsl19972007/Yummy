@@ -1,7 +1,10 @@
 package yummy.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import yummy.demo.service.ManagerService;
 
 @RestController
@@ -11,25 +14,21 @@ public class ApiMngController {
     ManagerService mngService;
 
     @PostMapping(value = "/approve")
-    @ResponseBody
     public void approve(@RequestParam int rstId) {
         mngService.approve(rstId);
     }
 
     @PostMapping(value = "/reject")
-    @ResponseBody
     public void reject(@RequestParam int rstId) {
         mngService.reject(rstId);
     }
 
     @PostMapping(value = "/balance")
-    @ResponseBody
     public void balance(@RequestParam int rstId) {
         mngService.balance(rstId);
     }
 
     @PostMapping(value = "/balanceAll")
-    @ResponseBody
     public void balanceAll() {
         mngService.balanceAll();
     }

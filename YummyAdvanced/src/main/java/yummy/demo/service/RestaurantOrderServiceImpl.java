@@ -2,6 +2,7 @@ package yummy.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yummy.demo.dao.CustomerDao;
 import yummy.demo.dao.OrderDao;
 import yummy.demo.model.Order;
@@ -12,8 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static yummy.demo.service.RestaurantServiceImpl.ID_DIFF;
-
+@Transactional
 @Service
 public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     @Autowired
@@ -25,26 +25,21 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     @Override
     public Order findById(int id) {
         Order order=orderDao.findById(id);
-        order.setRstId(order.getRstId()+ID_DIFF);
+        order.setRstId(order.getRstId());
         return order;
     }
 
     @Override
     public List<Order> findByRst(int rstId) {
-        List<Order> orderList=orderDao.findByRst(rstId-RestaurantServiceImpl.ID_DIFF);
-        for(int i=0;i<orderList.size();i++){
-            orderList.get(i).setRstId(orderList.get(i).getRstId()+ID_DIFF);
-        }
-        return orderList;
+        return orderDao.findByRst(rstId);
     }
 
     @Override
     public List<Order> findPaidByRst(int rstId) {
-        List<Order> orderPaidList=new ArrayList<Order>();
-        List<Order> orderList=orderDao.findByCst(rstId-RestaurantServiceImpl.ID_DIFF);
+        List<Order> orderPaidList=new ArrayList<>();
+        List<Order> orderList=orderDao.findByCst(rstId);
         for(Order order:orderList){
             if(order.getState().equals("进行中")) {
-                order.setRstId(order.getRstId()+ID_DIFF);
                 orderPaidList.add(order);
             }
         }
@@ -53,11 +48,10 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
     @Override
     public List<Order> findCompletedByRst(int rstId) {
-        List<Order> orderCompletedList=new ArrayList<Order>();
-        List<Order> orderList=orderDao.findByCst(rstId-RestaurantServiceImpl.ID_DIFF);
+        List<Order> orderCompletedList=new ArrayList<>();
+        List<Order> orderList=orderDao.findByCst(rstId);
         for(Order order:orderList){
             if(order.getState().equals("已完成")) {
-                order.setRstId(order.getRstId()+ID_DIFF);
                 orderCompletedList.add(order);
             }
         }
@@ -67,11 +61,10 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
     @Override
     public List<Order> findReturnedByRst(int rstId) {
-        List<Order> orderReturnedList=new ArrayList<Order>();
-        List<Order> orderList=orderDao.findByCst(rstId-RestaurantServiceImpl.ID_DIFF);
+        List<Order> orderReturnedList=new ArrayList<>();
+        List<Order> orderList=orderDao.findByCst(rstId);
         for(Order order:orderList){
             if(order.getState().equals("已退订")) {
-                order.setRstId(order.getRstId()+ID_DIFF);
                 orderReturnedList.add(order);
             }
         }
@@ -85,15 +78,15 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
 
     @Override
     public RestaurantStatistics getRestaurantStatistics(int rstId) {
-        List<Order> orderList=orderDao.findByRst(rstId-RestaurantServiceImpl.ID_DIFF);
-        ArrayList<Integer> cstIdList = new ArrayList<Integer>();
-        ArrayList<String> cstNameList=new ArrayList<String>();
-        ArrayList<Double> cstConsumptionList=new ArrayList<Double>();
+        List<Order> orderList=orderDao.findByRst(rstId);
+        ArrayList<Integer> cstIdList = new ArrayList<>();
+        ArrayList<String> cstNameList=new ArrayList<>();
+        ArrayList<Double> cstConsumptionList=new ArrayList<>();
         int totalOrderNum=0;
         int todayOrderNum=0;
         double totalProfit=0;
         double todayProfit=0;
-        ArrayList<Double> weekProfitList=new ArrayList<Double>();
+        ArrayList<Double> weekProfitList=new ArrayList<>();
         Calendar cal=Calendar.getInstance();
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         int dayOfWeek=Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1;
@@ -155,7 +148,6 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
             cstNameList.add(cstDao.findById(id).getName());
         }
 
-        RestaurantStatistics rstStatistics=new RestaurantStatistics(cstNameList, cstConsumptionList, totalOrderNum, todayOrderNum, totalProfit, todayProfit, weekProfitList);
-        return rstStatistics;
+        return new RestaurantStatistics(cstNameList, cstConsumptionList, totalOrderNum, todayOrderNum, totalProfit, todayProfit, weekProfitList);
     }
 }

@@ -6,7 +6,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import yummy.demo.model.Customer;
-import yummy.demo.model.Restaurant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
     public List<Customer> getAllCustomers(){
         List list=baseDao.getAllList(Customer.class);
-        List<Customer> cstList=new ArrayList<Customer>();
+        List<Customer> cstList=new ArrayList<>();
         for(int i=0;i<list.size();i++){
             cstList.add((Customer) list.get(i));
         }
@@ -51,7 +50,6 @@ public class CustomerDaoImpl implements CustomerDao {
         query.setParameter(1, email);
         query.setParameter(2, password);
         cst=(Customer)query.uniqueResult();
-        session.close();
         return cst;
     }
 
@@ -62,46 +60,25 @@ public class CustomerDaoImpl implements CustomerDao {
         Query query = session.createQuery(hql);
         query.setParameter(1, email);
         cst=(Customer)query.uniqueResult();
-        session.close();
         return cst;
     }
 
     @Override
     public void setActive(int id) {
         Session session=baseDao.getSession();
-        try {
-            session.beginTransaction();
-            Customer cst=session.get(Customer.class,id);
-            if(cst==null) return;
-            cst.setIsActive(true);
-            cst.setBalance(100);
-            session.update(cst);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        finally {
-            session.close();
-        }
+        Customer cst=session.get(Customer.class,id);
+        if(cst==null) return;
+        cst.setIsActive(true);
+        cst.setBalance(100);
+        session.update(cst);
     }
 
     @Override
     public void writeOff(int id) {
         Session session=baseDao.getSession();
-        try {
-            session.beginTransaction();
-            Customer cst=session.get(Customer.class,id);
-            if(cst==null) return;
-            cst.setIsWrittenOff(true);
-            session.update(cst);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            session.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        finally {
-            session.close();
-        }
+        Customer cst=session.get(Customer.class,id);
+        if(cst==null) return;
+        cst.setIsWrittenOff(true);
+        session.update(cst);
     }
 }

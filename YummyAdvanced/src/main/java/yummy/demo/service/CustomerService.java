@@ -2,8 +2,6 @@ package yummy.demo.service;
 
 import yummy.demo.model.Customer;
 
-import java.util.List;
-
 public interface  CustomerService {
     public void register(Customer cst);
 

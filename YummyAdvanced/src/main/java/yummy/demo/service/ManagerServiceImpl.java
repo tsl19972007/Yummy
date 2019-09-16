@@ -2,6 +2,7 @@ package yummy.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yummy.demo.dao.CustomerDao;
 import yummy.demo.dao.OrderDao;
 import yummy.demo.dao.RestaurantDao;
@@ -15,11 +16,10 @@ import yummy.demo.statistics.YummyWeeklyFinance;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import static yummy.demo.service.RestaurantServiceImpl.ID_DIFF;
 
+@Transactional
 @Service
 public class ManagerServiceImpl implements ManagerService {
     @Autowired
@@ -31,10 +31,10 @@ public class ManagerServiceImpl implements ManagerService {
 
     public static final Double PROFIT_RATIO=0.95;
 
-    private ArrayList<Restaurant> rstList=new ArrayList<Restaurant>();
+    private List<Restaurant> rstList=new ArrayList<>();
 
     @Override
-    public ArrayList<Restaurant> getRstUpdateList() {
+    public List<Restaurant> getRstUpdateList() {
         return rstList;
     }
 
@@ -65,7 +65,7 @@ public class ManagerServiceImpl implements ManagerService {
             if(rstId==rstList.get(i).getId()){
                 Restaurant rst=rstList.get(i);
                 rstList.remove(i);
-                rst.setId(rst.getId()-ID_DIFF);
+                rst.setId(rst.getId());
                 rstDao.updateRst(rst);
             }
         }
@@ -86,23 +86,22 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public ArrayList<Restaurant> getRstBalanceList() {
-        ArrayList<Restaurant> rstList=new ArrayList<Restaurant>();
+    public List<Restaurant> getRstBalanceList() {
+        List<Restaurant> rstList2=new ArrayList<>();
         List list=rstDao.getAllRestaurants();
         for(Object obj:list){
             Restaurant rst=(Restaurant)obj;
             if(rst.getProfit()>0) {
-                rst.setId(rst.getId() + ID_DIFF);
-                rstList.add(rst);
+                rstList2.add(rst);
             }
         }
-        return rstList;
+        return rstList2;
     }
 
 
 
     public void balance(int rstId){
-        rstDao.balance(rstId-ID_DIFF);
+        rstDao.balance(rstId);
     }
 
     public void balanceAll(){
@@ -110,18 +109,18 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public ArrayList<Restaurant> getAllRestaurants() {
-        ArrayList<Restaurant> rstList=new ArrayList<Restaurant>();
+    public List<Restaurant> getAllRestaurants() {
+        List<Restaurant> rstList2=new ArrayList<>();
         List list=rstDao.getAllRestaurants();
         for(Object obj:list){
-            rstList.add((Restaurant)obj);
+            rstList2.add((Restaurant)obj);
         }
-        return rstList;
+        return rstList2;
     }
 
     @Override
-    public ArrayList<Customer> getAllCustomers() {
-        ArrayList<Customer> cstList=new ArrayList<Customer>();
+    public List<Customer> getAllCustomers() {
+        List<Customer> cstList=new ArrayList<>();
         List list=cstDao.getAllCustomers();
         for(Object obj:list){
             cstList.add((Customer)obj);
@@ -135,10 +134,10 @@ public class ManagerServiceImpl implements ManagerService {
         double totalTransactionAmount=0;
         int totalOrderNum=orderList.size();
         double totalProfit=0;
-        ArrayList<Double> transactionAmountList=new ArrayList<Double>();
-        ArrayList<Integer> orderNumList=new ArrayList<Integer>();
-        ArrayList<Double> profitList=new ArrayList<Double>();
-        int monthOfYear=Calendar.getInstance().get(Calendar.MONTH)+1;;
+        ArrayList<Double> transactionAmountList=new ArrayList<>();
+        ArrayList<Integer> orderNumList=new ArrayList<>();
+        ArrayList<Double> profitList=new ArrayList<>();
+        int monthOfYear=Calendar.getInstance().get(Calendar.MONTH)+1;
         for(int i=0;i<monthOfYear;i++){
             transactionAmountList.add(0.0);
             orderNumList.add(0);
@@ -152,8 +151,7 @@ public class ManagerServiceImpl implements ManagerService {
             orderNumList.set(month,orderNumList.get(month)+1);
             profitList.set(month,profitList.get(month)+Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO))));
         }
-        YummyAnnualFinance annualFinance=new YummyAnnualFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
-        return annualFinance;
+        return new YummyAnnualFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
     }
 
     @Override
@@ -162,9 +160,9 @@ public class ManagerServiceImpl implements ManagerService {
         double totalTransactionAmount=0;
         int totalOrderNum=orderList.size();
         double totalProfit=0;
-        ArrayList<Double> transactionAmountList=new ArrayList<Double>();
-        ArrayList<Integer> orderNumList=new ArrayList<Integer>();
-        ArrayList<Double> profitList=new ArrayList<Double>();
+        ArrayList<Double> transactionAmountList=new ArrayList<>();
+        ArrayList<Integer> orderNumList=new ArrayList<>();
+        ArrayList<Double> profitList=new ArrayList<>();
         int dayOfMonth=Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         for(int i=0;i<dayOfMonth;i++){
             transactionAmountList.add(0.0);
@@ -182,8 +180,7 @@ public class ManagerServiceImpl implements ManagerService {
             orderNumList.set(day,orderNumList.get(day)+1);
             profitList.set(day,profitList.get(day)+Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO))));
         }
-        YummyMonthlyFinance monthlyFinance=new YummyMonthlyFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
-        return monthlyFinance;
+        return new YummyMonthlyFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
     }
 
     @Override
@@ -192,9 +189,9 @@ public class ManagerServiceImpl implements ManagerService {
         double totalTransactionAmount=0;
         int totalOrderNum=orderList.size();
         double totalProfit=0;
-        ArrayList<Double> transactionAmountList=new ArrayList<Double>();
-        ArrayList<Integer> orderNumList=new ArrayList<Integer>();
-        ArrayList<Double> profitList=new ArrayList<Double>();
+        ArrayList<Double> transactionAmountList=new ArrayList<>();
+        ArrayList<Integer> orderNumList=new ArrayList<>();
+        ArrayList<Double> profitList=new ArrayList<>();
         Calendar cal=Calendar.getInstance();
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         int dayOfWeek=Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1;
@@ -220,7 +217,6 @@ public class ManagerServiceImpl implements ManagerService {
             orderNumList.set(day,orderNumList.get(day)+1);
             profitList.set(day,profitList.get(day)+Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO))));
         }
-        YummyWeeklyFinance weeklyFinance=new YummyWeeklyFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
-        return weeklyFinance;
+        return new YummyWeeklyFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
     }
 }

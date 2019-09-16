@@ -26,6 +26,21 @@ public class Order implements Serializable{
     private Date arriveTime;
     private String state;
 
+    public Order(int orderId,int rstId, int cstId, String phone, String address, String remarks, List<OrderItem> itemList, double consumption,double discount,Date orderTime, Date arriveTime, String state) {
+        this.orderId=orderId;
+        this.rstId = rstId;
+        this.cstId = cstId;
+        this.phone = phone;
+        this.address = address;
+        this.remarks = remarks;
+        this.itemList = itemList;
+        this.consumption = consumption;
+        this.discount = discount;
+        this.orderTime = orderTime;
+        this.arriveTime = arriveTime;
+        this.state = state;
+    }
+
     public Order(int rstId, int cstId, String phone, String address, String remarks, List<OrderItem> itemList, double consumption,double discount,Date orderTime, Date arriveTime, String state) {
         this.rstId = rstId;
         this.cstId = cstId;
