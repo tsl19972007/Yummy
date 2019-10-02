@@ -4,18 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yummy.demo.dao.CustomerDao;
+import yummy.demo.dao.ManagerDao;
 import yummy.demo.dao.OrderDao;
 import yummy.demo.dao.RestaurantDao;
-import yummy.demo.model.Customer;
 import yummy.demo.model.Manager;
-import yummy.demo.model.Order;
 import yummy.demo.model.Restaurant;
-import yummy.demo.statistics.YummyAnnualFinance;
-import yummy.demo.statistics.YummyMonthlyFinance;
-import yummy.demo.statistics.YummyWeeklyFinance;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 
@@ -28,14 +23,16 @@ public class ManagerServiceImpl implements ManagerService {
     CustomerDao cstDao;
     @Autowired
     OrderDao orderDao;
+    @Autowired
+    ManagerDao mngDao;
 
     public static final Double PROFIT_RATIO=0.95;
 
     private List<Restaurant> rstList=new ArrayList<>();
 
     @Override
-    public List<Restaurant> getRstUpdateList() {
-        return rstList;
+    public boolean login(int id, String password) {
+        return (id== Manager.getDefaultId()&&password.equals(Manager.getDefaultPassword()));
     }
 
     @Override
@@ -66,7 +63,7 @@ public class ManagerServiceImpl implements ManagerService {
                 Restaurant rst=rstList.get(i);
                 rstList.remove(i);
                 rst.setId(rst.getId());
-                rstDao.updateRst(rst);
+                rstDao.update(rst);
             }
         }
     }
@@ -80,15 +77,11 @@ public class ManagerServiceImpl implements ManagerService {
         }
     }
 
-    @Override
-    public boolean login(int id, String password) {
-        return (id== Manager.getDefaultId()&&password.equals(Manager.getDefaultPassword()));
-    }
 
     @Override
     public List<Restaurant> getRstBalanceList() {
         List<Restaurant> rstList2=new ArrayList<>();
-        List list=rstDao.getAllRestaurants();
+        List list=rstDao.getAll();
         for(Object obj:list){
             Restaurant rst=(Restaurant)obj;
             if(rst.getProfit()>0) {
@@ -98,125 +91,34 @@ public class ManagerServiceImpl implements ManagerService {
         return rstList2;
     }
 
+    @Override
+    public List<Restaurant> getRstUpdateList() {
+        return rstList;
+    }
 
-
+    @Override
     public void balance(int rstId){
-        rstDao.balance(rstId);
+        Restaurant rst=rstDao.get(rstId);
+        double profit=rst.getProfit();
+        rst.setProfit(0);
+        rst.setBalance(rst.getBalance()+profit*ManagerServiceImpl.PROFIT_RATIO);
+        rstDao.update(rst);
+        Manager mng=mngDao.get(Manager.getDefaultId());
+        mng.setBalance(mng.getBalance()-profit*ManagerServiceImpl.PROFIT_RATIO);
+        mngDao.update(mng);
     }
 
+    @Override
     public void balanceAll(){
-        rstDao.balanceAll();
-    }
-
-    @Override
-    public List<Restaurant> getAllRestaurants() {
-        List<Restaurant> rstList2=new ArrayList<>();
-        List list=rstDao.getAllRestaurants();
-        for(Object obj:list){
-            rstList2.add((Restaurant)obj);
-        }
-        return rstList2;
-    }
-
-    @Override
-    public List<Customer> getAllCustomers() {
-        List<Customer> cstList=new ArrayList<>();
-        List list=cstDao.getAllCustomers();
-        for(Object obj:list){
-            cstList.add((Customer)obj);
-        }
-        return cstList;
-    }
-
-    @Override
-    public YummyAnnualFinance getYummyAnnualFinance() {
-        List<Order> orderList=orderDao.getAnnualOrders();
-        double totalTransactionAmount=0;
-        int totalOrderNum=orderList.size();
+        List<Restaurant> rstList=getRstBalanceList();
         double totalProfit=0;
-        ArrayList<Double> transactionAmountList=new ArrayList<>();
-        ArrayList<Integer> orderNumList=new ArrayList<>();
-        ArrayList<Double> profitList=new ArrayList<>();
-        int monthOfYear=Calendar.getInstance().get(Calendar.MONTH)+1;
-        for(int i=0;i<monthOfYear;i++){
-            transactionAmountList.add(0.0);
-            orderNumList.add(0);
-            profitList.add(0.0);
+        for(Restaurant rst:rstList){
+            totalProfit+=rst.getProfit();
+            rst.setBalance(rst.getBalance()+PROFIT_RATIO*rst.getProfit());
+            rst.setProfit(0);
         }
-        for (Order order:orderList) {
-            totalTransactionAmount+=Double.parseDouble(String.format("%.2f",order.getConsumption()));
-            totalProfit+=Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO)));
-            int month=order.getOrderTime().getMonth();
-            transactionAmountList.set(month,transactionAmountList.get(month)+Double.parseDouble(String.format("%.2f", order.getConsumption())));
-            orderNumList.set(month,orderNumList.get(month)+1);
-            profitList.set(month,profitList.get(month)+Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO))));
-        }
-        return new YummyAnnualFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
-    }
-
-    @Override
-    public YummyMonthlyFinance getYummyMonthlyFinance() {
-        List<Order> orderList=orderDao.getMonthlyOrders();
-        double totalTransactionAmount=0;
-        int totalOrderNum=orderList.size();
-        double totalProfit=0;
-        ArrayList<Double> transactionAmountList=new ArrayList<>();
-        ArrayList<Integer> orderNumList=new ArrayList<>();
-        ArrayList<Double> profitList=new ArrayList<>();
-        int dayOfMonth=Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        for(int i=0;i<dayOfMonth;i++){
-            transactionAmountList.add(0.0);
-            orderNumList.add(0);
-            profitList.add(0.0);
-        }
-        for (Order order:orderList) {
-            totalTransactionAmount+=Double.parseDouble(String.format("%.2f",order.getConsumption()));
-            totalProfit+=Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO)));
-            Calendar cal=Calendar.getInstance();
-            cal.setTime(order.getOrderTime());
-            int day=cal.get(Calendar.DAY_OF_MONTH);
-            day--;
-            transactionAmountList.set(day,transactionAmountList.get(day)+Double.parseDouble(String.format("%.2f", order.getConsumption())));
-            orderNumList.set(day,orderNumList.get(day)+1);
-            profitList.set(day,profitList.get(day)+Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO))));
-        }
-        return new YummyMonthlyFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
-    }
-
-    @Override
-    public YummyWeeklyFinance getYummyWeeklyFinance() {
-        List<Order> orderList=orderDao.getWeeklyOrders();
-        double totalTransactionAmount=0;
-        int totalOrderNum=orderList.size();
-        double totalProfit=0;
-        ArrayList<Double> transactionAmountList=new ArrayList<>();
-        ArrayList<Integer> orderNumList=new ArrayList<>();
-        ArrayList<Double> profitList=new ArrayList<>();
-        Calendar cal=Calendar.getInstance();
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
-        int dayOfWeek=Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1;
-        if(dayOfWeek==0){
-            dayOfWeek=7;
-        }
-        for(int i=0;i<dayOfWeek;i++){
-            transactionAmountList.add(0.0);
-            orderNumList.add(0);
-            profitList.add(0.0);
-        }
-        for (Order order:orderList) {
-            totalTransactionAmount+=Double.parseDouble(String.format("%.2f",order.getConsumption()));
-            totalProfit+=Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO)));
-            cal.setTime(order.getOrderTime());
-            cal.setFirstDayOfWeek(Calendar.MONDAY);
-            int day=cal.get(Calendar.DAY_OF_WEEK)-1;
-            if(day==0){
-                day=7;
-            }
-            day--;
-            transactionAmountList.set(day,transactionAmountList.get(day)+Double.parseDouble(String.format("%.2f", order.getConsumption())));
-            orderNumList.set(day,orderNumList.get(day)+1);
-            profitList.set(day,profitList.get(day)+Double.parseDouble(String.format("%.2f",order.getConsumption()*(1-ManagerServiceImpl.PROFIT_RATIO))));
-        }
-        return new YummyWeeklyFinance(totalTransactionAmount,totalOrderNum,totalProfit,transactionAmountList,orderNumList,profitList);
+        Manager mng=mngDao.get(Manager.getDefaultId());
+        mng.setBalance(mng.getBalance()-totalProfit*ManagerServiceImpl.PROFIT_RATIO);
+        mngDao.update(mng);
     }
 }

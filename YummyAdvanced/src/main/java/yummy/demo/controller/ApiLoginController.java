@@ -10,7 +10,6 @@ import yummy.demo.service.ManagerService;
 import yummy.demo.service.RestaurantService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -71,21 +70,21 @@ public class ApiLoginController {
     }
 
     @PostMapping(value = "/cstLogout")
-    public void cstLogout(HttpServletRequest request, HttpServletResponse response){
-        HttpSession session = request.getSession(false);
-        if(session==null) return;
-        session.invalidate();
+    public void cstLogout(HttpServletRequest request){
+        userLogout(request);
     }
 
     @PostMapping(value = "/rstLogout")
-    public void rstLogout(HttpServletRequest request, HttpServletResponse response){
-        HttpSession session = request.getSession(false);
-        if(session==null) return;
-        session.invalidate();
+    public void rstLogout(HttpServletRequest request){
+        userLogout(request);
     }
 
     @PostMapping(value = "/mngLogout")
-    public void mngLogout(HttpServletRequest request, HttpServletResponse response){
+    public void mngLogout(HttpServletRequest request){
+        userLogout(request);
+    }
+
+    private void userLogout(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if(session==null) return;
         session.invalidate();

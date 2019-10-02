@@ -4,32 +4,24 @@ import yummy.demo.model.Order;
 
 import java.util.List;
 
-public interface OrderDao {
-    public Order findById(int id);
+/**
+ * @author ：tsl
+ * @date ：Created in 2019/10/1 16:00
+ * @description：dao interface of Order
+ */
 
-    public List<Order> getAllOrders();
+public interface OrderDao extends BaseDao<Order>{
+    public List<Order> getCompletedAnnualOrders();
 
-    public List<Order> getAnnualOrders();
+    public List<Order> getCompletedMonthlyOrders();
 
-    public List<Order> getMonthlyOrders();
-
-    public List<Order> getWeeklyOrders();
-
-    public void cancelOrders();
+    public List<Order> getCompletedWeeklyOrders();
 
     public List<Order> findByCst(int cstId);
 
+    public List<Order> findByCst(int cstId,String state);
+
     public List<Order> findByRst(int rstId);
 
-    public int add(Order order);
-
-    public void update(Order order);
-
-    public boolean payOrder(int id);
-
-    public double returnOrder(int id);
-
-    public void finishOrder(int id);
-
-    public void delete(int id);
+    public List<Order> findByRst(int rstId,String state);
 }

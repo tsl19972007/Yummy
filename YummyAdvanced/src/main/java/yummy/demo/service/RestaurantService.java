@@ -6,7 +6,9 @@ import yummy.demo.model.Restaurant;
 import java.util.List;
 
 public interface RestaurantService {
-    public List<Restaurant> getAllRestaurants();
+    public Restaurant login(int id,String password);
+
+    public Restaurant findById(int id);
 
     public int register(Restaurant rst);
 
@@ -14,9 +16,5 @@ public interface RestaurantService {
 
     public void updateMenu(int rstId,Menu menu);
 
-    public void delete(int id);
-
-    public Restaurant login(int id,String password);
-
-    public Restaurant findById(int id);
+    public List<Restaurant> getAll();
 }

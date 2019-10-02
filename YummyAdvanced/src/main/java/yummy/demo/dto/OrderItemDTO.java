@@ -2,9 +2,7 @@ package yummy.demo.dto;
 
 import yummy.demo.model.OrderItem;
 
-import java.io.Serializable;
-
-public class OrderItemDTO implements Serializable{
+public class OrderItemDTO{
     private int id;
     private int menuItemId;
     private String type;

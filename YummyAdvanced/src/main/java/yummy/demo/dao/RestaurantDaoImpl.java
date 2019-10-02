@@ -1,107 +1,27 @@
 package yummy.demo.dao;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import yummy.demo.model.Manager;
-import yummy.demo.model.Menu;
+import yummy.demo.model.MenuItem;
 import yummy.demo.model.Restaurant;
-import yummy.demo.service.ManagerServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * @author ：tsl
+ * @date ：Created in 2019/10/1 15:56
+ * @description：implementation of restaurantDao
+ */
 
 @Repository
-public class RestaurantDaoImpl implements RestaurantDao {
-    @Autowired
-    BaseDao baseDao;
-
-    public List<Restaurant> getAllRestaurants(){
-        List list=baseDao.getAllList(Restaurant.class);
-        List<Restaurant> rstList=new ArrayList<Restaurant>();
-        for(int i=0;i<list.size();i++){
-            rstList.add((Restaurant) list.get(i));
-        }
-        return rstList;
-    }
-
+public class RestaurantDaoImpl extends BaseDaoImpl<Restaurant> implements RestaurantDao{
     @Override
-    public Restaurant findById(int id) {
-        return (Restaurant) baseDao.load(Restaurant.class,id);
+    public Restaurant findByIdAndPassword(int id, String password) {
+        return getUniqueResultByHQL("SELECT r FROM Restaurant r WHERE r.id = ?0 and r.password=?1",id,password);
     }
 
-    @Override
-    public int add(Restaurant rst) {
-        return (Integer)baseDao.save(rst);
+    public MenuItem getMenuItem(int id){
+        return getSession().get(MenuItem.class,id);
     }
 
-    @Override
-    public void updateRst(Restaurant rst) {
-        Session session=baseDao.getSession();
-        String hql = "UPDATE Restaurant r SET r.password=?2,r.type=?3,r.name=?4,r.phone=?5,r.address=?6 WHERE r.id = ?1";
-        Query query = session.createQuery(hql);
-        query.setParameter(1, rst.getId());
-        query.setParameter(2, rst.getPassword());
-        query.setParameter(3, rst.getType());
-        query.setParameter(4, rst.getName());
-        query.setParameter(5, rst.getPhone());
-        query.setParameter(6, rst.getAddress());
-        int ret = query.executeUpdate();
-    }
-
-    @Override
-    public void updateMenu(int rstId, Menu menu){
-        Session session=baseDao.getSession();
-        Restaurant rst=session.get(Restaurant.class,rstId);
-        rst.setMenu(menu);
-        session.update(rst);
-    }
-
-    @Override
-    public void delete(int id) {
-        baseDao.delete(Restaurant.class,id);
-    }
-
-    @Override
-    public Restaurant login(int id, String password) {
-        Session session=baseDao.getSession();
-        Restaurant rst=null;
-        String hql="SELECT r FROM Restaurant r WHERE r.id = ?1 and r.password=?2";
-        Query query = session.createQuery(hql);
-        query.setParameter(1, id);
-        query.setParameter(2, password);
-        rst=(Restaurant) query.uniqueResult();
-        return rst;
-    }
-
-    public void balance(int id){
-        Session session=baseDao.getSession();
-        Restaurant rst=(Restaurant)session.get(Restaurant.class,id);
-        double profit=rst.getProfit();
-        rst.setProfit(0);
-        rst.setBalance(rst.getBalance()+profit*ManagerServiceImpl.PROFIT_RATIO);
-        session.update(rst);
-        Manager mng=(Manager)session.get(Manager.class,Manager.getDefaultId());
-        mng.setBalance(mng.getBalance()-profit*ManagerServiceImpl.PROFIT_RATIO);
-        session.update(mng);
-    }
-
-    public void balanceAll(){
-        Session session=baseDao.getSession();
-        String hql = "SELECT r FROM Restaurant r WHERE r.profit>0 ";
-        List rstList=session.createQuery(hql).list();
-        double totalProfit=0;
-        for(Object obj :rstList){
-            Restaurant rst = (Restaurant) obj;
-            rst.setBalance(rst.getBalance()+rst.getProfit()*ManagerServiceImpl.PROFIT_RATIO);
-            totalProfit+=rst.getProfit()*ManagerServiceImpl.PROFIT_RATIO;
-            rst.setProfit(0);
-            session.update(rst);
-        }
-        String hqlUpd = "UPDATE Manager m SET m.balance=m.balance- ?1 ";
-        Query query = session.createQuery(hqlUpd);
-        query.setParameter(1, totalProfit);
-        query.executeUpdate();
+    public void updateMenuItem(MenuItem item){
+        getSession().update(item);
     }
 }

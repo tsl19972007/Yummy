@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import yummy.demo.dao.CustomerDao;
 import yummy.demo.model.Customer;
 
+import java.util.List;
+
 @Transactional
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -28,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public void writeOff(int id) {
-        cstDao.writeOff(id);
+        cstDao.deleteById(id);
     }
 
     @Override
@@ -37,17 +39,11 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public void delete(int id) {
-        cstDao.delete(id);
-    }
-
-    @Override
     public Customer login(String email, String password) {
-        Customer cst=cstDao.login(email,password);
+        Customer cst=cstDao.findByEmailAndPassword(email,password);
         if(cst!=null&&cst.getIsActive()&&!cst.getIsWrittenOff()) {
             return cst;
         }
-        //int a=1/0;
         return null;
     }
 
@@ -58,7 +54,11 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer findById(int id) {
-        return cstDao.findById(id);
+        return cstDao.get(id);
     }
 
+    @Override
+    public List<Customer> getAll() {
+        return cstDao.getAll();
+    }
 }

@@ -1,84 +1,39 @@
 package yummy.demo.dao;
 
-
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import yummy.demo.model.Customer;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * @author ：tsl
+ * @date ：Created in 2019/10/1 15:32
+ * @description：implementation of customerDao
+ */
 
 @Repository
-public class CustomerDaoImpl implements CustomerDao {
-    @Autowired
-    BaseDao baseDao;
-
-    public List<Customer> getAllCustomers(){
-        List list=baseDao.getAllList(Customer.class);
-        List<Customer> cstList=new ArrayList<>();
-        for(int i=0;i<list.size();i++){
-            cstList.add((Customer) list.get(i));
-        }
-        return cstList;
+public class CustomerDaoImpl extends BaseDaoImpl<Customer> implements CustomerDao{
+    @Override
+    public Customer findByEmail(String email) {
+        return getUniqueResultByHQL("SELECT c FROM Customer c WHERE c.email = ?0",email);
     }
 
-    public Customer findById(int id){
-        return (Customer) baseDao.load(Customer.class,id);
-    }
-
-    public void add(Customer cst){
-        baseDao.save(cst);
-    }
-
-    public void update(Customer cst){
-        baseDao.update(cst);
-    }
-
-    public void delete(int id){
-        baseDao.delete(Customer.class,id);
-    }
-
-
-    public Customer login(String email,String password){
-        Session session=baseDao.getSession();
-        Customer cst=null;
-        String hql="SELECT c FROM Customer c WHERE c.email = ?1 and c.password=?2";
-        Query query = session.createQuery(hql);
-        query.setParameter(1, email);
-        query.setParameter(2, password);
-        cst=(Customer)query.uniqueResult();
-        return cst;
-    }
-
-    public Customer findByEmail(String email){
-        Session session=baseDao.getSession();
-        Customer cst=null;
-        String hql="SELECT c FROM Customer c WHERE c.email = ?1";
-        Query query = session.createQuery(hql);
-        query.setParameter(1, email);
-        cst=(Customer)query.uniqueResult();
-        return cst;
+    @Override
+    public Customer findByEmailAndPassword(String email, String password) {
+        return getUniqueResultByHQL("SELECT c FROM Customer c WHERE c.email = ?0 and c.password=?1",email,password);
     }
 
     @Override
     public void setActive(int id) {
-        Session session=baseDao.getSession();
-        Customer cst=session.get(Customer.class,id);
+        Customer cst=get(id);
         if(cst==null) return;
         cst.setIsActive(true);
-        cst.setBalance(100);
-        session.update(cst);
+        update(cst);
     }
 
     @Override
-    public void writeOff(int id) {
-        Session session=baseDao.getSession();
-        Customer cst=session.get(Customer.class,id);
+    public void setWrittenOff(int id) {
+        Customer cst=get(id);
         if(cst==null) return;
         cst.setIsWrittenOff(true);
-        session.update(cst);
+        update(cst);
     }
 }

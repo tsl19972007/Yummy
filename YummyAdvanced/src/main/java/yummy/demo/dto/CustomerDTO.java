@@ -2,10 +2,9 @@ package yummy.demo.dto;
 
 import yummy.demo.model.Customer;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class CustomerDTO implements Serializable  {
+public class CustomerDTO{
     private int id;
     private String email;
     private String password;

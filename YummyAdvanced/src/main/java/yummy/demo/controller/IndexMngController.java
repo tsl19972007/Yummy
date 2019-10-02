@@ -12,6 +12,7 @@ import yummy.demo.model.Restaurant;
 import yummy.demo.service.CustomerService;
 import yummy.demo.service.ManagerService;
 import yummy.demo.service.RestaurantService;
+import yummy.demo.service.StatisticsService;
 import yummy.demo.statistics.YummyAnnualFinance;
 import yummy.demo.statistics.YummyMonthlyFinance;
 import yummy.demo.statistics.YummyWeeklyFinance;
@@ -28,6 +29,8 @@ public class IndexMngController {
     CustomerService cstService;
     @Autowired
     ManagerService mngService;
+    @Autowired
+    StatisticsService staService;
 
     @RequestMapping("/mngHome")
     public String mngHome(HttpServletRequest request) {
@@ -36,7 +39,7 @@ public class IndexMngController {
 
     @RequestMapping("/mngCstInfo")
     public String mngCstInfo(Model model, HttpServletRequest request) {
-        List<Customer> cstList=mngService.getAllCustomers();
+        List<Customer> cstList=cstService.getAll();
         List<CustomerDTO> cstDTOList=new ArrayList<>();
         for(int i=0;i<cstList.size();i++){
             cstDTOList.add(new CustomerDTO(cstList.get(i)));
@@ -48,7 +51,7 @@ public class IndexMngController {
 
     @RequestMapping("/mngRstInfo")
     public String mngRstInfo(Model model, HttpServletRequest request) {
-        List<Restaurant> rstList=mngService.getAllRestaurants();
+        List<Restaurant> rstList=rstService.getAll();
         List<RestaurantDTO> rstDTOList=new ArrayList<>();
         for(int i=0;i<rstList.size();i++){
             rstDTOList.add(new RestaurantDTO(rstList.get(i)));
@@ -90,9 +93,9 @@ public class IndexMngController {
 
     @RequestMapping("/mngStatistics")
     public String rstStatistics(Model model) {
-        YummyAnnualFinance annualFinance=mngService.getYummyAnnualFinance();
-        YummyMonthlyFinance monthlyFinance=mngService.getYummyMonthlyFinance();
-        YummyWeeklyFinance weeklyFinance=mngService.getYummyWeeklyFinance();
+        YummyAnnualFinance annualFinance=staService.getYummyAnnualFinance();
+        YummyMonthlyFinance monthlyFinance=staService.getYummyMonthlyFinance();
+        YummyWeeklyFinance weeklyFinance=staService.getYummyWeeklyFinance();
         model.addAttribute("annualFinance",annualFinance);
         model.addAttribute("monthlyFinance",monthlyFinance);
         model.addAttribute("weeklyFinance",weeklyFinance);

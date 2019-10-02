@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import yummy.demo.dto.MenuDTO;
 import yummy.demo.dto.RestaurantDTO;
-import yummy.demo.service.RestaurantOrderService;
+import yummy.demo.service.OrderService;
 import yummy.demo.service.RestaurantService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ public class ApiRstController {
     @Autowired
     RestaurantService rstService;
     @Autowired
-    RestaurantOrderService rstOrderService;
+    OrderService orderService;
 
     @PostMapping(value = "/updateRst")
     public void updateRst(@RequestBody RestaurantDTO rstDTO) {
@@ -30,6 +30,6 @@ public class ApiRstController {
 
     @PostMapping(value = "/finishOrder")
     public void finishOrder(@RequestParam int id) {
-        rstOrderService.finishOrder(id);
+        orderService.finishOrder(id);
     }
 }

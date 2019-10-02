@@ -3,12 +3,11 @@ package yummy.demo.dto;
 import yummy.demo.model.Menu;
 import yummy.demo.model.MenuItem;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MenuDTO implements Serializable {
+public class MenuDTO{
 
     private int id;
     private Date beginTime;

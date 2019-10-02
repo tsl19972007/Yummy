@@ -3,12 +3,11 @@ package yummy.demo.dto;
 import yummy.demo.model.Order;
 import yummy.demo.model.OrderItem;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class OrderDTO implements Serializable{
+public class OrderDTO{
     private int orderId;
     private int rstId;
     private int cstId;

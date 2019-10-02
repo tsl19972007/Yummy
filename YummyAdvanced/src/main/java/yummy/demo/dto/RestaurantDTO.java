@@ -3,9 +3,7 @@ package yummy.demo.dto;
 
 import yummy.demo.model.Restaurant;
 
-import java.io.Serializable;
-
-public class RestaurantDTO implements Serializable{
+public class RestaurantDTO{
     private int id;
     private String password;
     private String type;

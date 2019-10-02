@@ -1,31 +1,28 @@
 package yummy.demo.dao;
 
-import org.hibernate.Session;
-
+import java.io.Serializable;
 import java.util.List;
 
-public interface BaseDao {
+/**
+ * @author ：tsl
+ * @date ：Created in 2019/9/30 13:40
+ * @description：common dao interface
+ */
 
-    public Session getSession();
+public interface BaseDao<T> {
+    public Serializable add(T t);
 
-    public void flush();
+    public void delete(T t);
 
-    public void clear();
+    public void deleteById(Serializable id);
 
-    public Object load(Class c, int id);
+    public T get(Serializable id);
 
-    public List getAllList(Class c);
+    public void update(T t);
 
-    public Long getTotalCount(Class c);
+    public List<T> getAll();
 
-    public Object save(Object bean);
+    public T getUniqueResultByHQL(String hql,Object... values);
 
-    public void update(Object bean);
-
-    public void delete(Object bean);
-
-    public void delete(Class c, int id);
-
-    public void delete(Class c, int[] ids);
-
+    public List<T> getListByHQL(String hql,Object... values);
 }

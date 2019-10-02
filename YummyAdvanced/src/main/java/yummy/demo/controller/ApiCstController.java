@@ -8,8 +8,8 @@ import yummy.demo.dto.OrderDTO;
 import yummy.demo.dto.OrderItemDTO;
 import yummy.demo.model.Order;
 import yummy.demo.model.OrderItem;
-import yummy.demo.service.CustomerOrderService;
 import yummy.demo.service.CustomerService;
+import yummy.demo.service.OrderService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +24,7 @@ public class ApiCstController {
     @Autowired
     CustomerService cstService;
     @Autowired
-    CustomerOrderService cstOrderService;
+    OrderService orderService;
 
     @PostMapping(value = "/update")
     public void update(@RequestBody CustomerDTO cstDTO) {
@@ -48,31 +48,31 @@ public class ApiCstController {
             newItemList.add(new OrderItem(item.getMenuItemId(),item.getType(),item.getName(),item.getPrice(),item.getNum()));
         }
         order.setItemList(newItemList);
-        return cstOrderService.add(order);
+        return orderService.add(order);
     }
 
     @PostMapping(value = "/cancelOrder")
     public void cancelOrder(@RequestParam int id) {
-        cstOrderService.cancelOrder(id);
+        orderService.cancelOrder(id);
     }
 
     @PostMapping(value = "/payOrder")
     public boolean payOrder(@RequestParam int id) {
-        return cstOrderService.payOrder(id);
+        return orderService.payOrder(id);
     }
 
     @PostMapping(value = "/returnOrder")
     public double returnOrder(@RequestParam int id) {
-        return cstOrderService.returnOrder(id);
+        return orderService.returnOrder(id);
     }
 
     @PostMapping(value = "/finishOrder")
     public void finishOrder(@RequestParam int id) {
-        cstOrderService.finishOrder(id);
+        orderService.finishOrder(id);
     }
 
     @PostMapping(value = "/getDiscount")
     public double getDiscount(@RequestParam int cstId,@RequestParam double totalPrice) {
-        return cstOrderService.getDiscount(cstId,totalPrice);
+        return orderService.getDiscount(cstId,totalPrice);
     }
 }
