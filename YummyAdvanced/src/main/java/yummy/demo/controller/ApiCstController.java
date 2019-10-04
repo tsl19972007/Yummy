@@ -2,6 +2,7 @@ package yummy.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import yummy.demo.dto.CustomerDTO;
 import yummy.demo.dto.OrderDTO;
@@ -24,6 +25,7 @@ public class ApiCstController {
     @Autowired
     CustomerService cstService;
     @Autowired
+    @Qualifier("OrderServiceImplWithThreadPoolCancel")
     OrderService orderService;
 
     @PostMapping(value = "/update")

@@ -232,7 +232,7 @@
         seconds--;
         if(seconds<=0){
             clearInterval(id) ;
-            cancelOrder();
+            window.history.back(-1);
         }else{
             setTimeout(box,1000) ;
         }

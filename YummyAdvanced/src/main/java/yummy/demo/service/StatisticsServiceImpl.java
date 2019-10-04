@@ -3,7 +3,6 @@ package yummy.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yummy.demo.dao.CustomerDao;
-import yummy.demo.dao.ManagerDao;
 import yummy.demo.dao.OrderDao;
 import yummy.demo.dao.RestaurantDao;
 import yummy.demo.model.Customer;
@@ -24,13 +23,11 @@ import java.util.List;
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
-    OrderDao orderDao;
+     OrderDao orderDao;
     @Autowired
     CustomerDao cstDao;
     @Autowired
     RestaurantDao rstDao;
-    @Autowired
-    ManagerDao managerDao;
 
     @Override
     public CustomerStatistics getCustomerStatistics(int cstId) {

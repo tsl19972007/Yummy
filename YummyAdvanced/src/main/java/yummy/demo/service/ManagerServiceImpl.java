@@ -3,9 +3,7 @@ package yummy.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import yummy.demo.dao.CustomerDao;
 import yummy.demo.dao.ManagerDao;
-import yummy.demo.dao.OrderDao;
 import yummy.demo.dao.RestaurantDao;
 import yummy.demo.model.Manager;
 import yummy.demo.model.Restaurant;
@@ -19,10 +17,6 @@ import java.util.List;
 public class ManagerServiceImpl implements ManagerService {
     @Autowired
     RestaurantDao rstDao;
-    @Autowired
-    CustomerDao cstDao;
-    @Autowired
-    OrderDao orderDao;
     @Autowired
     ManagerDao mngDao;
 

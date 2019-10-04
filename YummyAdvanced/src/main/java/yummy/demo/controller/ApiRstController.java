@@ -1,6 +1,7 @@
 package yummy.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import yummy.demo.dto.MenuDTO;
 import yummy.demo.dto.RestaurantDTO;
@@ -15,6 +16,7 @@ public class ApiRstController {
     @Autowired
     RestaurantService rstService;
     @Autowired
+    @Qualifier("OrderServiceImplWithThreadPoolCancel")
     OrderService orderService;
 
     @PostMapping(value = "/updateRst")

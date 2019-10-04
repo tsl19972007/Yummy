@@ -19,8 +19,8 @@ import java.util.List;
  */
 
 @Transactional
-@Service
-public class OrderServiceImpl implements OrderService{
+@Service("OrderServiceImplWithoutCancel")
+public class OrderServiceImplWithoutCancel implements OrderService{
     @Autowired
     OrderDao orderDao;
     @Autowired
@@ -135,6 +135,7 @@ public class OrderServiceImpl implements OrderService{
     public void cancelOrder(int id){
         //更新餐厅菜单信息
         Order order=orderDao.get(id);
+        if(order==null) return;
         for(OrderItem orderItem:order.getItemList()){
             MenuItem menuItem=rstDao.getMenuItem(orderItem.getMenuItemId());
             menuItem.setNum(menuItem.getNum()+orderItem.getNum());

@@ -14,7 +14,6 @@ import java.util.List;
 public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
     RestaurantDao rstDao;
-
     @Autowired
     ManagerService mngService;
 

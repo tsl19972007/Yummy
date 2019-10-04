@@ -6,7 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "`order`")
+@Table(name = "`order`",
+        indexes={@Index(name="cstId_index",columnList="cstId"),
+        @Index(name="rstId_index",columnList="rstId"),
+        @Index(name="orderTime_index",columnList="orderTime")})
 public class Order implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
