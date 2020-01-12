@@ -31,21 +31,21 @@ public class OrderDaoImpl extends BaseDaoImpl<Order> implements OrderDao {
 
     @Override
     public List<Order> findByCst(int cstId) {
-        return getListByHQL("SELECT o FROM Order o WHERE o.cstId = ?0",cstId);
+        return getListByHQL("SELECT o FROM Order o WHERE o.cstId = ?0", cstId);
     }
 
     @Override
-    public List<Order> findByCst(int cstId,String state) {
-        return getListByHQL("SELECT o FROM Order o WHERE o.cstId = ?0 AND o.state=?1",cstId,state);
+    public List<Order> findByCst(int cstId, String state) {
+        return getListByHQL("SELECT o FROM Order o WHERE o.cstId = ?0 AND o.state=?1", cstId, state);
     }
 
     @Override
     public List<Order> findByRst(int rstId) {
-        return getListByHQL("SELECT o FROM Order o WHERE o.rstId = ?0",rstId);
+        return getListByHQL("SELECT o FROM Order o WHERE o.rstId = ?0", rstId);
     }
 
     @Override
     public List<Order> findByRst(int rstId, String state) {
-        return getListByHQL("SELECT o FROM Order o WHERE o.rstId = ?0 AND o.state=?1",rstId,state);
+        return getListByHQL("SELECT o FROM Order o WHERE o.rstId = ?0 AND o.state=?1", rstId, state);
     }
 }

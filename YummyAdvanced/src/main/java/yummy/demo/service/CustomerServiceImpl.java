@@ -10,7 +10,7 @@ import java.util.List;
 
 @Transactional
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CustomerDao cstDao;
     @Autowired
@@ -19,7 +19,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public void register(Customer cst) {
         cstDao.add(cst);
-        mailService.cstRegisterConfirm(cst.getId(),cst.getEmail());
+        mailService.cstRegisterConfirm(cst.getId(), cst.getEmail());
     }
 
     @Override
@@ -40,8 +40,8 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer login(String email, String password) {
-        Customer cst=cstDao.findByEmailAndPassword(email,password);
-        if(cst!=null&&cst.getIsActive()&&!cst.getIsWrittenOff()) {
+        Customer cst = cstDao.findByEmailAndPassword(email, password);
+        if (cst != null && cst.getIsActive() && !cst.getIsWrittenOff()) {
             return cst;
         }
         return null;

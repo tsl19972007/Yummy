@@ -12,6 +12,17 @@ public class CustomerStatistics {
     private List<String> rstNameList;
     private List<Double> rstConsumptionList;
 
+    public CustomerStatistics(int totalOrderNum, int todayOrderNum, double totalConsumption, double todayConsumption, String nextLevel, double consumptionToNextLevel, List<String> rstNameList, List<Double> rstConsumptionList) {
+        this.totalOrderNum = totalOrderNum;
+        this.todayOrderNum = todayOrderNum;
+        this.totalConsumption = totalConsumption;
+        this.todayConsumption = todayConsumption;
+        this.nextLevel = nextLevel;
+        this.consumptionToNextLevel = consumptionToNextLevel;
+        this.rstNameList = rstNameList;
+        this.rstConsumptionList = rstConsumptionList;
+    }
+
     public int getTotalOrderNum() {
         return totalOrderNum;
     }
@@ -73,17 +84,6 @@ public class CustomerStatistics {
     }
 
     public void setRstConsumptionList(List<Double> rstConsumptionList) {
-        this.rstConsumptionList = rstConsumptionList;
-    }
-
-    public CustomerStatistics(int totalOrderNum, int todayOrderNum, double totalConsumption, double todayConsumption, String nextLevel, double consumptionToNextLevel, List<String> rstNameList, List<Double> rstConsumptionList) {
-        this.totalOrderNum = totalOrderNum;
-        this.todayOrderNum = todayOrderNum;
-        this.totalConsumption = totalConsumption;
-        this.todayConsumption = todayConsumption;
-        this.nextLevel = nextLevel;
-        this.consumptionToNextLevel = consumptionToNextLevel;
-        this.rstNameList = rstNameList;
         this.rstConsumptionList = rstConsumptionList;
     }
 }

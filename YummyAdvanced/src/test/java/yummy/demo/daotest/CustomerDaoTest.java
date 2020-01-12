@@ -8,7 +8,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import yummy.demo.dao.CustomerDao;
 
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CustomerDaoTest.class)
 public class CustomerDaoTest {

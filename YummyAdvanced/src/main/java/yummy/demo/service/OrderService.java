@@ -15,11 +15,11 @@ public interface OrderService {
 
     public List<Order> findByCst(int cstId);
 
-    public List<Order> findByCst(int cstId,String state);
+    public List<Order> findByCst(int cstId, String state);
 
     public List<Order> findByRst(int rstId);
 
-    public List<Order> findByRst(int rstId,String state);
+    public List<Order> findByRst(int rstId, String state);
 
     public int add(Order order);
 
@@ -31,5 +31,5 @@ public interface OrderService {
 
     public void finishOrder(int id);
 
-    public double getDiscount(int cstId,double consumption);
+    public double getDiscount(int cstId, double consumption);
 }

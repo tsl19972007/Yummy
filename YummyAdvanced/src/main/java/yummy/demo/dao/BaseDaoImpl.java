@@ -18,7 +18,7 @@ import java.util.List;
 
 @Repository
 @SuppressWarnings("unchecked")
-public class BaseDaoImpl<T> implements BaseDao<T>{
+public class BaseDaoImpl<T> implements BaseDao<T> {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -27,14 +27,14 @@ public class BaseDaoImpl<T> implements BaseDao<T>{
     /*
      * 用反射获取具体类型
      */
-    public BaseDaoImpl(){
-        if(this.getClass().getGenericSuperclass() instanceof ParameterizedType) {
+    public BaseDaoImpl() {
+        if (this.getClass().getGenericSuperclass() instanceof ParameterizedType) {
             ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
             clazz = (Class<T>) type.getActualTypeArguments()[0];
         }
     }
 
-    protected final Session getSession(){
+    protected final Session getSession() {
         return entityManager.unwrap(Session.class);
     }
 
@@ -50,14 +50,14 @@ public class BaseDaoImpl<T> implements BaseDao<T>{
 
     @Override
     public void deleteById(Serializable id) {
-        Session session=getSession();
+        Session session = getSession();
         Object obj = session.get(clazz, id);
         session.delete(obj);
     }
 
     @Override
     public T get(Serializable id) {
-        return getSession().get(clazz,id);
+        return getSession().get(clazz, id);
     }
 
     @Override

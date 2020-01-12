@@ -12,8 +12,8 @@ public class InterceptorMngConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(mngInterceptor).addPathPatterns("/mngHome","/mngCstInfo","/mngRstInfo",
-                "/mngBalance","/mngApprove","/mngApprove/**","/mngStatistics",
+        registry.addInterceptor(mngInterceptor).addPathPatterns("/mngHome", "/mngCstInfo", "/mngRstInfo",
+                "/mngBalance", "/mngApprove", "/mngApprove/**", "/mngStatistics",
                 "/manager/**");
     }
 }

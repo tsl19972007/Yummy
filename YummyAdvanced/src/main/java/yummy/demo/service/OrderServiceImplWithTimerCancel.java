@@ -20,9 +20,9 @@ import java.util.TimerTask;
 
 @Transactional
 @Service("OrderServiceImplWithTimerCancel")
-public class OrderServiceImplWithTimerCancel implements OrderService{
+public class OrderServiceImplWithTimerCancel implements OrderService {
     //120s未支付订单取消
-    private static final long PAY_INTERVAL =  120 * 1000L;
+    private static final long PAY_INTERVAL = 120 * 1000L;
 
     @Autowired
     @Qualifier("OrderServiceImplWithoutCancel")
@@ -40,7 +40,7 @@ public class OrderServiceImplWithTimerCancel implements OrderService{
 
     @Override
     public List<Order> findByCst(int cstId, String state) {
-        return orderService.findByCst(cstId,state);
+        return orderService.findByCst(cstId, state);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class OrderServiceImplWithTimerCancel implements OrderService{
 
     @Override
     public List<Order> findByRst(int rstId, String state) {
-        return orderService.findByRst(rstId,state);
+        return orderService.findByRst(rstId, state);
     }
 
     @Override
     public int add(Order order) {
-        int id=orderService.add(order);
+        int id = orderService.add(order);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -89,14 +89,14 @@ public class OrderServiceImplWithTimerCancel implements OrderService{
 
     @Override
     public double getDiscount(int cstId, double consumption) {
-        return orderService.getDiscount(cstId,consumption);
+        return orderService.getDiscount(cstId, consumption);
     }
 
-    private void cancelOrderIfOvertime(int orderId){
-        Order order=findById(orderId);
-        if(order==null) return;//订单已经被取消
-        Date now=new Date(System.currentTimeMillis()-PAY_INTERVAL);
-        if("待支付".equals(order.getState())&&order.getOrderTime().before(now)){
+    private void cancelOrderIfOvertime(int orderId) {
+        Order order = findById(orderId);
+        if (order == null) return;//订单已经被取消
+        Date now = new Date(System.currentTimeMillis() - PAY_INTERVAL);
+        if ("待支付".equals(order.getState()) && order.getOrderTime().before(now)) {
             cancelOrder(orderId);
         }
     }

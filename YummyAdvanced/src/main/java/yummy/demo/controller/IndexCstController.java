@@ -35,112 +35,112 @@ public class IndexCstController {
 
     @RequestMapping("/cstHome")
     public String cstHome(HttpServletRequest request, Model model) {
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        CustomerDTO cst=new CustomerDTO(cstService.findById(cstId));
-        model.addAttribute("customer",cst);
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        CustomerDTO cst = new CustomerDTO(cstService.findById(cstId));
+        model.addAttribute("customer", cst);
         return "customer/cstHome";
     }
 
     @RequestMapping("/cstStatistics")
-    public String cstStatistics(HttpServletRequest request,Model model) {
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        CustomerDTO cst=new CustomerDTO(cstService.findById(cstId));
-        model.addAttribute("cst",cst);
-        CustomerStatistics cstStatistics=staService.getCustomerStatistics(cstId);
-        model.addAttribute("cstStatistics",cstStatistics);
+    public String cstStatistics(HttpServletRequest request, Model model) {
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        CustomerDTO cst = new CustomerDTO(cstService.findById(cstId));
+        model.addAttribute("cst", cst);
+        CustomerStatistics cstStatistics = staService.getCustomerStatistics(cstId);
+        model.addAttribute("cstStatistics", cstStatistics);
         return "customer/cstStatistics";
     }
 
     @RequestMapping("/cstOrder")
     public String cstOrder(Model model) {
-        List<Restaurant> rstList=rstService.getAll();
-        List<RestaurantDTO> rstDTOList=new ArrayList<>();
-        for(int i=0;i<rstList.size();i++){
+        List<Restaurant> rstList = rstService.getAll();
+        List<RestaurantDTO> rstDTOList = new ArrayList<>();
+        for (int i = 0; i < rstList.size(); i++) {
             rstDTOList.add(new RestaurantDTO(rstList.get(i)));
         }
-        model.addAttribute("rstList",rstDTOList);
+        model.addAttribute("rstList", rstDTOList);
         return "customer/cstOrder";
     }
 
     @RequestMapping("/cstOrder/{rstId}")
     public String cstOrderRst(HttpServletRequest request, @PathVariable Integer rstId, Model model) {
-        RestaurantDTO rst=new RestaurantDTO(rstService.findById(rstId));
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        CustomerDTO cst=new CustomerDTO(cstService.findById(cstId));
-        model.addAttribute("rst",rst);
-        model.addAttribute("customer",cst);
+        RestaurantDTO rst = new RestaurantDTO(rstService.findById(rstId));
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        CustomerDTO cst = new CustomerDTO(cstService.findById(cstId));
+        model.addAttribute("rst", rst);
+        model.addAttribute("customer", cst);
         return "customer/cstOrderRst";
     }
 
     @RequestMapping("/cstOrderList")
     public String cstOrderList(HttpServletRequest request, Model model) {
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        List<Order> orderList=orderService.findByCst(cstId);
-        List<OrderDTO> orderDTOList=new ArrayList<>();
-        for(int i=0;i<orderList.size();i++){
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        List<Order> orderList = orderService.findByCst(cstId);
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        for (int i = 0; i < orderList.size(); i++) {
             orderDTOList.add(new OrderDTO(orderList.get(i)));
         }
-        model.addAttribute("orderList",orderDTOList);
+        model.addAttribute("orderList", orderDTOList);
         return "customer/cstOrderList";
     }
 
     @RequestMapping("/cstOrderListUnpaid")
     public String cstOrderListUnpaid(HttpServletRequest request, Model model) {
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        List<Order> orderList=orderService.findByCst(cstId,"待支付");
-        List<OrderDTO> orderDTOList=new ArrayList<>();
-        for(int i=0;i<orderList.size();i++){
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        List<Order> orderList = orderService.findByCst(cstId, "待支付");
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        for (int i = 0; i < orderList.size(); i++) {
             orderDTOList.add(new OrderDTO(orderList.get(i)));
         }
-        model.addAttribute("orderList",orderDTOList);
+        model.addAttribute("orderList", orderDTOList);
         return "customer/cstOrderList";
     }
 
     @RequestMapping("/cstOrderListPaid")
     public String cstOrderListPaid(HttpServletRequest request, Model model) {
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        List<Order> orderList=orderService.findByCst(cstId,"进行中");
-        List<OrderDTO> orderDTOList=new ArrayList<>();
-        for(int i=0;i<orderList.size();i++){
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        List<Order> orderList = orderService.findByCst(cstId, "进行中");
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        for (int i = 0; i < orderList.size(); i++) {
             orderDTOList.add(new OrderDTO(orderList.get(i)));
         }
-        model.addAttribute("orderList",orderDTOList);
+        model.addAttribute("orderList", orderDTOList);
         return "customer/cstOrderList";
     }
 
     @RequestMapping("/cstOrderListCompleted")
     public String cstOrderListCompleted(HttpServletRequest request, Model model) {
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        List<Order> orderList=orderService.findByCst(cstId,"已完成");
-        List<OrderDTO> orderDTOList=new ArrayList<>();
-        for(int i=0;i<orderList.size();i++){
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        List<Order> orderList = orderService.findByCst(cstId, "已完成");
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        for (int i = 0; i < orderList.size(); i++) {
             orderDTOList.add(new OrderDTO(orderList.get(i)));
         }
-        model.addAttribute("orderList",orderDTOList);
+        model.addAttribute("orderList", orderDTOList);
         return "customer/cstOrderList";
     }
 
     @RequestMapping("/cstOrderListReturned")
     public String cstOrderListReturned(HttpServletRequest request, Model model) {
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        List<Order> orderList=orderService.findByCst(cstId,"已退订");
-        List<OrderDTO> orderDTOList=new ArrayList<>();
-        for(int i=0;i<orderList.size();i++){
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        List<Order> orderList = orderService.findByCst(cstId, "已退订");
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        for (int i = 0; i < orderList.size(); i++) {
             orderDTOList.add(new OrderDTO(orderList.get(i)));
         }
-        model.addAttribute("orderList",orderDTOList);
+        model.addAttribute("orderList", orderDTOList);
         return "customer/cstOrderList";
     }
 
     @RequestMapping("/cstOrderDetail/{orderId}")
-    public String cstOrderDetail(HttpServletRequest request,@PathVariable Integer orderId, Model model) {
-        OrderDTO order=new OrderDTO(orderService.findById(orderId));
-        model.addAttribute("order",order);
-        RestaurantDTO rst=new RestaurantDTO(rstService.findById(order.getRstId()));
-        model.addAttribute("rst",rst);
-        CustomerDTO cst=new CustomerDTO(cstService.findById(order.getCstId()));
-        model.addAttribute("cst",cst);
-        if(order.getState().equals("待支付")){
+    public String cstOrderDetail(HttpServletRequest request, @PathVariable Integer orderId, Model model) {
+        OrderDTO order = new OrderDTO(orderService.findById(orderId));
+        model.addAttribute("order", order);
+        RestaurantDTO rst = new RestaurantDTO(rstService.findById(order.getRstId()));
+        model.addAttribute("rst", rst);
+        CustomerDTO cst = new CustomerDTO(cstService.findById(order.getCstId()));
+        model.addAttribute("cst", cst);
+        if (order.getState().equals("待支付")) {
             return "customer/cstOrderPay";
         }
         return "customer/cstOrderDetail";
@@ -148,11 +148,11 @@ public class IndexCstController {
 
     @RequestMapping("/cstInfo")
     public String cstInfo(HttpServletRequest request, Model model) {
-        int cstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
-        CustomerDTO cst=new CustomerDTO(cstService.findById(cstId));
-        model.addAttribute("customer",cst);
-        model.addAttribute("level",cst.getLevel());
-        model.addAttribute("percent",cst.getInfoCompletePercent());
+        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        CustomerDTO cst = new CustomerDTO(cstService.findById(cstId));
+        model.addAttribute("customer", cst);
+        model.addAttribute("level", cst.getLevel());
+        model.addAttribute("percent", cst.getInfoCompletePercent());
         return "customer/cstInfo";
     }
 }

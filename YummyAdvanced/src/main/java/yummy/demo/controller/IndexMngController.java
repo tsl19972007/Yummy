@@ -39,66 +39,66 @@ public class IndexMngController {
 
     @RequestMapping("/mngCstInfo")
     public String mngCstInfo(Model model, HttpServletRequest request) {
-        List<Customer> cstList=cstService.getAll();
-        List<CustomerDTO> cstDTOList=new ArrayList<>();
-        for(int i=0;i<cstList.size();i++){
+        List<Customer> cstList = cstService.getAll();
+        List<CustomerDTO> cstDTOList = new ArrayList<>();
+        for (int i = 0; i < cstList.size(); i++) {
             cstDTOList.add(new CustomerDTO(cstList.get(i)));
         }
-        model.addAttribute("cstList",cstDTOList);
+        model.addAttribute("cstList", cstDTOList);
         return "manager/mngCstInfo";
     }
 
 
     @RequestMapping("/mngRstInfo")
     public String mngRstInfo(Model model, HttpServletRequest request) {
-        List<Restaurant> rstList=rstService.getAll();
-        List<RestaurantDTO> rstDTOList=new ArrayList<>();
-        for(int i=0;i<rstList.size();i++){
+        List<Restaurant> rstList = rstService.getAll();
+        List<RestaurantDTO> rstDTOList = new ArrayList<>();
+        for (int i = 0; i < rstList.size(); i++) {
             rstDTOList.add(new RestaurantDTO(rstList.get(i)));
         }
-        model.addAttribute("rstList",rstDTOList);
+        model.addAttribute("rstList", rstDTOList);
         return "manager/mngRstInfo";
     }
 
     @RequestMapping("/mngBalance")
     public String mngBalance(Model model) {
-        List<Restaurant> rstList=mngService.getRstBalanceList();
-        List<RestaurantDTO> rstDTOList=new ArrayList<>();
-        for(int i=0;i<rstList.size();i++){
+        List<Restaurant> rstList = mngService.getRstBalanceList();
+        List<RestaurantDTO> rstDTOList = new ArrayList<>();
+        for (int i = 0; i < rstList.size(); i++) {
             rstDTOList.add(new RestaurantDTO(rstList.get(i)));
         }
-        model.addAttribute("rstList",rstDTOList);
+        model.addAttribute("rstList", rstDTOList);
         return "manager/mngBalance";
     }
 
     @RequestMapping("/mngApprove")
     public String mngApprove(Model model) {
-        List<Restaurant> rstList=mngService.getRstUpdateList();
-        List<RestaurantDTO> rstDTOList=new ArrayList<>();
-        for(int i=0;i<rstList.size();i++){
+        List<Restaurant> rstList = mngService.getRstUpdateList();
+        List<RestaurantDTO> rstDTOList = new ArrayList<>();
+        for (int i = 0; i < rstList.size(); i++) {
             rstDTOList.add(new RestaurantDTO(rstList.get(i)));
         }
-        model.addAttribute("rstList",rstDTOList);
+        model.addAttribute("rstList", rstDTOList);
         return "manager/mngApprove";
     }
 
     @RequestMapping("/mngApprove/{rstId}")
     public String mngApproveDetail(@PathVariable Integer rstId, Model model) {
-        RestaurantDTO newRst=new RestaurantDTO(mngService.getApplyFromId(rstId));
-        RestaurantDTO oldRst=new RestaurantDTO(rstService.findById(rstId));
-        model.addAttribute("oldRst",oldRst);
-        model.addAttribute("newRst",newRst);
+        RestaurantDTO newRst = new RestaurantDTO(mngService.getApplyFromId(rstId));
+        RestaurantDTO oldRst = new RestaurantDTO(rstService.findById(rstId));
+        model.addAttribute("oldRst", oldRst);
+        model.addAttribute("newRst", newRst);
         return "manager/mngApproveDetail";
     }
 
     @RequestMapping("/mngStatistics")
     public String rstStatistics(Model model) {
-        YummyAnnualFinance annualFinance=staService.getYummyAnnualFinance();
-        YummyMonthlyFinance monthlyFinance=staService.getYummyMonthlyFinance();
-        YummyWeeklyFinance weeklyFinance=staService.getYummyWeeklyFinance();
-        model.addAttribute("annualFinance",annualFinance);
-        model.addAttribute("monthlyFinance",monthlyFinance);
-        model.addAttribute("weeklyFinance",weeklyFinance);
+        YummyAnnualFinance annualFinance = staService.getYummyAnnualFinance();
+        YummyMonthlyFinance monthlyFinance = staService.getYummyMonthlyFinance();
+        YummyWeeklyFinance weeklyFinance = staService.getYummyWeeklyFinance();
+        model.addAttribute("annualFinance", annualFinance);
+        model.addAttribute("monthlyFinance", monthlyFinance);
+        model.addAttribute("weeklyFinance", weeklyFinance);
         return "manager/mngStatistics";
     }
 }

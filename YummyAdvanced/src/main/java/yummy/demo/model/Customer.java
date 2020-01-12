@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "customer")
-public class Customer implements Serializable  {
+public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
@@ -17,23 +17,23 @@ public class Customer implements Serializable  {
     private boolean isActive;
     private boolean isWrittenOff;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name="address", joinColumns=@JoinColumn(name="id"))
-    @Column(name="address")
+    @CollectionTable(name = "address", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "address")
     private List<String> addresses;
     private double consumption;
     private double balance;
 
-    public Customer(int id,String email,String password,String name,String phone,boolean isActive,boolean isWrittenOff,List<String> addresses,double consumption,double balance){
-        this.id=id;
-        this.email=email;
-        this.password=password;
-        this.name=name;
-        this.phone=phone;
-        this.isActive=isActive;
-        this.isWrittenOff=isWrittenOff;
-        this.addresses=addresses;
-        this.consumption=consumption;
-        this.balance=balance;
+    public Customer(int id, String email, String password, String name, String phone, boolean isActive, boolean isWrittenOff, List<String> addresses, double consumption, double balance) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.isActive = isActive;
+        this.isWrittenOff = isWrittenOff;
+        this.addresses = addresses;
+        this.consumption = consumption;
+        this.balance = balance;
     }
 
     public Customer(String email, String password, String name, String phone) {
@@ -42,12 +42,12 @@ public class Customer implements Serializable  {
         this.name = name;
         this.phone = phone;
         this.isActive = false;
-        this.isWrittenOff=false;
-        this.consumption=0;
-        this.balance=0;
+        this.isWrittenOff = false;
+        this.consumption = 0;
+        this.balance = 0;
     }
 
-    public Customer(){ }
+    public Customer() { }
 
     public int getId() {
         return id;
@@ -129,46 +129,46 @@ public class Customer implements Serializable  {
         this.balance = balance;
     }
 
-    public String getLevel(){
-        if(consumption>1000){
+    public String getLevel() {
+        if (consumption > 1000) {
             return "顶级会员";
-        }else if(consumption>100){
+        } else if (consumption > 100) {
             return "超级会员";
         }
         return "会员";
     }
 
-    public String getNextLevel(){
-        if(consumption>1000){
+    public String getNextLevel() {
+        if (consumption > 1000) {
             return "已封顶";
-        }else if(consumption>100){
+        } else if (consumption > 100) {
             return "顶级会员";
-        }else{
+        } else {
             return "超级会员";
         }
     }
 
-    public double getConsumptionToNextLevel(){
-        if(consumption>1000){
+    public double getConsumptionToNextLevel() {
+        if (consumption > 1000) {
             return 0;
-        }else if(consumption>100){
-            return 1000-consumption;
+        } else if (consumption > 100) {
+            return 1000 - consumption;
         }
-        return 100-consumption;
+        return 100 - consumption;
     }
 
-    public double getLevelPercentage(){
-        if(consumption>1000){
+    public double getLevelPercentage() {
+        if (consumption > 1000) {
             return 0;
-        }else if(consumption>100){
-            return consumption/1000;
+        } else if (consumption > 100) {
+            return consumption / 1000;
         }
-        return consumption/100;
+        return consumption / 100;
     }
 
 
-    public double getInfoCompletePercent(){
-        if(addresses.isEmpty())
+    public double getInfoCompletePercent() {
+        if (addresses.isEmpty())
             return 75.0;
         else
             return 100.0;

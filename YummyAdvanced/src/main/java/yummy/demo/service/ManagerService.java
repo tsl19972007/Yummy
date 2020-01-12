@@ -5,7 +5,7 @@ import yummy.demo.model.Restaurant;
 import java.util.List;
 
 public interface ManagerService {
-    public boolean login(int id,String password);
+    public boolean login(int id, String password);
 
     public List<Restaurant> getRstUpdateList();
 

@@ -23,7 +23,7 @@ public class OrderDaoImpl implements OrderDao {
         Session session=baseDao.getSession();
         try {
             session.beginTransaction();
-            String hql = "SELECT o.id FROM Order o WHERE o.orderTime < ?1 AND o.state = '待支付'";
+            String hql = "SELECT o.id FROM Order o WHERE o.orderTime < ?1 AND o.state = 'unpaid'";
             Date date=new Date(System.currentTimeMillis()-2*60*1000);
             Query query = session.createQuery(hql);
             query.setParameter(1,date);
@@ -99,7 +99,7 @@ public class OrderDaoImpl implements OrderDao {
             }
             cst.setBalance(cst.getBalance()-order.getTotal());
             session.update(cst);
-            order.setState("已支付");
+            order.setState("paid");
             session.update(order);
             Manager manager=session.get(Manager.class, Manager.getDefaultId());
             manager.setBalance(manager.getBalance()+order.getTotal());
@@ -119,7 +119,7 @@ public class OrderDaoImpl implements OrderDao {
         try {
             session.beginTransaction();
             Order order=session.get(Order.class,id);
-            order.setState("已完成");
+            order.setState("completed");
             session.update(order);
 
             Restaurant rst=session.get(Restaurant.class,order.getRstId());
@@ -145,7 +145,7 @@ public class OrderDaoImpl implements OrderDao {
         try {
             session.beginTransaction();
             Order order=session.get(Order.class,id);
-            order.setState("已退订");
+            order.setState("returned");
             session.update(order);
 
             returned=getReturnedMoney(order.getTotal(),order.getOrderTime(),order.getArriveTime());

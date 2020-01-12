@@ -3,7 +3,7 @@ package yummy.demo.dto;
 
 import yummy.demo.model.Restaurant;
 
-public class RestaurantDTO{
+public class RestaurantDTO {
     private int id;
     private String password;
     private String type;
@@ -21,13 +21,14 @@ public class RestaurantDTO{
         this.name = rst.getName();
         this.phone = rst.getPhone();
         this.address = rst.getAddress();
-        if(rst.getMenu()!=null) this.menuDTO = new MenuDTO(rst.getMenu());
+        if (rst.getMenu() != null) this.menuDTO = new MenuDTO(rst.getMenu());
         this.profit = rst.getProfit();
         this.balance = rst.getProfit();
     }
 
 
-    public RestaurantDTO(){}
+    public RestaurantDTO() {
+    }
 
     public int getId() {
         return id;
@@ -101,8 +102,8 @@ public class RestaurantDTO{
         this.balance = balance;
     }
 
-    public Restaurant toRestaurant(){
-        if(menuDTO==null) return new Restaurant(id,password,type,name,phone,address,null,profit,balance);
-        return new Restaurant(id,password,type,name,phone,address,menuDTO.toMenu(),profit,balance);
+    public Restaurant toRestaurant() {
+        if (menuDTO == null) return new Restaurant(id, password, type, name, phone, address, null, profit, balance);
+        return new Restaurant(id, password, type, name, phone, address, menuDTO.toMenu(), profit, balance);
     }
 }

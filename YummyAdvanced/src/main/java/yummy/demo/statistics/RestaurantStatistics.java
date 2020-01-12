@@ -11,6 +11,16 @@ public class RestaurantStatistics {
     private double todayProfit;
     private List<Double> weekProfitList;
 
+    public RestaurantStatistics(List<String> cstNameList, List<Double> cstConsumptionList, int totalOrderNum, int todayOrderNum, double totalProfit, double todayProfit, List<Double> weekProfitList) {
+        this.cstNameList = cstNameList;
+        this.cstConsumptionList = cstConsumptionList;
+        this.totalOrderNum = totalOrderNum;
+        this.todayOrderNum = todayOrderNum;
+        this.totalProfit = totalProfit;
+        this.todayProfit = todayProfit;
+        this.weekProfitList = weekProfitList;
+    }
+
     public List<String> getCstNameList() {
         return cstNameList;
     }
@@ -64,16 +74,6 @@ public class RestaurantStatistics {
     }
 
     public void setWeekProfitList(List<Double> weekProfitList) {
-        this.weekProfitList = weekProfitList;
-    }
-
-    public RestaurantStatistics(List<String> cstNameList, List<Double> cstConsumptionList, int totalOrderNum, int todayOrderNum, double totalProfit, double todayProfit, List<Double> weekProfitList) {
-        this.cstNameList = cstNameList;
-        this.cstConsumptionList = cstConsumptionList;
-        this.totalOrderNum = totalOrderNum;
-        this.todayOrderNum = todayOrderNum;
-        this.totalProfit = totalProfit;
-        this.todayProfit = todayProfit;
         this.weekProfitList = weekProfitList;
     }
 }

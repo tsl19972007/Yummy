@@ -9,7 +9,7 @@ import yummy.demo.model.Restaurant;
  * @description：dao interface of restaurant
  */
 
-public interface RestaurantDao extends BaseDao<Restaurant>{
+public interface RestaurantDao extends BaseDao<Restaurant> {
     public Restaurant findByIdAndPassword(int id, String password);
 
     public MenuItem getMenuItem(int id);

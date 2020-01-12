@@ -22,7 +22,7 @@ public interface BaseDao<T> {
 
     public List<T> getAll();
 
-    public T getUniqueResultByHQL(String hql,Object... values);
+    public T getUniqueResultByHQL(String hql, Object... values);
 
-    public List<T> getListByHQL(String hql,Object... values);
+    public List<T> getListByHQL(String hql, Object... values);
 }

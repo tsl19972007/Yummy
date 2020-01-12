@@ -26,8 +26,8 @@ public class ApiRstController {
 
     @PostMapping(value = "/updateMenu")
     public void updateMenu(HttpServletRequest request, @RequestBody MenuDTO menuDTO) {
-        int rstId=(Integer)request.getSession(false).getAttribute(ConstantField.SESSION_RESTAURANT_ID);
-        rstService.updateMenu(rstId,menuDTO.toMenu());
+        int rstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_RESTAURANT_ID);
+        rstService.updateMenu(rstId, menuDTO.toMenu());
     }
 
     @PostMapping(value = "/finishOrder")

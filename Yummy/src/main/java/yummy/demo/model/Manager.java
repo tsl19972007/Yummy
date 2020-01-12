@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "manager")
 public class Manager implements Serializable{
-    private static final int DEFAULT_ID = 161250128;
+    private static final int DEFAULT_ID = 001;
     private static final String DEFAULT_PASSWORD = "yummy";
 
     @Id

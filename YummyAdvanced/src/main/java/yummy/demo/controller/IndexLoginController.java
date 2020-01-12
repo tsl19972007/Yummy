@@ -43,13 +43,13 @@ public class IndexLoginController {
     }
 
     @RequestMapping("/cstRegister/{id}")
-    public String cstRegisterConfirm(@PathVariable Integer id){
+    public String cstRegisterConfirm(@PathVariable Integer id) {
         cstService.setActive(id);
         return "loginAndRegister/cstRegisterConfirm";
     }
 
     @RequestMapping("/rstRegister/{id}")
-    public String rstRegisterConfirm(@PathVariable Integer id,Model model) {
+    public String rstRegisterConfirm(@PathVariable Integer id, Model model) {
         model.addAttribute("id", id);
         return "loginAndRegister/rstRegisterConfirm";
     }

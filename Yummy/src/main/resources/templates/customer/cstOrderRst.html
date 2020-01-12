@@ -142,7 +142,7 @@
             alert("当前无已选项目");
             return;
         }
-        var state="待支付";
+        var state="unpaid";
         var order=new Order(rstId, cstId, phone, address, remarks, itemList, total, nowStr, arriveStr, state);
         var basePath = "http:\/\/localhost:8080\/yummy";
         $.ajax({

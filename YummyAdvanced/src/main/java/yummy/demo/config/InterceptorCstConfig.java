@@ -12,8 +12,8 @@ public class InterceptorCstConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(cstInterceptor).addPathPatterns("/cstHome","/cstStatistics","/cstOrder","/cstOrder/**",
-                "/cstOrderList","/cstOrderListUnpaid","/cstOrderListPaid","/cstOrderListCompleted","/cstOrderListReturned",
-                "/cstOrderDetail/**","/cstInfo","/customer/**");
+        registry.addInterceptor(cstInterceptor).addPathPatterns("/cstHome", "/cstStatistics", "/cstOrder", "/cstOrder/**",
+                "/cstOrderList", "/cstOrderListUnpaid", "/cstOrderListPaid", "/cstOrderListCompleted", "/cstOrderListReturned",
+                "/cstOrderDetail/**", "/cstInfo", "/customer/**");
     }
 }

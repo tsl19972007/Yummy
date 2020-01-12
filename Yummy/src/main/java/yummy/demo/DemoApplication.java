@@ -14,18 +14,8 @@ import yummy.demo.dao.CustomerDao;
 @ComponentScan("yummy.demo")
 @EntityScan("yummy.demo.model")
 public class DemoApplication {
-    @Autowired
-    private CustomerDao cstDao;
-    @Autowired
-    private BaseDao baseDao;
-
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
-    }
-
-    private void test(){
-        System.out.println(cstDao==null);
-        System.out.println(null==cstDao.findById(1));
     }
 }
 

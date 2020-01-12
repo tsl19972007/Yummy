@@ -24,9 +24,9 @@ public class ApiLoginController {
 
     @PostMapping(value = "/cstRegister")
     public boolean cstRegister(@RequestBody CustomerDTO cstDTO) {
-        Customer cst=cstDTO.toCustomer();
-        Customer cstFound=cstService.findByEmail(cst.getEmail());
-        if(cstFound!=null){
+        Customer cst = cstDTO.toCustomer();
+        Customer cstFound = cstService.findByEmail(cst.getEmail());
+        if (cstFound != null) {
             return false;
         }
         cstService.register(cst);
@@ -40,53 +40,53 @@ public class ApiLoginController {
 
     @PostMapping(value = "/cstLogin")
     public boolean cstLogin(HttpServletRequest request, @RequestParam String email, @RequestParam String password) {
-        Customer cst=cstService.login(email,password);
-        if(cst!=null){
+        Customer cst = cstService.login(email, password);
+        if (cst != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute(ConstantField.SESSION_CUSTOMER_ID, cst.getId());
             session.setAttribute(ConstantField.SESSION_USERNAME, cst.getName());
         }
-        return cst!=null;
+        return cst != null;
     }
 
     @PostMapping(value = "/rstLogin")
-    public boolean rstLogin(HttpServletRequest request, @RequestParam int id,@RequestParam String password) {
-        if(rstService.login(id,password)!=null){
+    public boolean rstLogin(HttpServletRequest request, @RequestParam int id, @RequestParam String password) {
+        if (rstService.login(id, password) != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute(ConstantField.SESSION_RESTAURANT_ID, id);
-            session.setAttribute(ConstantField.SESSION_USERNAME,id);
+            session.setAttribute(ConstantField.SESSION_USERNAME, id);
         }
-        return rstService.login(id,password)!=null;
+        return rstService.login(id, password) != null;
     }
 
     @PostMapping(value = "/mngLogin")
-    public boolean mngLogin(HttpServletRequest request, @RequestParam int id,@RequestParam String password) {
-        if(mngService.login(id,password)){
+    public boolean mngLogin(HttpServletRequest request, @RequestParam int id, @RequestParam String password) {
+        if (mngService.login(id, password)) {
             HttpSession session = request.getSession(true);
             session.setAttribute(ConstantField.SESSION_MANAGER_ID, id);
-            session.setAttribute(ConstantField.SESSION_USERNAME,"manager");
+            session.setAttribute(ConstantField.SESSION_USERNAME, "manager");
         }
-        return mngService.login(id,password);
+        return mngService.login(id, password);
     }
 
     @PostMapping(value = "/cstLogout")
-    public void cstLogout(HttpServletRequest request){
+    public void cstLogout(HttpServletRequest request) {
         userLogout(request);
     }
 
     @PostMapping(value = "/rstLogout")
-    public void rstLogout(HttpServletRequest request){
+    public void rstLogout(HttpServletRequest request) {
         userLogout(request);
     }
 
     @PostMapping(value = "/mngLogout")
-    public void mngLogout(HttpServletRequest request){
+    public void mngLogout(HttpServletRequest request) {
         userLogout(request);
     }
 
-    private void userLogout(HttpServletRequest request){
+    private void userLogout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if(session==null) return;
+        if (session == null) return;
         session.invalidate();
     }
 }

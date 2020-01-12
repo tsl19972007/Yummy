@@ -13,12 +13,12 @@ public class MailServiceImpl implements  MailService {
     private JavaMailSender mailSender;
 
     @Override
-    public void cstRegisterConfirm(int id) {
+    public void cstRegisterConfirm(int id,String email) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setFrom("498656288@qq.com");
-            helper.setTo("498656288@qq.com");
+            helper.setFrom("tsl20071997@163.com");
+            helper.setTo(email);
             helper.setSubject("YUMMY注册验证");
             helper.setText("<html><body><p>点击<a href=\"http://localhost:8080/yummy/cstRegister/" +String.valueOf(id)+ "\">链接</a>完成邮件认证</p></body></html>", true);
         }

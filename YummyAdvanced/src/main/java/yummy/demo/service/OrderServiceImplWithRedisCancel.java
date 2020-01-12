@@ -16,9 +16,9 @@ import java.util.List;
 
 @Transactional
 @Service("OrderServiceImplWithRedisCancel")
-public class OrderServiceImplWithRedisCancel implements OrderService{
+public class OrderServiceImplWithRedisCancel implements OrderService {
 
-    private static final long PAY_INTERVAL =  120 * 1000L;
+    private static final long PAY_INTERVAL = 120 * 1000L;
 
     @Autowired
     @Qualifier("OrderServiceImplWithoutCancel")
@@ -36,7 +36,7 @@ public class OrderServiceImplWithRedisCancel implements OrderService{
 
     @Override
     public List<Order> findByCst(int cstId, String state) {
-        return orderService.findByCst(cstId,state);
+        return orderService.findByCst(cstId, state);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class OrderServiceImplWithRedisCancel implements OrderService{
 
     @Override
     public List<Order> findByRst(int rstId, String state) {
-        return orderService.findByRst(rstId,state);
+        return orderService.findByRst(rstId, state);
     }
 
     @Override
@@ -76,6 +76,6 @@ public class OrderServiceImplWithRedisCancel implements OrderService{
 
     @Override
     public double getDiscount(int cstId, double consumption) {
-        return orderService.getDiscount(cstId,consumption);
+        return orderService.getDiscount(cstId, consumption);
     }
 }

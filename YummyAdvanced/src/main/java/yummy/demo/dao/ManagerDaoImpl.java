@@ -9,5 +9,5 @@ import yummy.demo.model.Manager;
  * @description：implementation of ManagerDao
  */
 @Repository
-public class ManagerDaoImpl extends BaseDaoImpl<Manager> implements ManagerDao{
+public class ManagerDaoImpl extends BaseDaoImpl<Manager> implements ManagerDao {
 }

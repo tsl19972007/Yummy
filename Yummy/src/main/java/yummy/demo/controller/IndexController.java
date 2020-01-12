@@ -148,7 +148,7 @@ public class IndexController {
         Iterator<Order> iterator = orderList.iterator();
         while(iterator.hasNext()){
             Order order = iterator.next();
-            if("待支付".equals(order.getState())){
+            if("unpaid".equals(order.getState())){
                 iterator.remove();
             }
         }
@@ -206,7 +206,7 @@ public class IndexController {
         model.addAttribute("order",order);
         Restaurant rst=rstService.findById(order.getRstId());
         model.addAttribute("rst",rst);
-        if(order.getState().equals("待支付")){
+        if(order.getState().equals("unpaid")){
             return "customer/cstOrderPay";
         }
         return "customer/cstOrderDetail";

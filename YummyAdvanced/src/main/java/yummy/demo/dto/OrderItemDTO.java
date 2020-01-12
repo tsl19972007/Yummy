@@ -2,7 +2,7 @@ package yummy.demo.dto;
 
 import yummy.demo.model.OrderItem;
 
-public class OrderItemDTO{
+public class OrderItemDTO {
     private int id;
     private int menuItemId;
     private String type;
@@ -20,7 +20,8 @@ public class OrderItemDTO{
     }
 
 
-    public OrderItemDTO(){}
+    public OrderItemDTO() {
+    }
 
     public int getId() {
         return id;
@@ -70,11 +71,11 @@ public class OrderItemDTO{
         this.num = num;
     }
 
-    public double getSum(){
-        return price*num;
+    public double getSum() {
+        return price * num;
     }
 
-    public OrderItem toOrderItem(){
-        return new OrderItem(id,menuItemId,type,name,price,num);
+    public OrderItem toOrderItem() {
+        return new OrderItem(id, menuItemId, type, name, price, num);
     }
 }

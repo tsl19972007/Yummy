@@ -20,11 +20,11 @@ import java.util.concurrent.TimeUnit;
 
 @Transactional
 @Service("OrderServiceImplWithThreadPoolCancel")
-public class OrderServiceImplWithThreadPoolCancel implements OrderService{
+public class OrderServiceImplWithThreadPoolCancel implements OrderService {
 
-    private static final long PAY_INTERVAL =  120 * 1000L;
+    private static final long PAY_INTERVAL = 120 * 1000L;
 
-    private static ScheduledExecutorService threadPool=Executors.newScheduledThreadPool(1);
+    private static ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(1);
 
     @Autowired
     @Qualifier("OrderServiceImplWithoutCancel")
@@ -42,7 +42,7 @@ public class OrderServiceImplWithThreadPoolCancel implements OrderService{
 
     @Override
     public List<Order> findByCst(int cstId, String state) {
-        return orderService.findByCst(cstId,state);
+        return orderService.findByCst(cstId, state);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class OrderServiceImplWithThreadPoolCancel implements OrderService{
 
     @Override
     public List<Order> findByRst(int rstId, String state) {
-        return orderService.findByRst(rstId,state);
+        return orderService.findByRst(rstId, state);
     }
 
     @Override
     public int add(Order order) {
-        int id=orderService.add(order);
-        threadPool.schedule(()->cancelOrder(order.getOrderId()),PAY_INTERVAL, TimeUnit.MILLISECONDS);
+        int id = orderService.add(order);
+        threadPool.schedule(() -> cancelOrder(order.getOrderId()), PAY_INTERVAL, TimeUnit.MILLISECONDS);
         return id;
     }
 
@@ -84,7 +84,7 @@ public class OrderServiceImplWithThreadPoolCancel implements OrderService{
 
     @Override
     public double getDiscount(int cstId, double consumption) {
-        return orderService.getDiscount(cstId,consumption);
+        return orderService.getDiscount(cstId, consumption);
     }
 
     @PreDestroy

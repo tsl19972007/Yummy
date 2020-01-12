@@ -45,8 +45,8 @@
 <h4 th:text="'地址:'+${order.address}"></h4>
 <h4 th:text="'送餐时间:'+${#strings.substring(order.arriveTime,0,19)}"></h4>
 <h4 th:text="'备注:'+${order.remarks}"></h4>
-<button id="return">退订</button>
-<button id="finish">确认送达</button>
+<button th:if="${order.state=='paid'}" id="return">退订</button>
+<button th:if="${order.state=='paid'}" id="finish">确认送达</button>
 <input id="orderId" th:value="${order.orderId}" style="display:none;"/>
 </body>
 <script>

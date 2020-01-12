@@ -6,11 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "`order`",
-        indexes={@Index(name="cstId_index",columnList="cstId"),
-        @Index(name="rstId_index",columnList="rstId"),
-        @Index(name="orderTime_index",columnList="orderTime")})
-public class Order implements Serializable{
+@Table(name = "`order`", indexes = {@Index(name = "cstId_index", columnList = "cstId"),
+        @Index(name = "rstId_index", columnList = "rstId"), @Index(name = "orderTime_index", columnList = "orderTime")})
+public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int orderId;
@@ -20,8 +18,8 @@ public class Order implements Serializable{
     private String address;
     private String remarks;
 
-    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name="order_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
     private List<OrderItem> itemList;
     private double consumption;
     private double discount;
@@ -29,8 +27,8 @@ public class Order implements Serializable{
     private Date arriveTime;
     private String state;
 
-    public Order(int orderId,int rstId, int cstId, String phone, String address, String remarks, List<OrderItem> itemList, double consumption,double discount,Date orderTime, Date arriveTime, String state) {
-        this.orderId=orderId;
+    public Order(int orderId, int rstId, int cstId, String phone, String address, String remarks, List<OrderItem> itemList, double consumption, double discount, Date orderTime, Date arriveTime, String state) {
+        this.orderId = orderId;
         this.rstId = rstId;
         this.cstId = cstId;
         this.phone = phone;
@@ -44,7 +42,7 @@ public class Order implements Serializable{
         this.state = state;
     }
 
-    public Order(int rstId, int cstId, String phone, String address, String remarks, List<OrderItem> itemList, double consumption,double discount,Date orderTime, Date arriveTime, String state) {
+    public Order(int rstId, int cstId, String phone, String address, String remarks, List<OrderItem> itemList, double consumption, double discount, Date orderTime, Date arriveTime, String state) {
         this.rstId = rstId;
         this.cstId = cstId;
         this.phone = phone;
@@ -58,7 +56,8 @@ public class Order implements Serializable{
         this.state = state;
     }
 
-    public Order(){}
+    public Order() {
+    }
 
     public int getOrderId() {
         return orderId;
@@ -156,10 +155,10 @@ public class Order implements Serializable{
         this.state = state;
     }
 
-    public double getTotalPrice(){
-        double total=0;
-        for(OrderItem item:itemList){
-            total+=item.getNum()*item.getPrice();
+    public double getTotalPrice() {
+        double total = 0;
+        for (OrderItem item : itemList) {
+            total += item.getNum() * item.getPrice();
         }
         return total;
     }

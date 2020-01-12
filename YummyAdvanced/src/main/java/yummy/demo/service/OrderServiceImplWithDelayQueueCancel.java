@@ -21,19 +21,15 @@ import java.util.concurrent.DelayQueue;
 
 @Transactional
 @Service("OrderServiceImplWithDelayQueueCancel")
-public class OrderServiceImplWithDelayQueueCancel implements OrderService{
+public class OrderServiceImplWithDelayQueueCancel implements OrderService {
 
-    private static final long PAY_INTERVAL =  120 * 1000L;
-
-    private static DelayQueue<OrderMessage> queue = new DelayQueue<>();
-
-    private Thread cancelOrderThread;
-
+    private static final long PAY_INTERVAL = 120 * 1000L;
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImplWithDelayQueueCancel.class);
-
+    private static DelayQueue<OrderMessage> queue = new DelayQueue<>();
     @Autowired
     @Qualifier("OrderServiceImplWithoutCancel")
     OrderService orderService;
+    private Thread cancelOrderThread;
 
     @Override
     public Order findById(int id) {
@@ -47,7 +43,7 @@ public class OrderServiceImplWithDelayQueueCancel implements OrderService{
 
     @Override
     public List<Order> findByCst(int cstId, String state) {
-        return orderService.findByCst(cstId,state);
+        return orderService.findByCst(cstId, state);
     }
 
     @Override
@@ -57,13 +53,13 @@ public class OrderServiceImplWithDelayQueueCancel implements OrderService{
 
     @Override
     public List<Order> findByRst(int rstId, String state) {
-        return orderService.findByRst(rstId,state);
+        return orderService.findByRst(rstId, state);
     }
 
     @Override
     public int add(Order order) {
-        int id=orderService.add(order);
-        queue.put(new OrderMessage(id,PAY_INTERVAL));//订单信息放入延时队列
+        int id = orderService.add(order);
+        queue.put(new OrderMessage(id, PAY_INTERVAL));//订单信息放入延时队列
         return id;
     }
 
@@ -89,24 +85,24 @@ public class OrderServiceImplWithDelayQueueCancel implements OrderService{
 
     @Override
     public double getDiscount(int cstId, double consumption) {
-        return orderService.getDiscount(cstId,consumption);
+        return orderService.getDiscount(cstId, consumption);
     }
 
     //@PostConstruct：当整个bean被初始化完成后执行
     @PostConstruct
     public void init() {
-        cancelOrderThread = new Thread(()->{
-                while(!Thread.currentThread().isInterrupted()) {
-                    OrderMessage om = null;
-                    try {
-                        om = queue.take();
-                    } catch (InterruptedException e) {
-                        logger.error("",e);
-                        Thread.currentThread().interrupt();
-                    }
-                    if(om==null) return;
-                    cancelOrder(om.getOrderId());
+        cancelOrderThread = new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                OrderMessage om = null;
+                try {
+                    om = queue.take();
+                } catch (InterruptedException e) {
+                    logger.error("", e);
+                    Thread.currentThread().interrupt();
                 }
+                if (om == null) return;
+                cancelOrder(om.getOrderId());
+            }
         });
         cancelOrderThread.start();
     }

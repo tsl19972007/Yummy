@@ -18,34 +18,34 @@ public class RestaurantServiceImpl implements RestaurantService {
     ManagerService mngService;
 
     @Override
-    public Restaurant login(int id,String password){
-        return rstDao.findByIdAndPassword(id,password);
+    public Restaurant login(int id, String password) {
+        return rstDao.findByIdAndPassword(id, password);
     }
 
     @Override
-    public Restaurant findById(int id){
+    public Restaurant findById(int id) {
         return rstDao.get(id);
     }
 
     @Override
-    public int register(Restaurant rst){
-        return (int)rstDao.add(rst);
+    public int register(Restaurant rst) {
+        return (int) rstDao.add(rst);
     }
 
     @Override
-    public void updateRst(Restaurant rst){
+    public void updateRst(Restaurant rst) {
         mngService.addApply(rst);
     }
 
     @Override
-    public void updateMenu(int rstId,Menu menu){
-        Restaurant rst=rstDao.get(rstId);
+    public void updateMenu(int rstId, Menu menu) {
+        Restaurant rst = rstDao.get(rstId);
         rst.setMenu(menu);
         rstDao.update(rst);
     }
 
     @Override
-    public List<Restaurant> getAll(){
+    public List<Restaurant> getAll() {
         return rstDao.getAll();
     }
 }

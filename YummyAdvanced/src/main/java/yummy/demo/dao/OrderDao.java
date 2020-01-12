@@ -10,7 +10,7 @@ import java.util.List;
  * @description：dao interface of Order
  */
 
-public interface OrderDao extends BaseDao<Order>{
+public interface OrderDao extends BaseDao<Order> {
     public List<Order> getCompletedAnnualOrders();
 
     public List<Order> getCompletedMonthlyOrders();
@@ -19,9 +19,9 @@ public interface OrderDao extends BaseDao<Order>{
 
     public List<Order> findByCst(int cstId);
 
-    public List<Order> findByCst(int cstId,String state);
+    public List<Order> findByCst(int cstId, String state);
 
     public List<Order> findByRst(int rstId);
 
-    public List<Order> findByRst(int rstId,String state);
+    public List<Order> findByRst(int rstId, String state);
 }

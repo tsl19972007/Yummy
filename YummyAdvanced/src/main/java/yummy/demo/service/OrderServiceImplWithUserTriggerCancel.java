@@ -18,9 +18,9 @@ import java.util.List;
 
 @Transactional
 @Service("OrderServiceImplWithUserTriggerCancel")
-public class OrderServiceImplWithUserTriggerCancel implements OrderService{
+public class OrderServiceImplWithUserTriggerCancel implements OrderService {
     //120s未支付订单取消
-    private static final long PAY_INTERVAL =  120 * 1000L;
+    private static final long PAY_INTERVAL = 120 * 1000L;
 
     @Autowired
     @Qualifier("OrderServiceImplWithoutCancel")
@@ -33,25 +33,25 @@ public class OrderServiceImplWithUserTriggerCancel implements OrderService{
 
     @Override
     public List<Order> findByCst(int cstId) {
-        List<Order> orderList=orderService.findByCst(cstId);
+        List<Order> orderList = orderService.findByCst(cstId);
         return filterOrderList(orderList);//筛选出超时的待支付订单并取消
     }
 
     @Override
     public List<Order> findByCst(int cstId, String state) {
-        List<Order> orderList=orderService.findByCst(cstId,state);
+        List<Order> orderList = orderService.findByCst(cstId, state);
         return filterOrderList(orderList);//筛选出超时的待支付订单并取消
     }
 
     @Override
     public List<Order> findByRst(int rstId) {
-        List<Order> orderList=orderService.findByRst(rstId);
+        List<Order> orderList = orderService.findByRst(rstId);
         return filterOrderList(orderList);//筛选出超时的待支付订单并取消
     }
 
     @Override
     public List<Order> findByRst(int rstId, String state) {
-        List<Order> orderList=orderService.findByRst(rstId,state);
+        List<Order> orderList = orderService.findByRst(rstId, state);
         return filterOrderList(orderList);//筛选出超时的待支付订单并取消
     }
 
@@ -82,15 +82,15 @@ public class OrderServiceImplWithUserTriggerCancel implements OrderService{
 
     @Override
     public double getDiscount(int cstId, double consumption) {
-        return orderService.getDiscount(cstId,consumption);
+        return orderService.getDiscount(cstId, consumption);
     }
 
-    private List<Order> filterOrderList(List<Order> orderList){
-        Iterator<Order> it=orderList.iterator();
-        Date now=new Date(System.currentTimeMillis()-PAY_INTERVAL);
-        while(it.hasNext()){
-            Order order=it.next();
-            if("待支付".equals(order.getState())&&order.getOrderTime().before(now)){
+    private List<Order> filterOrderList(List<Order> orderList) {
+        Iterator<Order> it = orderList.iterator();
+        Date now = new Date(System.currentTimeMillis() - PAY_INTERVAL);
+        while (it.hasNext()) {
+            Order order = it.next();
+            if ("待支付".equals(order.getState()) && order.getOrderTime().before(now)) {
                 cancelOrder(order.getOrderId());
                 it.remove();
             }

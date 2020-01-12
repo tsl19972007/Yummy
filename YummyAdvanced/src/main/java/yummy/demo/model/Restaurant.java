@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "restaurant")
-public class Restaurant implements Serializable{
+public class Restaurant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
@@ -16,8 +16,8 @@ public class Restaurant implements Serializable{
     private String phone;
     private String address;
 
-    @OneToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinColumn(name="menu_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "menu_id")
     private Menu menu;
     private double profit;
     private double balance;
@@ -32,7 +32,7 @@ public class Restaurant implements Serializable{
         this.profit = 0;
     }
 
-    public Restaurant(int id, String password, String type, String name, String phone, String address, Menu menu,double profit, double balance) {
+    public Restaurant(int id, String password, String type, String name, String phone, String address, Menu menu, double profit, double balance) {
         this.id = id;
         this.password = password;
         this.type = type;
@@ -44,7 +44,8 @@ public class Restaurant implements Serializable{
         this.balance = balance;
     }
 
-    public Restaurant(){}
+    public Restaurant() {
+    }
 
     public int getId() {
         return id;

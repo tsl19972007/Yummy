@@ -15,8 +15,9 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public void register(Customer cst) {
+        cst.setBalance(1000);
         cstDao.add(cst);
-        mailService.cstRegisterConfirm(cst.getId());
+        mailService.cstRegisterConfirm(cst.getId(),cst.getEmail());
     }
 
     @Override

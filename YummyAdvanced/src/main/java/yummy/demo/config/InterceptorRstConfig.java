@@ -12,8 +12,8 @@ public class InterceptorRstConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(rstInterceptor).addPathPatterns("/rstHome","/rstStatistics","/rstInfo","/rstMenu",
-                "/rstOrderListPaid","/rstOrderListCompleted","/rstOrderListReturned","/rstOrderDetail/**",
+        registry.addInterceptor(rstInterceptor).addPathPatterns("/rstHome", "/rstStatistics", "/rstInfo", "/rstMenu",
+                "/rstOrderListPaid", "/rstOrderListCompleted", "/rstOrderListReturned", "/rstOrderDetail/**",
                 "/restaurant/**");
     }
 }

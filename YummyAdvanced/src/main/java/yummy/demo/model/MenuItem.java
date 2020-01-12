@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "menu_item")
-public class MenuItem implements Serializable{
+public class MenuItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
@@ -16,20 +16,20 @@ public class MenuItem implements Serializable{
 
     public MenuItem(int id, String type, String name, double price, int num) {
         this.id = id;
-        this.type=type;
-        this.name = name;
-        this.price = price;
-        this.num = num;
-    }
-
-    public MenuItem(String type,String name, double price, int num) {
         this.type = type;
         this.name = name;
         this.price = price;
         this.num = num;
     }
 
-    public MenuItem(){}
+    public MenuItem(String type, String name, double price, int num) {
+        this.type = type;
+        this.name = name;
+        this.price = price;
+        this.num = num;
+    }
+
+    public MenuItem() {}
 
     public int getId() {
         return id;
@@ -63,7 +63,11 @@ public class MenuItem implements Serializable{
         this.price = price;
     }
 
-    public int getNum() { return num; }
+    public int getNum() {
+        return num;
+    }
 
-    public void setNum(int num) { this.num = num; }
+    public void setNum(int num) {
+        this.num = num;
+    }
 }

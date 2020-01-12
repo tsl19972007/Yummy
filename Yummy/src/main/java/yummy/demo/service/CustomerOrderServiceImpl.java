@@ -58,6 +58,4 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     public void finishOrder(int id){
         orderDao.finishOrder(id);
     }
-
-
 }

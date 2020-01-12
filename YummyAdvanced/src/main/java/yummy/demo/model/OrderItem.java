@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "order_item")
-public class OrderItem implements Serializable{
+public class OrderItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int id;
@@ -26,13 +26,14 @@ public class OrderItem implements Serializable{
 
     public OrderItem(int menuItemId, String type, String name, double price, int num) {
         this.menuItemId = menuItemId;
-        this.type=type;
+        this.type = type;
         this.name = name;
         this.price = price;
         this.num = num;
     }
 
-    public OrderItem(){}
+    public OrderItem() {
+    }
 
     public int getId() {
         return id;
@@ -82,7 +83,7 @@ public class OrderItem implements Serializable{
         this.num = num;
     }
 
-    public double getSum(){
-        return price*num;
+    public double getSum() {
+        return price * num;
     }
 }

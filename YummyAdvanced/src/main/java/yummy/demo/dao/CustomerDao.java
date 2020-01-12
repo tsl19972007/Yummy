@@ -8,10 +8,10 @@ import yummy.demo.model.Customer;
  * @description：dao interface for Customer
  */
 
-public interface CustomerDao extends BaseDao<Customer>{
+public interface CustomerDao extends BaseDao<Customer> {
     public Customer findByEmail(String email);
 
-    public Customer findByEmailAndPassword(String email,String password);
+    public Customer findByEmailAndPassword(String email, String password);
 
     public void setActive(int id);
 

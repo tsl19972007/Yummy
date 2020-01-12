@@ -16,7 +16,7 @@ public class OrderMessage implements Delayed {
     private final long expireTime;//到期时间
 
     public OrderMessage(int orderId, long delayTime) {
-        this.orderId=orderId;
+        this.orderId = orderId;
         this.delayTime = delayTime;
         this.expireTime = System.currentTimeMillis() + delayTime;
     }
@@ -28,9 +28,9 @@ public class OrderMessage implements Delayed {
 
     @Override
     public int compareTo(Delayed o) {
-        long timeDiff = getDelay(TimeUnit.MILLISECONDS)-o.getDelay(TimeUnit.MILLISECONDS);
-        if(timeDiff==0) return 0;
-        return timeDiff>0?1:-1;
+        long timeDiff = getDelay(TimeUnit.MILLISECONDS) - o.getDelay(TimeUnit.MILLISECONDS);
+        if (timeDiff == 0) return 0;
+        return timeDiff > 0 ? 1 : -1;
     }
 
     public int getOrderId() {

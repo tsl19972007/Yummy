@@ -11,28 +11,27 @@ import yummy.demo.model.Restaurant;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Transactional
 @Service
 public class ManagerServiceImpl implements ManagerService {
+
+    public static final Double PROFIT_RATIO = 0.95;
+
     @Autowired
     RestaurantDao rstDao;
     @Autowired
     ManagerDao mngDao;
-
-    public static final Double PROFIT_RATIO=0.95;
-
-    private List<Restaurant> rstList=new ArrayList<>();
+    private List<Restaurant> rstList = new ArrayList<>();
 
     @Override
     public boolean login(int id, String password) {
-        return (id== Manager.getDefaultId()&&password.equals(Manager.getDefaultPassword()));
+        return id == Manager.getDefaultId() && Manager.getDefaultPassword().equals(password);
     }
 
     @Override
-    public Restaurant getApplyFromId(int rstId){
-        Restaurant rst=null;
-        for(int i=0;i<rstList.size();i++) {
+    public Restaurant getApplyFromId(int rstId) {
+        Restaurant rst = null;
+        for (int i = 0; i < rstList.size(); i++) {
             if (rstId == rstList.get(i).getId()) {
                 rst = rstList.get(i);
             }
@@ -42,8 +41,8 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public void addApply(Restaurant rst) {
-        for(int i=0;i<rstList.size();i++){
-            if(rst.getId()==rstList.get(i).getId()){
+        for (int i = 0; i < rstList.size(); i++) {
+            if (rst.getId() == rstList.get(i).getId()) {
                 rstList.remove(i);
             }
         }
@@ -52,9 +51,9 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public void approve(int rstId) {
-        for(int i=0;i<rstList.size();i++){
-            if(rstId==rstList.get(i).getId()){
-                Restaurant rst=rstList.get(i);
+        for (int i = 0; i < rstList.size(); i++) {
+            if (rstId == rstList.get(i).getId()) {
+                Restaurant rst = rstList.get(i);
                 rstList.remove(i);
                 rst.setId(rst.getId());
                 rstDao.update(rst);
@@ -64,8 +63,8 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public void reject(int rstId) {
-        for(int i=0;i<rstList.size();i++){
-            if(rstId==rstList.get(i).getId()){
+        for (int i = 0; i < rstList.size(); i++) {
+            if (rstId == rstList.get(i).getId()) {
                 rstList.remove(i);
             }
         }
@@ -74,11 +73,11 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public List<Restaurant> getRstBalanceList() {
-        List<Restaurant> rstList2=new ArrayList<>();
-        List list=rstDao.getAll();
-        for(Object obj:list){
-            Restaurant rst=(Restaurant)obj;
-            if(rst.getProfit()>0) {
+        List<Restaurant> rstList2 = new ArrayList<>();
+        List list = rstDao.getAll();
+        for (Object obj : list) {
+            Restaurant rst = (Restaurant) obj;
+            if (rst.getProfit() > 0) {
                 rstList2.add(rst);
             }
         }
@@ -91,28 +90,30 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public void balance(int rstId){
-        Restaurant rst=rstDao.get(rstId);
-        double profit=rst.getProfit();
+    public void balance(int rstId) {
+        Restaurant rst = rstDao.get(rstId);
+        double profit = rst.getProfit();
         rst.setProfit(0);
-        rst.setBalance(rst.getBalance()+profit*ManagerServiceImpl.PROFIT_RATIO);
+        rst.setBalance(rst.getBalance() + profit * ManagerServiceImpl.PROFIT_RATIO);
         rstDao.update(rst);
-        Manager mng=mngDao.get(Manager.getDefaultId());
-        mng.setBalance(mng.getBalance()-profit*ManagerServiceImpl.PROFIT_RATIO);
+        Manager mng = mngDao.get(Manager.getDefaultId());
+        mng.setBalance(mng.getBalance() - profit * ManagerServiceImpl.PROFIT_RATIO);
         mngDao.update(mng);
     }
 
     @Override
-    public void balanceAll(){
-        List<Restaurant> rstList=getRstBalanceList();
-        double totalProfit=0;
-        for(Restaurant rst:rstList){
-            totalProfit+=rst.getProfit();
-            rst.setBalance(rst.getBalance()+PROFIT_RATIO*rst.getProfit());
+    public void balanceAll() {
+        List<Restaurant> rstList = getRstBalanceList();
+        double totalProfit = 0;
+        for (Restaurant rst : rstList) {
+            totalProfit += rst.getProfit();
+            rst.setBalance(rst.getBalance() + PROFIT_RATIO * rst.getProfit());
             rst.setProfit(0);
         }
-        Manager mng=mngDao.get(Manager.getDefaultId());
-        mng.setBalance(mng.getBalance()-totalProfit*ManagerServiceImpl.PROFIT_RATIO);
+        Manager mng = mngDao.get(Manager.getDefaultId());
+        mng.setBalance(mng.getBalance() - totalProfit * ManagerServiceImpl.PROFIT_RATIO);
         mngDao.update(mng);
     }
 }
+
+

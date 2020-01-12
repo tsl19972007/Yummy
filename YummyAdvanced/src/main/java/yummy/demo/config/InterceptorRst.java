@@ -16,7 +16,7 @@ public class InterceptorRst implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession(false);
-        if(session!=null&&session.getAttribute(SESSION_KEY_RST) != null){
+        if (session != null && session.getAttribute(SESSION_KEY_RST) != null) {
             return true;
         }
         response.sendRedirect(URL);
