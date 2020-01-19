@@ -5,12 +5,16 @@
     <groupId>com.tangshilin</groupId>
     <artifactId>yummy-plaftorm</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <description>Demo project for Spring Boot</description>
+    <packaging>pom</packaging>
     <modules>
         <module>yummy-platform-advanced</module>
         <module>yummy-platform-old</module>
     </modules>
-
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.2.RELEASE</version>
+    </parent>
     <properties>
         <java.version>1.8</java.version>
     </properties>

@@ -5,12 +5,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import yummy.old.YummyOldApplication;
 import yummy.old.dao.CustomerDao;
 
 
-
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CustomerDaoTest.class)
+@SpringBootTest(classes = YummyOldApplication.class)
 public class CustomerDaoTest {
     @Autowired
     private CustomerDao CustomerDaoImpl;
