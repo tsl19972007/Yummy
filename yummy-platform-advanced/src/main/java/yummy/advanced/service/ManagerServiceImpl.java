@@ -24,8 +24,8 @@ public class ManagerServiceImpl implements ManagerService {
     private List<Restaurant> rstList = new ArrayList<>();
 
     @Override
-    public boolean login(int id, String password) {
-        return id == Manager.getDefaultId() && Manager.getDefaultPassword().equals(password);
+    public Manager login(int id, String password) {
+        return mngDao.findByIdAndPassword(id,password);
     }
 
     @Override

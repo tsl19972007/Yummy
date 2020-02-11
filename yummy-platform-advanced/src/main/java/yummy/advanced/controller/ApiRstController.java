@@ -1,15 +1,16 @@
 package yummy.advanced.controller;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+import yummy.advanced.config.shiro.ShiroUtil;
 import yummy.advanced.dto.MenuDTO;
 import yummy.advanced.dto.RestaurantDTO;
 import yummy.advanced.service.OrderService;
 import yummy.advanced.service.RestaurantService;
 
-import javax.servlet.http.HttpServletRequest;
-
+@RequiresRoles("Restaurant")
 @RestController
 @RequestMapping("/restaurant")
 public class ApiRstController {
@@ -25,8 +26,8 @@ public class ApiRstController {
     }
 
     @PostMapping(value = "/updateMenu")
-    public void updateMenu(HttpServletRequest request, @RequestBody MenuDTO menuDTO) {
-        int rstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_RESTAURANT_ID);
+    public void updateMenu(@RequestBody MenuDTO menuDTO) {
+        int rstId = ShiroUtil.getUserId();
         rstService.updateMenu(rstId, menuDTO.toMenu());
     }
 

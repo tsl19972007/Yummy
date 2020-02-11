@@ -1,16 +1,19 @@
 package yummy.advanced.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import yummy.advanced.config.shiro.CustomizedToken;
+import yummy.advanced.config.shiro.RoleEnum;
+import yummy.advanced.config.shiro.ShiroUtil;
 import yummy.advanced.dto.CustomerDTO;
 import yummy.advanced.dto.RestaurantDTO;
 import yummy.advanced.model.Customer;
 import yummy.advanced.service.CustomerService;
 import yummy.advanced.service.ManagerService;
 import yummy.advanced.service.RestaurantService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/loginAndRegister")
@@ -39,54 +42,53 @@ public class ApiLoginController {
     }
 
     @PostMapping(value = "/cstLogin")
-    public boolean cstLogin(HttpServletRequest request, @RequestParam String email, @RequestParam String password) {
-        Customer cst = cstService.login(email, password);
-        if (cst != null) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute(ConstantField.SESSION_CUSTOMER_ID, cst.getId());
-            session.setAttribute(ConstantField.SESSION_USERNAME, cst.getName());
+    public boolean cstLogin(@RequestParam String email, @RequestParam String password) {
+        Subject subject = SecurityUtils.getSubject();
+        CustomizedToken token = new CustomizedToken(email, password, RoleEnum.Customer.getRole());
+        try {
+            subject.login(token);
+            return true;
+        } catch (AuthenticationException e) {
+            return false;
         }
-        return cst != null;
     }
 
     @PostMapping(value = "/rstLogin")
-    public boolean rstLogin(HttpServletRequest request, @RequestParam int id, @RequestParam String password) {
-        if (rstService.login(id, password) != null) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute(ConstantField.SESSION_RESTAURANT_ID, id);
-            session.setAttribute(ConstantField.SESSION_USERNAME, id);
+    public boolean rstLogin(@RequestParam int id, @RequestParam String password) {
+        Subject subject = SecurityUtils.getSubject();
+        CustomizedToken token = new CustomizedToken(String.valueOf(id), password, RoleEnum.Restaurant.getRole());
+        try {
+            subject.login(token);
+            return true;
+        } catch (AuthenticationException e) {
+            return false;
         }
-        return rstService.login(id, password) != null;
     }
 
     @PostMapping(value = "/mngLogin")
-    public boolean mngLogin(HttpServletRequest request, @RequestParam int id, @RequestParam String password) {
-        if (mngService.login(id, password)) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute(ConstantField.SESSION_MANAGER_ID, id);
-            session.setAttribute(ConstantField.SESSION_USERNAME, "manager");
+    public boolean mngLogin(@RequestParam int id, @RequestParam String password) {
+        Subject subject = SecurityUtils.getSubject();
+        CustomizedToken token = new CustomizedToken(String.valueOf(id), password, RoleEnum.Manager.getRole());
+        try {
+            subject.login(token);
+            return true;
+        } catch (AuthenticationException e) {
+            return false;
         }
-        return mngService.login(id, password);
     }
 
     @PostMapping(value = "/cstLogout")
-    public void cstLogout(HttpServletRequest request) {
-        userLogout(request);
+    public void cstLogout() {
+        ShiroUtil.logout();
     }
 
     @PostMapping(value = "/rstLogout")
-    public void rstLogout(HttpServletRequest request) {
-        userLogout(request);
+    public void rstLogout() {
+        ShiroUtil.logout();
     }
 
     @PostMapping(value = "/mngLogout")
-    public void mngLogout(HttpServletRequest request) {
-        userLogout(request);
-    }
-
-    private void userLogout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) return;
-        session.invalidate();
+    public void mngLogout() {
+        ShiroUtil.logout();
     }
 }

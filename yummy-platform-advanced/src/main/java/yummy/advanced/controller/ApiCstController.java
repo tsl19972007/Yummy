@@ -1,9 +1,11 @@
 package yummy.advanced.controller;
 
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+import yummy.advanced.config.shiro.ShiroUtil;
 import yummy.advanced.dto.CustomerDTO;
 import yummy.advanced.dto.OrderDTO;
 import yummy.advanced.dto.OrderItemDTO;
@@ -12,13 +14,10 @@ import yummy.advanced.model.OrderItem;
 import yummy.advanced.service.CustomerService;
 import yummy.advanced.service.OrderService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@RequiresRoles("Customer")
 @RestController
 @RequestMapping("/customer")
 public class ApiCstController {
@@ -34,11 +33,10 @@ public class ApiCstController {
     }
 
     @PostMapping(value = "/writeOff")
-    public void writeOff(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-        int cstId = (Integer) session.getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public void writeOff() {
+        int cstId = ShiroUtil.getUserId();
         cstService.writeOff(cstId);
-        session.invalidate();
+        ShiroUtil.logout();
     }
 
     @PostMapping(value = "/order")

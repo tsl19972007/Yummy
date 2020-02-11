@@ -1,11 +1,12 @@
 package yummy.advanced.service;
 
+import yummy.advanced.model.Manager;
 import yummy.advanced.model.Restaurant;
 
 import java.util.List;
 
 public interface ManagerService {
-    public boolean login(int id, String password);
+    public Manager login(int id, String password);
 
     public List<Restaurant> getRstUpdateList();
 

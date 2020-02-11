@@ -1,12 +1,13 @@
 package yummy.advanced.controller;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import yummy.advanced.statistics.CustomerStatistics;
+import yummy.advanced.config.shiro.ShiroUtil;
 import yummy.advanced.dto.CustomerDTO;
 import yummy.advanced.dto.OrderDTO;
 import yummy.advanced.dto.RestaurantDTO;
@@ -16,11 +17,12 @@ import yummy.advanced.service.CustomerService;
 import yummy.advanced.service.OrderService;
 import yummy.advanced.service.RestaurantService;
 import yummy.advanced.service.StatisticsService;
+import yummy.advanced.statistics.CustomerStatistics;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiresRoles("Customer")
 @Controller
 public class IndexCstController {
     @Autowired
@@ -34,16 +36,16 @@ public class IndexCstController {
     StatisticsService staService;
 
     @RequestMapping("/cstHome")
-    public String cstHome(HttpServletRequest request, Model model) {
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public String cstHome(Model model) {
+        int cstId = ShiroUtil.getUserId();
         CustomerDTO cst = new CustomerDTO(cstService.findById(cstId));
         model.addAttribute("customer", cst);
         return "customer/cstHome";
     }
 
     @RequestMapping("/cstStatistics")
-    public String cstStatistics(HttpServletRequest request, Model model) {
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public String cstStatistics(Model model) {
+        int cstId = ShiroUtil.getUserId();
         CustomerDTO cst = new CustomerDTO(cstService.findById(cstId));
         model.addAttribute("cst", cst);
         CustomerStatistics cstStatistics = staService.getCustomerStatistics(cstId);
@@ -63,9 +65,9 @@ public class IndexCstController {
     }
 
     @RequestMapping("/cstOrder/{rstId}")
-    public String cstOrderRst(HttpServletRequest request, @PathVariable Integer rstId, Model model) {
+    public String cstOrderRst(@PathVariable Integer rstId, Model model) {
         RestaurantDTO rst = new RestaurantDTO(rstService.findById(rstId));
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+        int cstId = ShiroUtil.getUserId();
         CustomerDTO cst = new CustomerDTO(cstService.findById(cstId));
         model.addAttribute("rst", rst);
         model.addAttribute("customer", cst);
@@ -73,8 +75,8 @@ public class IndexCstController {
     }
 
     @RequestMapping("/cstOrderList")
-    public String cstOrderList(HttpServletRequest request, Model model) {
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public String cstOrderList(Model model) {
+        int cstId = ShiroUtil.getUserId();
         List<Order> orderList = orderService.findByCst(cstId);
         List<OrderDTO> orderDTOList = new ArrayList<>();
         for (int i = 0; i < orderList.size(); i++) {
@@ -85,8 +87,8 @@ public class IndexCstController {
     }
 
     @RequestMapping("/cstOrderListUnpaid")
-    public String cstOrderListUnpaid(HttpServletRequest request, Model model) {
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public String cstOrderListUnpaid(Model model) {
+        int cstId = ShiroUtil.getUserId();
         List<Order> orderList = orderService.findByCst(cstId, "待支付");
         List<OrderDTO> orderDTOList = new ArrayList<>();
         for (int i = 0; i < orderList.size(); i++) {
@@ -97,8 +99,8 @@ public class IndexCstController {
     }
 
     @RequestMapping("/cstOrderListPaid")
-    public String cstOrderListPaid(HttpServletRequest request, Model model) {
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public String cstOrderListPaid(Model model) {
+        int cstId = ShiroUtil.getUserId();
         List<Order> orderList = orderService.findByCst(cstId, "进行中");
         List<OrderDTO> orderDTOList = new ArrayList<>();
         for (int i = 0; i < orderList.size(); i++) {
@@ -109,8 +111,8 @@ public class IndexCstController {
     }
 
     @RequestMapping("/cstOrderListCompleted")
-    public String cstOrderListCompleted(HttpServletRequest request, Model model) {
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public String cstOrderListCompleted(Model model) {
+        int cstId = ShiroUtil.getUserId();
         List<Order> orderList = orderService.findByCst(cstId, "已完成");
         List<OrderDTO> orderDTOList = new ArrayList<>();
         for (int i = 0; i < orderList.size(); i++) {
@@ -121,8 +123,8 @@ public class IndexCstController {
     }
 
     @RequestMapping("/cstOrderListReturned")
-    public String cstOrderListReturned(HttpServletRequest request, Model model) {
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public String cstOrderListReturned(Model model) {
+        int cstId = ShiroUtil.getUserId();
         List<Order> orderList = orderService.findByCst(cstId, "已退订");
         List<OrderDTO> orderDTOList = new ArrayList<>();
         for (int i = 0; i < orderList.size(); i++) {
@@ -133,7 +135,7 @@ public class IndexCstController {
     }
 
     @RequestMapping("/cstOrderDetail/{orderId}")
-    public String cstOrderDetail(HttpServletRequest request, @PathVariable Integer orderId, Model model) {
+    public String cstOrderDetail(@PathVariable Integer orderId, Model model) {
         OrderDTO order = new OrderDTO(orderService.findById(orderId));
         model.addAttribute("order", order);
         RestaurantDTO rst = new RestaurantDTO(rstService.findById(order.getRstId()));
@@ -147,8 +149,8 @@ public class IndexCstController {
     }
 
     @RequestMapping("/cstInfo")
-    public String cstInfo(HttpServletRequest request, Model model) {
-        int cstId = (Integer) request.getSession(false).getAttribute(ConstantField.SESSION_CUSTOMER_ID);
+    public String cstInfo(Model model) {
+        int cstId = ShiroUtil.getUserId();
         CustomerDTO cst = new CustomerDTO(cstService.findById(cstId));
         model.addAttribute("customer", cst);
         model.addAttribute("level", cst.getLevel());

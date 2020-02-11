@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.w3.org/1999/xhtml">
 <head th:fragment="commonHeader">
     <meta charset="utf-8" />
     <title>Yummy</title>
@@ -157,7 +157,7 @@
                         <img class="nav-user-photo" th:src="@{/static/avatars/user.jpg}" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>Welcome,</small>
-									<span th:text="${#session.getAttribute('userName')}">Jason</span>
+                                    <span shiro:principal property="userName">Jason</span>
 								</span>
 
                         <i class="icon-caret-down"></i>

@@ -9,4 +9,5 @@ import yummy.advanced.model.Manager;
  */
 
 public interface ManagerDao extends BaseDao<Manager> {
+    Manager findByIdAndPassword(Integer id, String password);
 }

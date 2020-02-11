@@ -16,17 +16,17 @@ public class OrderDaoImpl extends BaseDaoImpl<Order> implements OrderDao {
 
     @Override
     public List<Order> getCompletedAnnualOrders() {
-        return getListByHQL("SELECT o FROM Order o WHERE year(o.order_time) = year(now())");
+        return getListByHQL("SELECT o FROM Order o WHERE year(o.orderTime) = year(now())");
     }
 
     @Override
     public List<Order> getCompletedMonthlyOrders() {
-        return getListByHQL("SELECT o FROM Order o WHERE month(o.order_time) = month(now())");
+        return getListByHQL("SELECT o FROM Order o WHERE month(o.orderTime) = month(now())");
     }
 
     @Override
     public List<Order> getCompletedWeeklyOrders() {
-        return getListByHQL("SELECT o FROM Order o WHERE yearweek(o.order_time) = yearweek(now())");
+        return getListByHQL("SELECT o FROM Order o WHERE yearweek(o.orderTime) = yearweek(now())");
     }
 
     @Override

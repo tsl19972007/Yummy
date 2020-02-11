@@ -1,5 +1,6 @@
 package yummy.advanced.controller;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import yummy.advanced.service.ManagerService;
 
+@RequiresRoles("Manager")
 @RestController
 @RequestMapping("/manager")
 public class ApiMngController {

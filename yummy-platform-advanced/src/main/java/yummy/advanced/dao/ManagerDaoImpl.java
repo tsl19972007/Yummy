@@ -1,6 +1,7 @@
 package yummy.advanced.dao;
 
 import org.springframework.stereotype.Repository;
+import yummy.advanced.model.Customer;
 import yummy.advanced.model.Manager;
 
 /**
@@ -10,4 +11,8 @@ import yummy.advanced.model.Manager;
  */
 @Repository
 public class ManagerDaoImpl extends BaseDaoImpl<Manager> implements ManagerDao {
+    @Override
+    public Manager findByIdAndPassword(Integer id, String password) {
+        return getUniqueResultByHQL("SELECT m FROM Manager m WHERE m.id = ?0 and m.password=?1", id, password);
+    }
 }
