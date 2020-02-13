@@ -6,7 +6,9 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import yummy.advanced.model.Customer;
 import yummy.advanced.model.Manager;
 import yummy.advanced.model.Restaurant;
@@ -21,11 +23,17 @@ import yummy.advanced.service.RestaurantService;
  */
 
 public class UserRealm extends AuthorizingRealm {
+    /*
+    配置懒加载，否则与Spring初始化冲突，导致@Transactional不可用
+     */
     @Autowired
+    @Lazy
     CustomerService cstService;
     @Autowired
+    @Lazy
     RestaurantService rstService;
     @Autowired
+    @Lazy
     ManagerService mngService;
 
     /*
@@ -47,17 +55,19 @@ public class UserRealm extends AuthorizingRealm {
         CustomizedToken token = (CustomizedToken) authenticationToken;
         String role = token.getRole();
         if (RoleEnum.Customer.getRole().equals(role)) {
-            Customer cst = cstService.login(token.getUsername(), String.valueOf(token.getPassword()));
-            if (cst == null) {
+            Customer cst = cstService.findByEmail(token.getUsername());
+            if (cst == null || !cst.getState().equals(CustomerStateEnum.Registered.getState())) {
                 throw new UnknownAccountException("账号或密码不正确");
             }
-            return new SimpleAuthenticationInfo(new ShiroUserInfo(cst), cst.getPassword(), getName());
+            ByteSource salt=ByteSource.Util.bytes(cst.getEmail());
+            return new SimpleAuthenticationInfo(new ShiroUserInfo(cst), cst.getPassword(), salt, getName());
         } else if (RoleEnum.Restaurant.getRole().equals(role)) {
-            Restaurant rst = rstService.login(Integer.parseInt(token.getUsername()), String.valueOf(token.getPassword()));
+            Restaurant rst = rstService.findById(Integer.parseInt(token.getUsername()));
             if (rst == null) {
                 throw new UnknownAccountException("账号或密码不正确");
             }
-            return new SimpleAuthenticationInfo(new ShiroUserInfo(rst), rst.getPassword(), getName());
+            ByteSource salt=ByteSource.Util.bytes(rst.getPhone());
+            return new SimpleAuthenticationInfo(new ShiroUserInfo(rst), rst.getPassword(), salt, getName());
         } else if (RoleEnum.Manager.getRole().equals(role)) {
             Manager mng = mngService.login(Integer.parseInt(token.getUsername()), String.valueOf(token.getPassword()));
             if (mng == null) {

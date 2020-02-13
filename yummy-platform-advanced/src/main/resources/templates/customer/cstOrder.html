@@ -6,7 +6,10 @@
 <div th:include="customer/cstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -19,7 +22,10 @@
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
 
                 <ul class="breadcrumb">
@@ -84,18 +90,19 @@
 </div>
 <div th:include="customer/cstCommon::commonFooter"></div>
 <script type="text/javascript">
-    jQuery(function($) {
-        var oTable1 = $('#sample-table-2').dataTable( {
+    jQuery(function ($) {
+        var oTable1 = $('#sample-table-2').dataTable({
             "aoColumns": [
-                null, null, { "bSortable": false },{ "bSortable": false },{ "bSortable": false },{ "bSortable": false }
-            ] } );
+                null, null, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}, {"bSortable": false}
+            ]
+        });
     })
 </script>
 <script type="text/javascript">
-    function checkDetail(obj){
+    function checkDetail(obj) {
         var tr = obj.parentNode.parentNode;
         var id = tr.childNodes[1].innerHTML;
-        window.location.href="/yummy/cstOrder/"+id;
+        window.location.href = "/yummy/cstOrder/" + id;
     }
 </script>
 </body>

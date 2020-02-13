@@ -1,7 +1,6 @@
 package yummy.advanced.service;
 
 import yummy.advanced.statistics.*;
-import yummy.advanced.statistics.*;
 
 /**
  * @author ：tsl
@@ -10,13 +9,13 @@ import yummy.advanced.statistics.*;
  */
 
 public interface StatisticsService {
-    public CustomerStatistics getCustomerStatistics(int cstId);
+    CustomerStatistics getCustomerStatistics(int cstId);
 
-    public RestaurantStatistics getRestaurantStatistics(int rstId);
+    RestaurantStatistics getRestaurantStatistics(int rstId);
 
-    public YummyAnnualFinance getYummyAnnualFinance();
+    YummyAnnualFinance getYummyAnnualFinance();
 
-    public YummyMonthlyFinance getYummyMonthlyFinance();
+    YummyMonthlyFinance getYummyMonthlyFinance();
 
-    public YummyWeeklyFinance getYummyWeeklyFinance();
+    YummyWeeklyFinance getYummyWeeklyFinance();
 }

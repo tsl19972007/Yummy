@@ -6,7 +6,10 @@
 <div th:include="customer/cstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -19,7 +22,10 @@
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
 
                 <ul class="breadcrumb">
@@ -54,9 +60,10 @@
                                             <span class="invoice-info-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态：</span>
                                             <span th:text="${order.state}" class="red"></span>
 
-                                            <br />
+                                            <br/>
                                             <span class="invoice-info-label">订单时间：</span>
-                                            <span th:text="${#strings.substring(order.orderTime,0,19)}" class="red"></span>
+                                            <span th:text="${#strings.substring(order.orderTime,0,19)}"
+                                                  class="red"></span>
                                         </div>
 
                                         <div class="widget-toolbar hidden-480">
@@ -168,7 +175,8 @@
 
                                             <div class="row">
                                                 <div class="col-sm-3 pull-left">
-                                                    送餐时间：<b class="red" th:text="${#strings.substring(order.arriveTime,0,19)}"> </b>
+                                                    送餐时间：<b class="red"
+                                                            th:text="${#strings.substring(order.arriveTime,0,19)}"> </b>
                                                     <br>
                                                     订单备注：<b class="red" th:text="${order.getRemarks()}"> </b>
                                                 </div>
@@ -184,7 +192,7 @@
                                                         <span th:text="'￥'+${order.consumption}" class="red"></span>
                                                     </h4>
                                                 </div>
-                                                <div class="col-sm-7 pull-left"> Extra Information </div>
+                                                <div class="col-sm-7 pull-left"> Extra Information</div>
                                             </div>
 
                                             <div class="space-6"></div>
@@ -193,10 +201,12 @@
                                             </div>
                                             <div class="space-6"></div>
                                             <div th:if="${order.state}=='待支付'" class="row">
-                                                <button id="cancel" class="btn btn-primary btn-danger"  style="margin-left:20px; float:right">
+                                                <button id="cancel" class="btn btn-primary btn-danger"
+                                                        style="margin-left:20px; float:right">
                                                     <i class="icon-remove bigger-120"></i>取消
                                                 </button>
-                                                <button id="pay" class="btn btn-primary btn-success"  style="float:right">
+                                                <button id="pay" class="btn btn-primary btn-success"
+                                                        style="float:right">
                                                     <i class="icon-ok bigger-120"></i>支付
                                                 </button>
                                             </div>
@@ -220,33 +230,35 @@
 <script th:inline="javascript">
     var id;
     var seconds;
-    window.onload=function() {
+    window.onload = function () {
         var orderStr = [[${order.orderTime}]];
-        orderStr=orderStr.substring(0,10)+" "+orderStr.substring(11,19);
+        orderStr = orderStr.substring(0, 10) + " " + orderStr.substring(11, 19);
         var orderDate = new Date(orderStr.substring(0, 19).replace(/-/g, "/"));
         seconds = (orderDate - new Date() + 1000 * 60 * 2) / 1000;
-        id=setTimeout(box, 1000);
+        id = setTimeout(box, 1000);
     };
-    function box(){
-        document.getElementById("time").innerHTML = (parseInt(seconds)-1)  ;
+
+    function box() {
+        document.getElementById("time").innerHTML = (parseInt(seconds) - 1);
         seconds--;
-        if(seconds<=0){
-            clearInterval(id) ;
+        if (seconds <= 0) {
+            clearInterval(id);
             window.history.back(-1);
-        }else{
-            setTimeout(box,1000) ;
+        } else {
+            setTimeout(box, 1000);
         }
     }
-    function cancelOrder(){
-        var orderId=[[${order.orderId}]];
+
+    function cancelOrder() {
+        var orderId = [[${order.orderId}]];
         var basePath = "http:\/\/localhost:8080\/yummy";
         $.ajax({
             type: 'POST',
             url: "/yummy/customer/cancelOrder",
             data: {
-                id:orderId
+                id: orderId
             },
-            success:function(result) {
+            success: function (result) {
                 window.history.back(-1);
             },
             error: function (result) {
@@ -254,17 +266,18 @@
             }
         });
     }
-    function payOrder(){
-        var orderId=[[${order.orderId}]];
+
+    function payOrder() {
+        var orderId = [[${order.orderId}]];
         var basePath = "http:\/\/localhost:8080\/yummy";
         $.ajax({
             type: 'POST',
             url: "/yummy/customer/payOrder",
             data: {
-                id:orderId
+                id: orderId
             },
-            success:function(result) {
-                if(result==false){
+            success: function (result) {
+                if (result == false) {
                     bootbox.alert("余额不足");
                 }
                 else {
@@ -276,10 +289,11 @@
             }
         });
     }
-    document.getElementById("cancel").onclick=function(){
+
+    document.getElementById("cancel").onclick = function () {
         cancelOrder();
     };
-    document.getElementById("pay").onclick=function(){
+    document.getElementById("pay").onclick = function () {
         payOrder();
     };
 </script>

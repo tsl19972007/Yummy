@@ -12,11 +12,6 @@ import yummy.advanced.model.Restaurant;
 
 @Repository
 public class RestaurantDaoImpl extends BaseDaoImpl<Restaurant> implements RestaurantDao {
-    @Override
-    public Restaurant findByIdAndPassword(int id, String password) {
-        return getUniqueResultByHQL("SELECT r FROM Restaurant r WHERE r.id = ?0 and r.password=?1", id, password);
-    }
-
     public MenuItem getMenuItem(int id) {
         return getSession().get(MenuItem.class, id);
     }

@@ -6,7 +6,10 @@
 <div th:include="customer/cstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -19,7 +22,10 @@
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
 
                 <ul class="breadcrumb">
@@ -45,11 +51,14 @@
                                 <div class="well well-sm">
                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     &nbsp;
-                                    <div class="inline middle blue bigger-110"> 您的资料完整度为<span th:text="${percent}+'%'">0</span> </div>
+                                    <div class="inline middle blue bigger-110"> 您的资料完整度为<span
+                                            th:text="${percent}+'%'">0</span></div>
 
                                     &nbsp; &nbsp; &nbsp;
-                                    <div style="width:200px;" th:attr="data-percent=${percent}" class="inline middle no-margin progress progress-striped active">
-                                        <div th:style="'width:'+${percent}+'%'" class="progress-bar progress-bar-success"></div>
+                                    <div style="width:200px;" th:attr="data-percent=${percent}"
+                                         class="inline middle no-margin progress progress-striped active">
+                                        <div th:style="'width:'+${percent}+'%'"
+                                             class="progress-bar progress-bar-success"></div>
                                     </div>
                                 </div><!-- /well -->
 
@@ -75,11 +84,14 @@
                                                     <div class="col-xs-12 col-sm-8">
 
                                                         <div class="form-group">
-                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-email">邮箱</label>
+                                                            <label class="col-sm-4 control-label no-padding-right"
+                                                                   for="form-field-email">邮箱</label>
 
                                                             <div class="col-sm-8">
                                                                 <div class="clearfix">
-                                                                    <input th:value="${customer.email}" class="col-xs-12 col-sm-8" type="email" name="email" id="form-field-email" readonly/>
+                                                                    <input th:value="${customer.email}"
+                                                                           class="col-xs-12 col-sm-8" type="email"
+                                                                           name="email" id="form-field-email" readonly/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -87,11 +99,14 @@
                                                         <div class="space-4"></div>
 
                                                         <div class="form-group">
-                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-name">姓名</label>
+                                                            <label class="col-sm-4 control-label no-padding-right"
+                                                                   for="form-field-name">姓名</label>
 
                                                             <div class="col-sm-8">
                                                                 <div class="clearfix">
-                                                                    <input th:value="${customer.name}" class="col-xs-12 col-sm-8" type="text" name="name" id="form-field-name"/>
+                                                                    <input th:value="${customer.name}"
+                                                                           class="col-xs-12 col-sm-8" type="text"
+                                                                           name="name" id="form-field-name"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -99,11 +114,14 @@
                                                         <div class="space-4"></div>
 
                                                         <div class="form-group">
-                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-pass">密码</label>
+                                                            <label class="col-sm-4 control-label no-padding-right"
+                                                                   for="form-field-pass">密码</label>
 
                                                             <div class="col-sm-8">
                                                                 <div class="clearfix">
-                                                                    <input th:value="${customer.password}" class="col-xs-12 col-sm-8" type="password" name="password" id="form-field-pass" />
+                                                                    <input th:value="${customer.password}"
+                                                                           class="col-xs-12 col-sm-8" type="password"
+                                                                           name="password" id="form-field-pass"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -111,11 +129,14 @@
                                                         <div class="space-4"></div>
 
                                                         <div class="form-group">
-                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-level">级别</label>
+                                                            <label class="col-sm-4 control-label no-padding-right"
+                                                                   for="form-field-level">级别</label>
 
                                                             <div class="col-sm-8">
                                                                 <div class="clearfix">
-                                                                    <input th:value="${level}" class="col-xs-12 col-sm-8" type="text" name="level" id="form-field-level" readonly/>
+                                                                    <input th:value="${level}"
+                                                                           class="col-xs-12 col-sm-8" type="text"
+                                                                           name="level" id="form-field-level" readonly/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -123,11 +144,15 @@
                                                         <div class="space-4"></div>
 
                                                         <div class="form-group">
-                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-balance">余额</label>
+                                                            <label class="col-sm-4 control-label no-padding-right"
+                                                                   for="form-field-balance">余额</label>
 
                                                             <div class="col-sm-8">
                                                                 <div class="clearfix">
-                                                                    <input th:value="${#numbers.formatDecimal(customer.balance,1,2)}" class="col-xs-12 col-sm-8" type="text" name="level" id="form-field-balance" readonly/>
+                                                                    <input th:value="${#numbers.formatDecimal(customer.balance,1,2)}"
+                                                                           class="col-xs-12 col-sm-8" type="text"
+                                                                           name="level" id="form-field-balance"
+                                                                           readonly/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -142,11 +167,14 @@
                                                     <div class="col-xs-12 col-sm-8">
 
                                                         <div class="form-group">
-                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-phone">电话</label>
+                                                            <label class="col-sm-4 control-label no-padding-right"
+                                                                   for="form-field-phone">电话</label>
 
                                                             <div class="col-sm-8">
                                                                 <div class="clearfix">
-                                                                    <input th:value="${customer.phone}" class="col-xs-12 col-sm-8" type="text" name="phone" id="form-field-phone" />
+                                                                    <input th:value="${customer.phone}"
+                                                                           class="col-xs-12 col-sm-8" type="text"
+                                                                           name="phone" id="form-field-phone"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -154,14 +182,22 @@
                                                         <div class="space-4"></div>
 
                                                         <div class="form-group">
-                                                            <label class="col-sm-4 control-label no-padding-right" for="form-field-select">地址</label>
+                                                            <label class="col-sm-4 control-label no-padding-right"
+                                                                   for="form-field-select">地址</label>
 
                                                             <div class="col-sm-8">
                                                                 <div class="clearfix">
-                                                                    <select name="addresses" class="col-xs-12 col-sm-8" id="form-field-select">
-                                                                        <option th:each="address:*{customer.addresses}" th:text="${address}"></option>
+                                                                    <select name="addresses" class="col-xs-12 col-sm-8"
+                                                                            id="form-field-select">
+                                                                        <option th:each="address:*{customer.addresses}"
+                                                                                th:text="${address}"></option>
                                                                     </select>
-                                                                    <button id="addAddress" class="btn btn-xs btn-success" data-toggle="modal" data-target="#myModal" style="margin-left:20px; margin-top:2px;">添加地址</button>
+                                                                    <button id="addAddress"
+                                                                            class="btn btn-xs btn-success"
+                                                                            data-toggle="modal" data-target="#myModal"
+                                                                            style="margin-left:20px; margin-top:2px;">
+                                                                        添加地址
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -217,39 +253,41 @@
     </div><!-- /.modal -->
 </div>
 <input th:value="${customer.id}" id="id" type="text" style="display:none;"/>
-<input th:value="${#numbers.formatDecimal(customer.consumption,1,2)}" id="consumption" type="text" style="display:none;"/>
+<input th:value="${customer.state}" id="state" type="text" style="display:none;"/>
+<input th:value="${#numbers.formatDecimal(customer.consumption,1,2)}" id="consumption" type="text"
+       style="display:none;"/>
 <input th:value="${#numbers.formatDecimal(customer.balance,1,2)}" id="balance" type="text" style="display:none;"/>
 <div th:include="customer/cstCommon::commonFooter"></div>
 <script th:src="@{static/js/jquery.validate.min.js}"></script>
 </body>
 <script th:inline="javascript">
-    function Customer(id,email,password,name,phone,isActive,isWrittenOff,addresses,consumption,balance){
-        this.id=id;
-        this.email=email;
-        this.password=password;
-        this.name=name;
-        this.phone=phone;
-        this.isActive=isActive;
-        this.isWrittenOff=isWrittenOff;
-        this.addresses=addresses;
-        this.consumption=consumption;
-        this.balance=balance;
+    function Customer(id, email, password, name, phone, state, addresses, consumption, balance) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.state = state;
+        this.addresses = addresses;
+        this.consumption = consumption;
+        this.balance = balance;
     }
-    function getAddresses(){
-        var addresses=[];
-        var options=document.getElementById("form-field-select").options;
-        for(var i=0;i<options.length;i++){
+
+    function getAddresses() {
+        var addresses = [];
+        var options = document.getElementById("form-field-select").options;
+        for (var i = 0; i < options.length; i++) {
             addresses.push(options[i].innerHTML);
         }
         return addresses;
     }
 </script>
 <script type="text/javascript">
-    $("#addAddressSureBut").click(function (){
+    $("#addAddressSureBut").click(function () {
         var address = $("#addressToAdd").val();
-        if(address!="") {
+        if (address != "") {
             console.log(address);
-            $("#form-field-select").append("<option value='"+address+"'>"+address+"</option>");
+            $("#form-field-select").append("<option value='" + address + "'>" + address + "</option>");
             $("#myModal").modal("hide");
         }
     });
@@ -258,20 +296,20 @@
         errorElement: 'div',
         errorClass: 'help-block',
         focusInvalid: false,
-        onclick:true,
+        onclick: true,
         rules: {
             email: {
                 required: true,
-                email:true
+                email: true
             },
             name: {
                 required: true,
-                minlength:2
+                minlength: 2
             },
             phone: {
                 required: true,
-                digits:true,
-                minlength:5
+                digits: true,
+                minlength: 5
             },
             password: {
                 required: true,
@@ -283,10 +321,10 @@
                 required: "Please provide a valid email.",
                 email: "Please provide a valid email."
             },
-            name:{
+            name: {
                 required: "Please provide a name."
             },
-            phone:{
+            phone: {
                 required: "Please provide a phone.",
                 minlength: "Please provide a valid phone.",
                 digits: "Please provide a valid phone."
@@ -305,15 +343,15 @@
             $(e).remove();
         },
         errorPlacement: function (error, element) {
-            if(element.is(':checkbox') || element.is(':radio')) {
+            if (element.is(':checkbox') || element.is(':radio')) {
                 var controls = element.closest('div[class*="col-"]');
-                if(controls.find(':checkbox,:radio').length > 1) controls.append(error);
+                if (controls.find(':checkbox,:radio').length > 1) controls.append(error);
                 else error.insertAfter(element.nextAll('.lbl:eq(0)').eq(0));
             }
-            else if(element.is('.select2')) {
+            else if (element.is('.select2')) {
                 error.insertAfter(element.siblings('[class*="select2-container"]:eq(0)'));
             }
-            else if(element.is('.chosen-select')) {
+            else if (element.is('.chosen-select')) {
                 error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
             }
             else error.insertAfter(element.parent());
@@ -324,26 +362,27 @@
         }
     });
 
-    document.getElementById("submitInfo").onclick=function(){
-        if(!$("#validation-form").valid()){
+    document.getElementById("submitInfo").onclick = function () {
+        if (!$("#validation-form").valid()) {
             return;
         }
-        var id=document.getElementById("id").value;
-        var email=document.getElementById("form-field-email").value;
-        var password=document.getElementById("form-field-pass").value;
-        var name=document.getElementById("form-field-name").value;
-        var phone=document.getElementById("form-field-phone").value;
-        var addresses=getAddresses();
-        var consumption=document.getElementById("consumption").value;
-        var balance=document.getElementById("balance").value;
-        var customer=new Customer(id,email,password,name,phone,true,false,addresses,consumption,balance);
+        var id = document.getElementById("id").value;
+        var state = document.getElementById("state").value;
+        var email = document.getElementById("form-field-email").value;
+        var password = document.getElementById("form-field-pass").value;
+        var name = document.getElementById("form-field-name").value;
+        var phone = document.getElementById("form-field-phone").value;
+        var addresses = getAddresses();
+        var consumption = document.getElementById("consumption").value;
+        var balance = document.getElementById("balance").value;
+        var customer = new Customer(id, email, password, name, phone, state, addresses, consumption, balance);
         var basePath = "http:\/\/localhost:8080\/yummy";
         $.ajax({
             type: 'POST',
             url: "/yummy/customer/update",
             contentType: "application/json",
             data: JSON.stringify(customer),
-            success:function(result) {
+            success: function (result) {
                 window.location.reload();
             },
             error: function (result) {

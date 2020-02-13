@@ -14,8 +14,7 @@ public class Customer implements Serializable {
     private String password;
     private String name;
     private String phone;
-    private boolean isActive;
-    private boolean isWrittenOff;
+    private Integer state;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "address", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "address")
@@ -23,28 +22,16 @@ public class Customer implements Serializable {
     private double consumption;
     private double balance;
 
-    public Customer(int id, String email, String password, String name, String phone, boolean isActive, boolean isWrittenOff, List<String> addresses, double consumption, double balance) {
+    public Customer(int id, String email, String password, String name, String phone, Integer state, List<String> addresses, double consumption, double balance) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
-        this.isActive = isActive;
-        this.isWrittenOff = isWrittenOff;
+        this.state = state;
         this.addresses = addresses;
         this.consumption = consumption;
         this.balance = balance;
-    }
-
-    public Customer(String email, String password, String name, String phone) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-        this.isActive = false;
-        this.isWrittenOff = false;
-        this.consumption = 0;
-        this.balance = 0;
     }
 
     public Customer() { }
@@ -89,20 +76,12 @@ public class Customer implements Serializable {
         this.phone = phone;
     }
 
-    public boolean getIsActive() {
-        return isActive;
+    public Integer getState() {
+        return state;
     }
 
-    public void setIsActive(boolean active) {
-        isActive = active;
-    }
-
-    public boolean getIsWrittenOff() {
-        return isWrittenOff;
-    }
-
-    public void setIsWrittenOff(boolean writtenOff) {
-        isWrittenOff = writtenOff;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public List<String> getAddresses() {

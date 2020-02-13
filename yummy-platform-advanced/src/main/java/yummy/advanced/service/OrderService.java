@@ -11,25 +11,25 @@ import java.util.List;
  */
 
 public interface OrderService {
-    public Order findById(int id);
+    Order findById(int id);
 
-    public List<Order> findByCst(int cstId);
+    List<Order> findByCst(int cstId);
 
-    public List<Order> findByCst(int cstId, String state);
+    List<Order> findByCst(int cstId, String state);
 
-    public List<Order> findByRst(int rstId);
+    List<Order> findByRst(int rstId);
 
-    public List<Order> findByRst(int rstId, String state);
+    List<Order> findByRst(int rstId, String state);
 
-    public int add(Order order);
+    int add(Order order);
 
-    public void cancelOrder(int id);
+    void cancelOrder(int id);
 
-    public double returnOrder(int id);
+    double returnOrder(int id);
 
-    public boolean payOrder(int id);
+    boolean payOrder(int id);
 
-    public void finishOrder(int id);
+    void finishOrder(int id);
 
-    public double getDiscount(int cstId, double consumption);
+    double getDiscount(int cstId, double consumption);
 }

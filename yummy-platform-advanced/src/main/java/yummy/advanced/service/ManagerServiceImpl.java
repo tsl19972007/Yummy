@@ -25,7 +25,7 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public Manager login(int id, String password) {
-        return mngDao.findByIdAndPassword(id,password);
+        return mngDao.findByIdAndPassword(id, password);
     }
 
     @Override
@@ -95,10 +95,8 @@ public class ManagerServiceImpl implements ManagerService {
         double profit = rst.getProfit();
         rst.setProfit(0);
         rst.setBalance(rst.getBalance() + profit * ManagerServiceImpl.PROFIT_RATIO);
-        rstDao.update(rst);
         Manager mng = mngDao.get(Manager.getDefaultId());
         mng.setBalance(mng.getBalance() - profit * ManagerServiceImpl.PROFIT_RATIO);
-        mngDao.update(mng);
     }
 
     @Override
@@ -112,7 +110,7 @@ public class ManagerServiceImpl implements ManagerService {
         }
         Manager mng = mngDao.get(Manager.getDefaultId());
         mng.setBalance(mng.getBalance() - totalProfit * ManagerServiceImpl.PROFIT_RATIO);
-        mngDao.update(mng);
+        ;
     }
 }
 

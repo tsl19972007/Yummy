@@ -6,7 +6,10 @@
 <div th:include="customer/cstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -19,7 +22,10 @@
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
 
                 <ul class="breadcrumb">
@@ -61,7 +67,8 @@
                                         </div>
 
                                         <div class="infobox-data">
-                                            <span th:text="${cstStatistics.todayConsumption}" class="infobox-data-number"></span>
+                                            <span th:text="${cstStatistics.todayConsumption}"
+                                                  class="infobox-data-number"></span>
                                             <div class="infobox-content">今日消费</div>
                                         </div>
                                     </div>
@@ -72,7 +79,8 @@
                                         </div>
 
                                         <div class="infobox-data">
-                                            <span th:text="${cstStatistics.todayOrderNum}" class="infobox-data-number"></span>
+                                            <span th:text="${cstStatistics.todayOrderNum}"
+                                                  class="infobox-data-number"></span>
                                             <div class="infobox-content">今日订单</div>
                                         </div>
                                     </div>
@@ -83,7 +91,8 @@
                                         </div>
 
                                         <div class="infobox-data">
-                                            <span th:text="${cstStatistics.totalConsumption}" class="infobox-data-number"></span>
+                                            <span th:text="${cstStatistics.totalConsumption}"
+                                                  class="infobox-data-number"></span>
                                             <div class="infobox-content">总消费</div>
                                         </div>
 
@@ -100,7 +109,8 @@
                                         </div>
 
                                         <div class="infobox-data">
-                                            <span th:text="${cstStatistics.totalOrderNum}" class="infobox-data-number"></span>
+                                            <span th:text="${cstStatistics.totalOrderNum}"
+                                                  class="infobox-data-number"></span>
                                             <div class="infobox-content">总订单</div>
                                         </div>
 
@@ -129,7 +139,8 @@
                                 </div>
                             </div>
                             <div class="widget-body">
-                                <div id="eChart" style="width:350px; height:280px" class="widget-main no-padding infobox-container">
+                                <div id="eChart" style="width:350px; height:280px"
+                                     class="widget-main no-padding infobox-container">
                                 </div>
                             </div>
                         </div>
@@ -149,8 +160,11 @@
                             </div>
                             <div class="widget-body center">
                                 <div class="space-20"></div>
-                                <div class="easy-pie-chart percentage" th:attr="data-percent=${#numbers.formatDecimal(cst.getLevelPercentage()*100,1,2)}" data-color="#87B87F">
-                                    <span class="percent" th:text="${#numbers.formatDecimal(cst.getLevelPercentage()*100,1,2)}"></span>%
+                                <div class="easy-pie-chart percentage"
+                                     th:attr="data-percent=${#numbers.formatDecimal(cst.getLevelPercentage()*100,1,2)}"
+                                     data-color="#87B87F">
+                                    <span class="percent"
+                                          th:text="${#numbers.formatDecimal(cst.getLevelPercentage()*100,1,2)}"></span>%
                                 </div>
                                 <div class="space-10"></div>
                                 <hr/>
@@ -196,7 +210,7 @@
 <script th:src="@{/static/js/jquery.easy-pie-chart.min.js}"></script>
 </body>
 <script th:inline="javascript">
-    $(function() {
+    $(function () {
         var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
         $('.easy-pie-chart.percentage').each(function () {
             $(this).easyPieChart({
@@ -214,25 +228,25 @@
 <script th:inline="javascript">
     var myChart = echarts.init(document.getElementById('eChart'));
     var statistics = [[${cstStatistics}]];
-    var data=[];
-    for(var i=0;i<statistics.rstNameList.length;i++){
-        var pair={}
-        pair.value=statistics.rstConsumptionList[i];
-        pair.name=statistics.rstNameList[i];
+    var data = [];
+    for (var i = 0; i < statistics.rstNameList.length; i++) {
+        var pair = {}
+        pair.value = statistics.rstConsumptionList[i];
+        pair.name = statistics.rstNameList[i];
         data.push(pair);
     }
     console.log(data);
     var option = {
-        tooltip : {
+        tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         toolbox: {
-            show : true,
-            feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                magicType : {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {
                     show: true,
                     type: ['pie', 'funnel'],
                     option: {
@@ -244,16 +258,16 @@
                         }
                     }
                 },
-                restore : {show: true},
-                saveAsImage : {show: true}
+                restore: {show: true},
+                saveAsImage: {show: true}
             }
         },
-        calculable : true,
-        series : [
+        calculable: true,
+        series: [
             {
-                name:'消费',
-                type:'pie',
-                radius : '55%',
+                name: '消费',
+                type: 'pie',
+                radius: '55%',
                 center: ['50%', '60%'],
                 data: data
             }

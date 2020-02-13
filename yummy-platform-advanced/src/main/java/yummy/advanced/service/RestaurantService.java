@@ -6,15 +6,13 @@ import yummy.advanced.model.Restaurant;
 import java.util.List;
 
 public interface RestaurantService {
-    public Restaurant login(int id, String password);
+    Restaurant findById(int id);
 
-    public Restaurant findById(int id);
+    int register(Restaurant rst);
 
-    public int register(Restaurant rst);
+    void updateRst(Restaurant rst);
 
-    public void updateRst(Restaurant rst);
+    void updateMenu(int rstId, Menu menu);
 
-    public void updateMenu(int rstId, Menu menu);
-
-    public List<Restaurant> getAll();
+    List<Restaurant> getAll();
 }

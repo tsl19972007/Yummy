@@ -9,11 +9,5 @@ import yummy.advanced.model.Customer;
  */
 
 public interface CustomerDao extends BaseDao<Customer> {
-    public Customer findByEmail(String email);
-
-    public Customer findByEmailAndPassword(String email, String password);
-
-    public void setActive(int id);
-
-    public void setWrittenOff(int id);
+    Customer findByEmail(String email);
 }

@@ -8,7 +8,6 @@ import yummy.advanced.dao.ManagerDao;
 import yummy.advanced.dao.OrderDao;
 import yummy.advanced.dao.RestaurantDao;
 import yummy.advanced.model.*;
-import yummy.advanced.model.*;
 
 import java.util.Date;
 import java.util.List;
@@ -65,7 +64,6 @@ public class OrderServiceImplWithoutCancel implements OrderService {
                 return -1;
             }
             menuItem.setNum(menuItem.getNum() - orderItem.getNum());
-            rstDao.updateMenuItem(menuItem);
         }
         //更新订单信息：状态为待支付
         return (int) orderDao.add(order);
@@ -75,18 +73,15 @@ public class OrderServiceImplWithoutCancel implements OrderService {
         //更新订单信息：状态为进行中
         Order order = findById(id);
         order.setState("进行中");
-        orderDao.update(order);
         //更新顾客信息:顾客余额减少
         Customer cst = cstDao.get(order.getCstId());
         if (cst.getBalance() < order.getConsumption()) {
             return false;
         }
         cst.setBalance(cst.getBalance() - order.getConsumption());
-        cstDao.update(cst);
         //更新管理员信息：管理员余额增加
         Manager manager = managerDao.get(Manager.getDefaultId());
         manager.setBalance(manager.getBalance() + order.getConsumption());
-        managerDao.update(manager);
         return true;
     }
 
@@ -94,22 +89,18 @@ public class OrderServiceImplWithoutCancel implements OrderService {
         //更新订单信息：状态为已完成
         Order order = findById(id);
         order.setState("已完成");
-        orderDao.update(order);
         //更新餐厅信息：餐厅盈利增加
         Restaurant rst = rstDao.get(order.getRstId());
         rst.setProfit(order.getConsumption() + rst.getProfit());
-        rstDao.update(rst);
         //更新顾客信息：顾客消费增加
         Customer cst = cstDao.get(order.getCstId());
         cst.setConsumption(order.getConsumption() + cst.getConsumption());
-        cstDao.update(cst);
     }
 
     public double returnOrder(int id) {
         //更新订单信息:状态为已退订
         Order order = orderDao.get(id);
         order.setState("已退订");
-        orderDao.update(order);
         //更新餐厅信息：餐厅盈利增加（增加退订损失的那部分）
         double returned = getReturnedMoney(order.getConsumption(), order.getOrderTime(), order.getArriveTime());
         Restaurant rst = rstDao.get(order.getRstId());
@@ -118,18 +109,13 @@ public class OrderServiceImplWithoutCancel implements OrderService {
         for (OrderItem orderItem : order.getItemList()) {
             MenuItem menuItem = rstDao.getMenuItem(orderItem.getMenuItemId());
             menuItem.setNum(menuItem.getNum() + orderItem.getNum());
-            rstDao.updateMenuItem(menuItem);
         }
-        rstDao.update(rst);
-
         //更新管理员信息：管理员余额减少（减少订单总额）
         Manager manager = managerDao.get(Manager.getDefaultId());
         manager.setBalance(manager.getBalance() - order.getConsumption());
-        managerDao.update(manager);
         //更新顾客信息：顾客余额增加（增加退订的部分）
         Customer cst = cstDao.get(order.getCstId());
         cst.setBalance(cst.getBalance() + returned);
-        cstDao.update(cst);
         return returned;
     }
 

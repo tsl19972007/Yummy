@@ -94,4 +94,9 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         }
         return query.list();
     }
+
+    @Override
+    public void flush() {
+        getSession().flush();
+    }
 }

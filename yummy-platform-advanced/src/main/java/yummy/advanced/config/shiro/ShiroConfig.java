@@ -1,6 +1,7 @@
 package yummy.advanced.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -35,6 +36,7 @@ public class ShiroConfig {
         filterMap.put("/", "anon");
         // 登录页面和登录请求路径需要放行
         filterMap.put("/cstLogin", "anon");
+        filterMap.put("/cstRegister/**", "anon");
         filterMap.put("/rstLogin", "anon");
         filterMap.put("/mngLogin", "anon");
         filterMap.put("/loginAndRegister/**", "anon");
@@ -56,9 +58,18 @@ public class ShiroConfig {
         return securityManager;
     }
 
+    /*
+    配置自定义Realm以及加密算法：
+    注册时将加密后的密码存进数据库；
+    登陆时根据用户名取数据库中的密码，与用户输入的密码加密后进行比对；
+     */
     @Bean
     public UserRealm userRealm() {
         UserRealm userRealm = new UserRealm();
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
+        matcher.setHashAlgorithmName("MD5");
+        matcher.setHashIterations(3);
+        userRealm.setCredentialsMatcher(matcher);
         return userRealm;
     }
 

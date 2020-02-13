@@ -6,21 +6,21 @@ import yummy.advanced.model.Restaurant;
 import java.util.List;
 
 public interface ManagerService {
-    public Manager login(int id, String password);
+    Manager login(int id, String password);
 
-    public List<Restaurant> getRstUpdateList();
+    List<Restaurant> getRstUpdateList();
 
-    public void addApply(Restaurant rst);
+    void addApply(Restaurant rst);
 
-    public Restaurant getApplyFromId(int rstId);
+    Restaurant getApplyFromId(int rstId);
 
-    public void approve(int rstId);
+    void approve(int rstId);
 
-    public void reject(int rstId);
+    void reject(int rstId);
 
-    public List<Restaurant> getRstBalanceList();
+    List<Restaurant> getRstBalanceList();
 
-    public void balance(int id);
+    void balance(int id);
 
-    public void balanceAll();
+    void balanceAll();
 }

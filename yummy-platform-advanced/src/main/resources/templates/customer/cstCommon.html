@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.w3.org/1999/xhtml">
 <head th:fragment="commonHeader">
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Yummy</title>
 
-    <link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet" />
-    <link rel="stylesheet" th:href="@{/static/css/font-awesome.min.css}" />
-    <link rel="stylesheet" th:href="@{/static/css/font-awesome-ie7.min.css}" />
+    <link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/static/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/font-awesome-ie7.min.css}"/>
 
-    <link rel="stylesheet" th:href="@{/static/css/ace.min.css}" />
-    <link rel="stylesheet" th:href="@{/static/css/ace-rtl.min.css}" />
-    <link rel="stylesheet" th:href="@{/static/css/ace-skins.min.css}" />
-    <link rel="stylesheet" th:href="@{/static/css/ace-ie.min.css}" />
+    <link rel="stylesheet" th:href="@{/static/css/ace.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/ace-rtl.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/ace-skins.min.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/ace-ie.min.css}"/>
     <script th:src="@{/static/js/ace-extra.min.js}"></script>
     <script th:src="@{/static/js/html5shiv.js}"></script>
     <script th:src="@{/static/js/respond.min.js}"></script>
@@ -20,7 +20,10 @@
 <body>
 <div th:fragment="commonNavBar" class="navbar navbar-default" id="navbar">
     <script type="text/javascript">
-        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('navbar', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="navbar-container" id="navbar-container">
@@ -94,7 +97,7 @@
 
                         <li>
                             <a href="#">
-                                <img th:src="@{/static/avatars/avatar.png}" class="msg-photo" alt="Alex's Avatar" />
+                                <img th:src="@{/static/avatars/avatar.png}" class="msg-photo" alt="Alex's Avatar"/>
                                 <span class="msg-body">
 											<span class="msg-title">
 												<span class="blue">Alex:</span>
@@ -111,7 +114,7 @@
 
                         <li>
                             <a href="#">
-                                <img th:src="@{/static/avatars/avatar3.png}" class="msg-photo" alt="Susan's Avatar" />
+                                <img th:src="@{/static/avatars/avatar3.png}" class="msg-photo" alt="Susan's Avatar"/>
                                 <span class="msg-body">
 											<span class="msg-title">
 												<span class="blue">Susan:</span>
@@ -128,7 +131,7 @@
 
                         <li>
                             <a href="#">
-                                <img th:src="@{/static/avatars/avatar4.png}" class="msg-photo" alt="Bob's Avatar" />
+                                <img th:src="@{/static/avatars/avatar4.png}" class="msg-photo" alt="Bob's Avatar"/>
                                 <span class="msg-body">
 											<span class="msg-title">
 												<span class="blue">Bob:</span>
@@ -154,7 +157,7 @@
 
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" th:src="@{/static/avatars/user.jpg}" alt="Jason's Photo" />
+                        <img class="nav-user-photo" th:src="@{/static/avatars/user.jpg}" alt="Jason's Photo"/>
                         <span class="user-info">
 									<small>Welcome,</small>
 									<span shiro:principal property="userName">Jason</span>
@@ -204,7 +207,10 @@
 
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -214,7 +220,10 @@
 
         <div th:fragment="commonNav(active)" class="sidebar" id="sidebar">
             <script type="text/javascript">
-                try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+                try {
+                    ace.settings.check('sidebar', 'fixed')
+                } catch (e) {
+                }
             </script>
 
             <div class="sidebar-shortcuts" id="sidebar-shortcuts">
@@ -313,18 +322,25 @@
             </ul><!-- /.nav-list -->
 
             <div class="sidebar-collapse" id="sidebar-collapse">
-                <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+                <i class="icon-double-angle-left" data-icon1="icon-double-angle-left"
+                   data-icon2="icon-double-angle-right"></i>
             </div>
 
             <script type="text/javascript">
-                try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+                try {
+                    ace.settings.check('sidebar', 'collapsed')
+                } catch (e) {
+                }
             </script>
         </div>
 
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
 
                 <ul class="breadcrumb">
@@ -359,10 +375,10 @@
 </div><!-- /.main-container -->
 
 <footer th:fragment="commonFooter">
-<script type="text/javascript"   th:src="@{/static/js/jquery-2.0.3.min.js}"></script>
-<script type="text/javascript">
-    if("ontouchend" in document) document.write("<script th:src='@{/static/js/jquery.mobile.custom.min.js}'>"+"<"+"/script>");
-</script>
+    <script type="text/javascript" th:src="@{/static/js/jquery-2.0.3.min.js}"></script>
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script th:src='@{/static/js/jquery.mobile.custom.min.js}'>" + "<" + "/script>");
+    </script>
     <script th:src="@{/static/js/bootstrap.min.js}"></script>
     <script th:src="@{/static/js/jquery.validate.min.js}"></script>
     <script th:src="@{/static/js/typeahead-bs2.min.js}"></script>
@@ -373,29 +389,31 @@
     <script th:src="@{/static/js/bootbox.min.js}"></script>
     <script>
         var basePath = "http:\/\/localhost:8080\/yummy";
-        function logout(){
+
+        function logout() {
             $.ajax({
                 type: 'POST',
                 url: "/yummy/loginAndRegister/cstLogout",
-                success:function(result) {
-                    window.location.href="/yummy/cstLogin";
+                success: function (result) {
+                    window.location.href = "/yummy/cstLogin";
                 },
                 error: function (result) {
                     bootbox.alert("error!");
                 }
             });
         }
-        function writeOff(){
+
+        function writeOff() {
             bootbox.confirm({
                 size: "small",
                 message: "注销后该账户将无法使用（无法恢复），确定吗？",
-                callback: function(result) { /* result is a boolean; true = OK, false = Cancel*/
+                callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
                     if (result) {
                         $.ajax({
                             type: 'POST',
                             url: "/yummy/customer/writeOff",
-                            success:function(result) {
-                                window.location.href="/yummy/cstLogin";
+                            success: function (result) {
+                                window.location.href = "/yummy/cstLogin";
                             },
                             error: function (result) {
                                 bootbox.alert("error!");
@@ -406,8 +424,11 @@
             });
         }
     </script>
-<!-- inline scripts related to this page -->
-<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+    <!-- inline scripts related to this page -->
+    <div style="display:none">
+        <script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript'
+                charset='gb2312'></script>
+    </div>
 </footer>
 </body>
 </html>

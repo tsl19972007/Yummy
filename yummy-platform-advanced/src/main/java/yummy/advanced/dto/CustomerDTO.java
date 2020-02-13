@@ -10,8 +10,7 @@ public class CustomerDTO {
     private String password;
     private String name;
     private String phone;
-    private boolean isActive;
-    private boolean isWrittenOff;
+    private Integer state;
     private List<String> addresses;
     private double consumption;
     private double balance;
@@ -22,8 +21,7 @@ public class CustomerDTO {
         this.password = cst.getPassword();
         this.name = cst.getName();
         this.phone = cst.getPhone();
-        this.isActive = cst.getIsActive();
-        this.isWrittenOff = cst.getIsWrittenOff();
+        this.state = cst.getState();
         this.addresses = cst.getAddresses();
         this.consumption = cst.getConsumption();
         this.balance = cst.getBalance();
@@ -72,12 +70,12 @@ public class CustomerDTO {
         this.phone = phone;
     }
 
-    public boolean getIsActive() {
-        return isActive;
+    public Integer getState() {
+        return state;
     }
 
-    public boolean getIsWrittenOff() {
-        return isWrittenOff;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public List<String> getAddresses() {
@@ -111,14 +109,6 @@ public class CustomerDTO {
             return 1000 - consumption;
         }
         return 100 - consumption;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public void setWrittenOff(boolean writtenOff) {
-        isWrittenOff = writtenOff;
     }
 
     public String getLevel() {
@@ -158,6 +148,6 @@ public class CustomerDTO {
     }
 
     public Customer toCustomer() {
-        return new Customer(id, email, password, name, phone, isActive, isWrittenOff, addresses, consumption, balance);
+        return new Customer(id, email, password, name, phone, state, addresses, consumption, balance);
     }
 }

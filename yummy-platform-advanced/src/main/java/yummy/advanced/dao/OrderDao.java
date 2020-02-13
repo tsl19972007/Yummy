@@ -11,17 +11,17 @@ import java.util.List;
  */
 
 public interface OrderDao extends BaseDao<Order> {
-    public List<Order> getCompletedAnnualOrders();
+    List<Order> getCompletedAnnualOrders();
 
-    public List<Order> getCompletedMonthlyOrders();
+    List<Order> getCompletedMonthlyOrders();
 
-    public List<Order> getCompletedWeeklyOrders();
+    List<Order> getCompletedWeeklyOrders();
 
-    public List<Order> findByCst(int cstId);
+    List<Order> findByCst(int cstId);
 
-    public List<Order> findByCst(int cstId, String state);
+    List<Order> findByCst(int cstId, String state);
 
-    public List<Order> findByRst(int rstId);
+    List<Order> findByRst(int rstId);
 
-    public List<Order> findByRst(int rstId, String state);
+    List<Order> findByRst(int rstId, String state);
 }

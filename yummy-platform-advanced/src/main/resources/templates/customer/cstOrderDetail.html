@@ -6,7 +6,10 @@
 <div th:include="customer/cstCommon::commonNavBar" class="navbar navbar-default" id="navbar"></div>
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
 
     <div class="main-container-inner">
@@ -19,7 +22,10 @@
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                    try {
+                        ace.settings.check('breadcrumbs', 'fixed')
+                    } catch (e) {
+                    }
                 </script>
 
                 <ul class="breadcrumb">
@@ -51,9 +57,10 @@
                                             <span class="invoice-info-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态：</span>
                                             <span th:text="${order.state}" class="red"></span>
 
-                                            <br />
+                                            <br/>
                                             <span class="invoice-info-label">订单时间：</span>
-                                            <span th:text="${#strings.substring(order.orderTime,0,19)}" class="red"></span>
+                                            <span th:text="${#strings.substring(order.orderTime,0,19)}"
+                                                  class="red"></span>
                                         </div>
 
                                         <div class="widget-toolbar hidden-480">
@@ -165,7 +172,8 @@
 
                                             <div class="row">
                                                 <div class="col-sm-3 pull-left">
-                                                    送餐时间：<b class="red" th:text="${#strings.substring(order.arriveTime,0,19)}"> </b>
+                                                    送餐时间：<b class="red"
+                                                            th:text="${#strings.substring(order.arriveTime,0,19)}"> </b>
                                                     <br>
                                                     订单备注：<b class="red" th:text="${order.getRemarks()}"> </b>
                                                 </div>
@@ -181,7 +189,7 @@
                                                         <span th:text="'￥'+${order.consumption}" class="red"></span>
                                                     </h4>
                                                 </div>
-                                                <div class="col-sm-7 pull-left"> Extra Information </div>
+                                                <div class="col-sm-7 pull-left"> Extra Information</div>
                                             </div>
 
                                             <div class="space-6"></div>
@@ -191,10 +199,12 @@
                                             </div>
                                             <div class="space-6"></div>
                                             <div th:if="${order.state}=='进行中'" class="row">
-                                                <button id="return" class="btn btn-primary btn-danger"  style="margin-left:20px; float:right">
+                                                <button id="return" class="btn btn-primary btn-danger"
+                                                        style="margin-left:20px; float:right">
                                                     <i class="icon-remove bigger-120"></i>退订
                                                 </button>
-                                                <button id="finish" class="btn btn-primary btn-success"  style="float:right">
+                                                <button id="finish" class="btn btn-primary btn-success"
+                                                        style="float:right">
                                                     <i class="icon-ok bigger-120"></i>确认送达
                                                 </button>
                                             </div>
@@ -216,16 +226,16 @@
 <div th:include="customer/cstCommon::commonFooter"></div>
 </body>
 <script th:inline="javascript">
-    function returnOrder(){
-        var orderId=[[${order.orderId}]];
+    function returnOrder() {
+        var orderId = [[${order.orderId}]];
         var basePath = "http:\/\/localhost:8080\/yummy";
         $.ajax({
             type: 'POST',
             url: "/yummy/customer/returnOrder",
             data: {
-                id:orderId
+                id: orderId
             },
-            success:function(result) {
+            success: function (result) {
                 window.location.reload();
             },
             error: function (result) {
@@ -233,16 +243,17 @@
             }
         });
     }
-    function finishOrder(){
-        var orderId=[[${order.orderId}]];
+
+    function finishOrder() {
+        var orderId = [[${order.orderId}]];
         var basePath = "http:\/\/localhost:8080\/yummy";
         $.ajax({
             type: 'POST',
             url: "/yummy/customer/finishOrder",
             data: {
-                id:orderId
+                id: orderId
             },
-            success:function(result) {
+            success: function (result) {
                 window.location.reload();
             },
             error: function (result) {
@@ -250,23 +261,24 @@
             }
         });
     }
-    document.getElementById("return").onclick=function(){
-        var orderDateStr=[[${order.orderTime}]];
-        var arriveDateStr=[[${order.arriveTime}]];
-        orderDateStr=orderDateStr.substring(0,10)+" "+orderDateStr.substring(11,19);
-        arriveDateStr=arriveDateStr.substring(0,10)+" "+arriveDateStr.substring(11,19);
-        var orderDate=new Date(orderDateStr.replace(/-/g,"/"));
-        var arriveDate=new Date(arriveDateStr.replace(/-/g,"/"));
-        var now=new Date();
-        if(arriveDate<now){
+
+    document.getElementById("return").onclick = function () {
+        var orderDateStr = [[${order.orderTime}]];
+        var arriveDateStr = [[${order.arriveTime}]];
+        orderDateStr = orderDateStr.substring(0, 10) + " " + orderDateStr.substring(11, 19);
+        arriveDateStr = arriveDateStr.substring(0, 10) + " " + arriveDateStr.substring(11, 19);
+        var orderDate = new Date(orderDateStr.replace(/-/g, "/"));
+        var arriveDate = new Date(arriveDateStr.replace(/-/g, "/"));
+        var now = new Date();
+        if (arriveDate < now) {
             bootbox.alert("当前订单现在已无法退订");
         }
-        else{
-            var percent=parseInt((arriveDate.getTime()-now.getTime())/(arriveDate.getTime()-orderDate.getTime())*100);
+        else {
+            var percent = parseInt((arriveDate.getTime() - now.getTime()) / (arriveDate.getTime() - orderDate.getTime()) * 100);
             bootbox.confirm({
                 size: "small",
-                message: "现在退订仅会返还约"+percent+"%金额，确定吗？",
-                callback: function(result) { /* result is a boolean; true = OK, false = Cancel*/
+                message: "现在退订仅会返还约" + percent + "%金额，确定吗？",
+                callback: function (result) { /* result is a boolean; true = OK, false = Cancel*/
                     if (result) {
                         returnOrder();
                     }
@@ -274,7 +286,7 @@
             });
         }
     };
-    document.getElementById("finish").onclick=function(){
+    document.getElementById("finish").onclick = function () {
         finishOrder();
     };
 </script>

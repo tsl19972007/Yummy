@@ -5,6 +5,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import yummy.advanced.config.shiro.CustomerStateEnum;
 import yummy.advanced.config.shiro.CustomizedToken;
 import yummy.advanced.config.shiro.RoleEnum;
 import yummy.advanced.config.shiro.ShiroUtil;
@@ -27,6 +28,7 @@ public class ApiLoginController {
 
     @PostMapping(value = "/cstRegister")
     public boolean cstRegister(@RequestBody CustomerDTO cstDTO) {
+        cstDTO.setState(CustomerStateEnum.NotActive.getState());
         Customer cst = cstDTO.toCustomer();
         Customer cstFound = cstService.findByEmail(cst.getEmail());
         if (cstFound != null) {

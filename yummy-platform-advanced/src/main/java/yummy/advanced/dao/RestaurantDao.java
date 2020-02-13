@@ -10,9 +10,7 @@ import yummy.advanced.model.Restaurant;
  */
 
 public interface RestaurantDao extends BaseDao<Restaurant> {
-    public Restaurant findByIdAndPassword(int id, String password);
+    MenuItem getMenuItem(int id);
 
-    public MenuItem getMenuItem(int id);
-
-    public void updateMenuItem(MenuItem item);
+    void updateMenuItem(MenuItem item);
 }

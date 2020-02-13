@@ -10,19 +10,21 @@ import java.util.List;
  */
 
 public interface BaseDao<T> {
-    public Serializable add(T t);
+    Serializable add(T t);
 
-    public void delete(T t);
+    void delete(T t);
 
-    public void deleteById(Serializable id);
+    void deleteById(Serializable id);
 
-    public T get(Serializable id);
+    T get(Serializable id);
 
-    public void update(T t);
+    void update(T t);
 
-    public List<T> getAll();
+    List<T> getAll();
 
-    public T getUniqueResultByHQL(String hql, Object... values);
+    T getUniqueResultByHQL(String hql, Object... values);
 
-    public List<T> getListByHQL(String hql, Object... values);
+    List<T> getListByHQL(String hql, Object... values);
+
+    void flush();
 }
