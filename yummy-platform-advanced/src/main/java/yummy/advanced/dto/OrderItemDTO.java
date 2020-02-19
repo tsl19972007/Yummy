@@ -1,7 +1,13 @@
 package yummy.advanced.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import yummy.advanced.model.OrderItem;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItemDTO {
     private int id;
     private int menuItemId;
@@ -17,62 +23,6 @@ public class OrderItemDTO {
         this.name = item.getName();
         this.price = item.getPrice();
         this.num = item.getNum();
-    }
-
-
-    public OrderItemDTO() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getMenuItemId() {
-        return menuItemId;
-    }
-
-    public void setMenuItemId(int menuItemId) {
-        this.menuItemId = menuItemId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public double getSum() {
-        return price * num;
     }
 
     public OrderItem toOrderItem() {

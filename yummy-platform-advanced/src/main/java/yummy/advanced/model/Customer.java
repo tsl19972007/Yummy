@@ -1,11 +1,18 @@
 package yummy.advanced.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "customer")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -21,92 +28,6 @@ public class Customer implements Serializable {
     private List<String> addresses;
     private double consumption;
     private double balance;
-
-    public Customer(int id, String email, String password, String name, String phone, Integer state, List<String> addresses, double consumption, double balance) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-        this.state = state;
-        this.addresses = addresses;
-        this.consumption = consumption;
-        this.balance = balance;
-    }
-
-    public Customer() { }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public List<String> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<String> addresses) {
-        this.addresses = addresses;
-    }
-
-    public double getConsumption() {
-        return consumption;
-    }
-
-    public void setConsumption(double consumption) {
-        this.consumption = consumption;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
 
     public String getLevel() {
         if (consumption > 1000) {

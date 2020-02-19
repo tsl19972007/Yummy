@@ -1,5 +1,8 @@
 package yummy.advanced.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import yummy.advanced.model.Menu;
 import yummy.advanced.model.MenuItem;
 
@@ -7,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MenuDTO {
 
     private int id;
@@ -22,42 +28,6 @@ public class MenuDTO {
         for (int i = 0; i < menu.getItemList().size(); i++) {
             itemList.add(new MenuItemDTO(menu.getItemList().get(i)));
         }
-    }
-
-
-    public MenuDTO() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public List<MenuItemDTO> getItemList() {
-        return itemList;
-    }
-
-    public void setItemList(List<MenuItemDTO> itemList) {
-        this.itemList = itemList;
     }
 
     public Menu toMenu() {

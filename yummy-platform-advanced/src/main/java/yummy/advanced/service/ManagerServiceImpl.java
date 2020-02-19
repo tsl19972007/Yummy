@@ -110,7 +110,6 @@ public class ManagerServiceImpl implements ManagerService {
         }
         Manager mng = mngDao.get(Manager.getDefaultId());
         mng.setBalance(mng.getBalance() - totalProfit * ManagerServiceImpl.PROFIT_RATIO);
-        ;
     }
 }
 
